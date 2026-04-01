@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.ToDoApp" parent="Base.Theme.ToDoApp" />
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">?android:attr/colorBackground</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Theme.ToDoApp</item>
+    </style>
 </resources>
