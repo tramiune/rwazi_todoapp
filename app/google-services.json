@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "649788285348",
+    "project_id": "notes-10acb",
+    "storage_bucket": "notes-10acb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649788285348:android:d458b1c41e6c29e811a131",
+        "android_client_info": {
+          "package_name": "com.finnify.mobile.qr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuJlFxYy6KwluW5zxIdeVRADfCLitRGIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649788285348:android:68e9a43b6621201411a131",
+        "android_client_info": {
+          "package_name": "com.rwazi.app.todo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuJlFxYy6KwluW5zxIdeVRADfCLitRGIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649788285348:android:284fc3703fc94ceb11a131",
+        "android_client_info": {
+          "package_name": "com.sunday.jsc.password"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuJlFxYy6KwluW5zxIdeVRADfCLitRGIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

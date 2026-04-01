@@ -8,7 +8,9 @@ pluginManagement {
             }
         }
         mavenCentral()
+        maven { setUrl("https://jitpack.io") }
         gradlePluginPortal()
+        maven("https://jitpack.io")
     }
 }
 dependencyResolutionManagement {
