@@ -87,4 +87,6 @@ dependencies {
     // Lottie
     implementation(libs.lottie)
 
+    implementation(libs.androidx.appcompat.v161)
+
 }
