@@ -25,15 +25,25 @@ class NoteViewModel @Inject constructor(
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
 
+    private val _sortOrder = MutableStateFlow(com.rwazi.app.todo.util.SortOrder.NEWEST_FIRST)
+    val sortOrder: StateFlow<com.rwazi.app.todo.util.SortOrder> = _sortOrder
+
     @OptIn(ExperimentalCoroutinesApi::class)
-    val notes: Flow<PagingData<NoteEntity>> = _searchQuery
-        .flatMapLatest { query ->
-            repository.getNotesPaged(query)
-        }
-        .cachedIn(viewModelScope)
+    val notes: Flow<PagingData<NoteEntity>> = kotlinx.coroutines.flow.combine(
+        _searchQuery,
+        _sortOrder
+    ) { query, sort ->
+        query to sort
+    }.flatMapLatest { (query, sort) ->
+        repository.getNotesPaged(query, sort)
+    }.cachedIn(viewModelScope)
 
     fun onSearchQueryChanged(query: String) {
         _searchQuery.value = query
+    }
+
+    fun setSortOrder(order: com.rwazi.app.todo.util.SortOrder) {
+        _sortOrder.value = order
     }
 
     fun addNote(title: String, content: String, backgroundColor: Int) {

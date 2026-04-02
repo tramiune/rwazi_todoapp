@@ -12,7 +12,10 @@ import kotlinx.coroutines.flow.Flow
 interface NoteDao {
 
     @Query("SELECT * FROM notes WHERE isDeleted = 0 ORDER BY createdAt DESC")
-    fun getAllNotesPaged(): PagingSource<Int, NoteEntity>
+    fun getAllNotesPagedDesc(): PagingSource<Int, NoteEntity>
+
+    @Query("SELECT * FROM notes WHERE isDeleted = 0 ORDER BY createdAt ASC")
+    fun getAllNotesPagedAsc(): PagingSource<Int, NoteEntity>
 
     @Query("""
         SELECT * FROM notes 
@@ -20,7 +23,15 @@ interface NoteDao {
         AND (title LIKE '%' || :query || '%' OR content LIKE '%' || :query || '%')
         ORDER BY createdAt DESC
     """)
-    fun searchNotesPaged(query: String): PagingSource<Int, NoteEntity>
+    fun searchNotesPagedDesc(query: String): PagingSource<Int, NoteEntity>
+
+    @Query("""
+        SELECT * FROM notes 
+        WHERE isDeleted = 0 
+        AND (title LIKE '%' || :query || '%' OR content LIKE '%' || :query || '%')
+        ORDER BY createdAt ASC
+    """)
+    fun searchNotesPagedAsc(query: String): PagingSource<Int, NoteEntity>
 
     @Query("SELECT * FROM notes WHERE syncStatus = 'PENDING' OR isDeleted = 1")
     suspend fun getNotesToSync(): List<NoteEntity>

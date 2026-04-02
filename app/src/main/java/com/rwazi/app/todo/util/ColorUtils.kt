@@ -1,6 +1,6 @@
 package com.rwazi.app.todo.util
 
-import android.graphics.Color
+import androidx.core.graphics.toColorInt
 import kotlin.random.Random
 
 object ColorUtils {
@@ -18,16 +18,27 @@ object ColorUtils {
     )
 
     fun getRandomNoteColor(): Int {
-        return Color.parseColor(NoteColors[Random.nextInt(NoteColors.size)])
+        return NoteColors[Random.nextInt(NoteColors.size)].toColorInt()
     }
 
     fun getRandomAppBackgroundColor(): Int {
         val lightColors = listOf("#FDFCFB", "#F5F7FA", "#E3EEFF", "#F6F5F7", "#F9F9F9")
-        return Color.parseColor(lightColors[Random.nextInt(lightColors.size)])
+        return lightColors[Random.nextInt(lightColors.size)].toColorInt()
     }
 
     fun getRandomSoftColor(): Int {
-        val softColors = listOf("#FFEBEE", "#FCE4EC", "#F3E5F5", "#EDE7F6", "#E8EAF6", "#E3F2FD", "#E1F5FE", "#E0F7FA", "#E0F2F1", "#E8F5E9")
-        return Color.parseColor(softColors[Random.nextInt(softColors.size)])
+        val softColors = listOf(
+            "#FFEBEE",
+            "#FCE4EC",
+            "#F3E5F5",
+            "#EDE7F6",
+            "#E8EAF6",
+            "#E3F2FD",
+            "#E1F5FE",
+            "#E0F7FA",
+            "#E0F2F1",
+            "#E8F5E9"
+        )
+        return softColors[Random.nextInt(softColors.size)].toColorInt()
     }
 }

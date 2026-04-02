@@ -86,7 +86,7 @@ class NoteRepositoryImpl @Inject constructor(
         firestore.collection("users").document(uid).collection("notes")
     }
 
-    override fun getNotesPaged(query: String): Flow<PagingData<NoteEntity>> {
+    override fun getNotesPaged(query: String, sortOrder: com.rwazi.app.todo.util.SortOrder): Flow<PagingData<NoteEntity>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
@@ -94,9 +94,15 @@ class NoteRepositoryImpl @Inject constructor(
             ),
             pagingSourceFactory = {
                 if (query.isBlank()) {
-                    noteDao.getAllNotesPaged()
+                    when (sortOrder) {
+                        com.rwazi.app.todo.util.SortOrder.NEWEST_FIRST -> noteDao.getAllNotesPagedDesc()
+                        com.rwazi.app.todo.util.SortOrder.OLDEST_FIRST -> noteDao.getAllNotesPagedAsc()
+                    }
                 } else {
-                    noteDao.searchNotesPaged(query)
+                    when (sortOrder) {
+                        com.rwazi.app.todo.util.SortOrder.NEWEST_FIRST -> noteDao.searchNotesPagedDesc(query)
+                        com.rwazi.app.todo.util.SortOrder.OLDEST_FIRST -> noteDao.searchNotesPagedAsc(query)
+                    }
                 }
             }
         ).flow

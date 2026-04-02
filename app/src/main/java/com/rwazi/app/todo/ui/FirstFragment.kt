@@ -47,7 +47,25 @@ class FirstFragment : Fragment() {
         setupSearchView()
         setupFab()
         setupLogout()
+        setupSort()
         observeNotes()
+    }
+
+    private fun setupSort() {
+        binding.btnSort.setOnClickListener {
+            val popup = androidx.appcompat.widget.PopupMenu(requireContext(), it)
+            popup.menu.add(0, 0, 0, "Newest First")
+            popup.menu.add(0, 1, 1, "Oldest First")
+            
+            popup.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    0 -> viewModel.setSortOrder(com.rwazi.app.todo.util.SortOrder.NEWEST_FIRST)
+                    1 -> viewModel.setSortOrder(com.rwazi.app.todo.util.SortOrder.OLDEST_FIRST)
+                }
+                true
+            }
+            popup.show()
+        }
     }
 
     private fun setupLogout() {
