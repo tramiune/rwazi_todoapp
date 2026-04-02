@@ -40,6 +40,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>(
     }
 
     override fun initControl(view: View, savedInstanceState: Bundle?) {
+        if (viewModel.isLoggedIn()) {
+            findNavController().navigate(R.id.action_LoginFragment_to_FirstFragment)
+            return
+        }
         binding.loginRoot.setBackgroundColor(ColorUtils.getRandomSoftColor())
         
         binding.btnGoogleSignIn.setOnClickListener {

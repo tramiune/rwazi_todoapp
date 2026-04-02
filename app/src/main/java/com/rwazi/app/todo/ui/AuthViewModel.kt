@@ -20,6 +20,8 @@ class AuthViewModel @Inject constructor(
     private val _authState = MutableStateFlow<AuthResult>(AuthResult.Initial)
     val authState: StateFlow<AuthResult> = _authState
 
+    fun isLoggedIn(): Boolean = authRepository.currentUser != null
+
     fun signInWithGoogle(credential: AuthCredential) {
         viewModelScope.launch {
             _authState.value = AuthResult.Loading

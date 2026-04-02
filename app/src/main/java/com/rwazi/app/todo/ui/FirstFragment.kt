@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
+import androidx.navigation.fragment.findNavController
 import com.rwazi.app.todo.R
 import com.rwazi.app.todo.databinding.FragmentFirstBinding
 import com.rwazi.app.todo.util.ColorUtils
@@ -34,6 +35,9 @@ class FirstFragment : Fragment() {
         return binding.root
     }
 
+    @javax.inject.Inject
+    lateinit var authRepository: com.rwazi.app.todo.data.repository.AuthRepository
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
@@ -42,7 +46,17 @@ class FirstFragment : Fragment() {
         setupRecyclerView()
         setupSearchView()
         setupFab()
+        setupLogout()
         observeNotes()
+    }
+
+    private fun setupLogout() {
+        binding.btnLogout.setOnClickListener {
+            viewLifecycleOwner.lifecycleScope.launch {
+                authRepository.signOut()
+                findNavController().navigate(R.id.LoginFragment)
+            }
+        }
     }
 
     private fun setupRecyclerView() {
