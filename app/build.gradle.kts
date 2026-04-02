@@ -22,6 +22,15 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("../debug.keystore")
+            storePassword = "android"
+            keyAlias = "AndroidDebugKey"
+            keyPassword = "android"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -29,6 +38,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -64,12 +76,23 @@ dependencies {
     // hilt
     ksp(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
+    implementation(libs.hilt.work)
+    ksp(libs.hilt.compiler)
 
-    // room
-    implementation(libs.retrofit.converter.gson)
-    implementation(libs.retrofit)
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging.interceptor)
+
+    // room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.paging)
+
+    // paging
+    implementation(libs.androidx.paging.runtime)
+
+    // work
+    implementation(libs.androidx.work.runtime.ktx)
 
     // Size- and scale-independent pixels for @dimen/_XXsdp and @dimen/_XXssp
     implementation(libs.sdp)
@@ -80,10 +103,15 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.config)
     implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.retrofit)
 
     // Glide
     implementation(libs.glide)
     implementation(libs.webpdecoder)
+    implementation(libs.play.services.auth)
 
     // Lottie
     implementation(libs.lottie)

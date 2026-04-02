@@ -12,7 +12,12 @@
           "package_name": "com.finnify.mobile.qr"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "649788285348-0kvjdpaph94fph0beb90le8kpli2iijv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDuJlFxYy6KwluW5zxIdeVRADfCLitRGIg"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "649788285348-0kvjdpaph94fph0beb90le8kpli2iijv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "649788285348-91jmushedvsghlb13vmhge0hhsm8q7eg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.test"
+              }
+            }
+          ]
         }
       }
     },
@@ -31,7 +48,20 @@
           "package_name": "com.rwazi.app.todo"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "649788285348-2tu9hqgg1l4m3cg786ps3akkt4n12195.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rwazi.app.todo",
+            "certificate_hash": "006fad0d9757203f97a5e8a58caf53370a1672e9"
+          }
+        },
+        {
+          "client_id": "649788285348-0kvjdpaph94fph0beb90le8kpli2iijv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDuJlFxYy6KwluW5zxIdeVRADfCLitRGIg"
@@ -39,7 +69,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "649788285348-0kvjdpaph94fph0beb90le8kpli2iijv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "649788285348-91jmushedvsghlb13vmhge0hhsm8q7eg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.test"
+              }
+            }
+          ]
         }
       }
     },
@@ -50,7 +92,12 @@
           "package_name": "com.sunday.jsc.password"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "649788285348-0kvjdpaph94fph0beb90le8kpli2iijv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDuJlFxYy6KwluW5zxIdeVRADfCLitRGIg"
@@ -58,7 +105,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "649788285348-0kvjdpaph94fph0beb90le8kpli2iijv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "649788285348-91jmushedvsghlb13vmhge0hhsm8q7eg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.test"
+              }
+            }
+          ]
         }
       }
     }
