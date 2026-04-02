@@ -8,32 +8,38 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rwazi.app.todo.R
 import com.rwazi.app.todo.base.BaseFragment
-import com.rwazi.app.todo.data.repository.AuthRepository
 import com.rwazi.app.todo.databinding.FragmentSettingsBinding
+import com.rwazi.app.todo.ui.viewmodel.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class SettingsFragment : BaseFragment<FragmentSettingsBinding, NoteViewModel>(
+class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel>(
     FragmentSettingsBinding::inflate
 ) {
-    override val viewModel: NoteViewModel by viewModels()
-
-    @Inject
-    lateinit var authRepository: AuthRepository
+    override val viewModel: SettingsViewModel by viewModels()
 
     override fun initControl(view: View, savedInstanceState: Bundle?) {
-        val sharedPrefs = requireContext().getSharedPreferences("app_settings", android.content.Context.MODE_PRIVATE)
-        
-        val isDarkModeObj = sharedPrefs.getBoolean("dark_mode", false)
-        val systemDarkMode = (requireContext().resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) == android.content.res.Configuration.UI_MODE_NIGHT_YES
-        val currentMode = if (sharedPrefs.contains("dark_mode")) isDarkModeObj else systemDarkMode
-        
-        binding.switchDarkMode.isChecked = currentMode
+        observeTheme()
+        setupListeners()
+    }
 
+    private fun observeTheme() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.themeFlow.collectLatest { isDarkMode ->
+                val systemDarkMode = (requireContext().resources.configuration.uiMode and 
+                    android.content.res.Configuration.UI_MODE_NIGHT_MASK) == android.content.res.Configuration.UI_MODE_NIGHT_YES
+                
+                val currentMode = isDarkMode ?: systemDarkMode
+                binding.switchDarkMode.isChecked = currentMode
+            }
+        }
+    }
+
+    private fun setupListeners() {
         binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
-            sharedPrefs.edit().putBoolean("dark_mode", isChecked).apply()
+            viewModel.setThemeMode(isChecked)
             if (isChecked) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             } else {
@@ -47,7 +53,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, NoteViewModel>(
 
         binding.btnLogout.setOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch {
-                authRepository.signOut()
+                viewModel.signOut()
                 findNavController().navigate(R.id.LoginFragment)
             }
         }

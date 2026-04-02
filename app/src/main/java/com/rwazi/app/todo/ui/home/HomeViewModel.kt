@@ -1,43 +1,39 @@
-package com.rwazi.app.todo.ui
+package com.rwazi.app.todo.ui.home
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.rwazi.app.todo.base.BaseViewModel
 import com.rwazi.app.todo.data.local.NoteEntity
-import com.rwazi.app.todo.data.repository.NoteRepository
+import com.rwazi.app.todo.domain.usecase.AddNoteUseCase
+import com.rwazi.app.todo.domain.usecase.DeleteNoteUseCase
+import com.rwazi.app.todo.domain.usecase.GetNotesUseCase
+import com.rwazi.app.todo.util.SortOrder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
-class NoteViewModel @Inject constructor(
-    private val getNotesUseCase: com.rwazi.app.todo.domain.usecase.GetNotesUseCase,
-    private val addNoteUseCase: com.rwazi.app.todo.domain.usecase.AddNoteUseCase,
-    private val deleteNoteUseCase: com.rwazi.app.todo.domain.usecase.DeleteNoteUseCase,
-    private val updateNoteUseCase: com.rwazi.app.todo.domain.usecase.UpdateNoteUseCase,
-    private val getNoteByIdUseCase: com.rwazi.app.todo.domain.usecase.GetNoteByIdUseCase,
-    private val getNoteFlowUseCase: com.rwazi.app.todo.domain.usecase.GetNoteFlowUseCase
-) : androidx.lifecycle.ViewModel() {
-
-    fun getNoteFlow(id: String) = getNoteFlowUseCase(id)
-    suspend fun getNoteById(id: String) = getNoteByIdUseCase(id)
+class HomeViewModel @Inject constructor(
+    private val getNotesUseCase: GetNotesUseCase,
+    private val addNoteUseCase: AddNoteUseCase,
+    private val deleteNoteUseCase: DeleteNoteUseCase
+) : BaseViewModel() {
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
 
-    private val _sortOrder = MutableStateFlow(com.rwazi.app.todo.util.SortOrder.NEWEST_FIRST)
-    val sortOrder: StateFlow<com.rwazi.app.todo.util.SortOrder> = _sortOrder
+    private val _sortOrder = MutableStateFlow(SortOrder.NEWEST_FIRST)
+    val sortOrder: StateFlow<SortOrder> = _sortOrder
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val notes: Flow<PagingData<NoteEntity>> = kotlinx.coroutines.flow.combine(
+    val notes: Flow<PagingData<NoteEntity>> = combine(
         _searchQuery,
         _sortOrder
     ) { query, sort ->
@@ -50,7 +46,7 @@ class NoteViewModel @Inject constructor(
         _searchQuery.value = query
     }
 
-    fun setSortOrder(order: com.rwazi.app.todo.util.SortOrder) {
+    fun setSortOrder(order: SortOrder) {
         _sortOrder.value = order
     }
 
@@ -62,12 +58,6 @@ class NoteViewModel @Inject constructor(
                 backgroundColor = backgroundColor
             )
             addNoteUseCase(note)
-        }
-    }
-
-    fun updateNote(note: NoteEntity) {
-        viewModelScope.launch {
-            updateNoteUseCase(note)
         }
     }
 

@@ -3,6 +3,7 @@ package com.rwazi.app.todo.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.work.*
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
@@ -11,9 +12,9 @@ import com.rwazi.app.todo.data.local.NoteEntity
 import com.rwazi.app.todo.data.local.SyncStatus
 import com.rwazi.app.todo.data.mapper.toEntity
 import com.rwazi.app.todo.data.mapper.toRemote
-import com.rwazi.app.todo.data.repository.AuthRepository
-import com.rwazi.app.todo.data.repository.NoteRepository
+import com.rwazi.app.todo.data.remote.NoteRemote
 import com.rwazi.app.todo.data.sync.SyncWorker
+import com.rwazi.app.todo.util.SortOrder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -29,7 +30,7 @@ class NoteRepositoryImpl @Inject constructor(
     private val noteDao: NoteDao,
     private val firestore: FirebaseFirestore,
     private val authRepository: AuthRepository,
-    private val workManager: androidx.work.WorkManager
+    private val workManager: WorkManager
 ) : NoteRepository {
 
     private val repositoryScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -62,7 +63,7 @@ class NoteRepositoryImpl @Inject constructor(
                 }
 
                 snapshot?.documentChanges?.forEach { dc ->
-                    val remote = dc.document.toObject(com.rwazi.app.todo.data.remote.NoteRemote::class.java)?.copy(id = dc.document.id) ?: return@forEach
+                    val remote = dc.document.toObject(NoteRemote::class.java)?.copy(id = dc.document.id) ?: return@forEach
                     val entity = remote.toEntity(SyncStatus.SYNCED)
 
                     repositoryScope.launch {
@@ -110,7 +111,7 @@ class NoteRepositoryImpl @Inject constructor(
         firestore.collection("users").document(uid).collection("notes")
     }
 
-    override fun getNotesPaged(query: String, sortOrder: com.rwazi.app.todo.util.SortOrder): Flow<PagingData<NoteEntity>> {
+    override fun getNotesPaged(query: String, sortOrder: SortOrder): Flow<PagingData<NoteEntity>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
@@ -119,13 +120,13 @@ class NoteRepositoryImpl @Inject constructor(
             pagingSourceFactory = {
                 if (query.isBlank()) {
                     when (sortOrder) {
-                        com.rwazi.app.todo.util.SortOrder.NEWEST_FIRST -> noteDao.getAllNotesPagedDesc()
-                        com.rwazi.app.todo.util.SortOrder.OLDEST_FIRST -> noteDao.getAllNotesPagedAsc()
+                        SortOrder.NEWEST_FIRST -> noteDao.getAllNotesPagedDesc()
+                        SortOrder.OLDEST_FIRST -> noteDao.getAllNotesPagedAsc()
                     }
                 } else {
                     when (sortOrder) {
-                        com.rwazi.app.todo.util.SortOrder.NEWEST_FIRST -> noteDao.searchNotesPagedDesc(query)
-                        com.rwazi.app.todo.util.SortOrder.OLDEST_FIRST -> noteDao.searchNotesPagedAsc(query)
+                        SortOrder.NEWEST_FIRST -> noteDao.searchNotesPagedDesc(query)
+                        SortOrder.OLDEST_FIRST -> noteDao.searchNotesPagedAsc(query)
                     }
                 }
             }
@@ -194,17 +195,17 @@ class NoteRepositoryImpl @Inject constructor(
     }
 
     override suspend fun syncNotes() {
-        val constraints = androidx.work.Constraints.Builder()
-            .setRequiredNetworkType(androidx.work.NetworkType.CONNECTED)
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
         
-        val syncRequest = androidx.work.OneTimeWorkRequestBuilder<SyncWorker>()
+        val syncRequest = OneTimeWorkRequestBuilder<SyncWorker>()
             .setConstraints(constraints)
             .build()
             
         workManager.enqueueUniqueWork(
             "note_sync",
-            androidx.work.ExistingWorkPolicy.REPLACE,
+            ExistingWorkPolicy.REPLACE,
             syncRequest
         )
     }

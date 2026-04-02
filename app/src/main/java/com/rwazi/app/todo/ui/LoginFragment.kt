@@ -16,12 +16,12 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.rwazi.app.todo.R
 import com.rwazi.app.todo.base.BaseFragment
 import com.rwazi.app.todo.databinding.FragmentLoginBinding
-import com.rwazi.app.todo.util.ColorUtils
+import com.rwazi.app.todo.ui.viewmodel.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class LoginFragment : com.rwazi.app.todo.base.BaseFragment<FragmentLoginBinding, AuthViewModel>(
+class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>(
     FragmentLoginBinding::inflate
 ) {
     override val viewModel: AuthViewModel by viewModels()

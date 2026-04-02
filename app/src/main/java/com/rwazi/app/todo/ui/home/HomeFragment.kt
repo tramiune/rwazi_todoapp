@@ -1,27 +1,33 @@
-package com.rwazi.app.todo.ui
+package com.rwazi.app.todo.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.PopupMenu
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
+import com.google.android.material.textfield.TextInputEditText
 import com.rwazi.app.todo.R
+import com.rwazi.app.todo.base.BaseFragment
 import com.rwazi.app.todo.databinding.FragmentHomeBinding
+import com.rwazi.app.todo.ui.NoteAdapter
+import com.rwazi.app.todo.ui.home.HomeViewModel
 import com.rwazi.app.todo.util.ColorUtils
+import com.rwazi.app.todo.util.SortOrder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class FirstFragment : com.rwazi.app.todo.base.BaseFragment<FragmentHomeBinding, NoteViewModel>(
+class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
     FragmentHomeBinding::inflate
 ) {
-    override val viewModel: NoteViewModel by viewModels()
+    override val viewModel: HomeViewModel by viewModels()
     private lateinit var adapter: NoteAdapter
-
-    @javax.inject.Inject
-    lateinit var authRepository: com.rwazi.app.todo.data.repository.AuthRepository
 
     override fun initControl(view: View, savedInstanceState: Bundle?) {
         setupRecyclerView()
@@ -34,14 +40,14 @@ class FirstFragment : com.rwazi.app.todo.base.BaseFragment<FragmentHomeBinding, 
 
     private fun setupSort() {
         binding.btnSort.setOnClickListener {
-            val popup = androidx.appcompat.widget.PopupMenu(requireContext(), it)
+            val popup = PopupMenu(requireContext(), it)
             popup.menu.add(0, 0, 0, getString(R.string.sort_newest))
             popup.menu.add(0, 1, 1, getString(R.string.sort_oldest))
 
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
-                    0 -> viewModel.setSortOrder(com.rwazi.app.todo.util.SortOrder.NEWEST_FIRST)
-                    1 -> viewModel.setSortOrder(com.rwazi.app.todo.util.SortOrder.OLDEST_FIRST)
+                    0 -> viewModel.setSortOrder(SortOrder.NEWEST_FIRST)
+                    1 -> viewModel.setSortOrder(SortOrder.OLDEST_FIRST)
                 }
                 true
             }
@@ -72,7 +78,7 @@ class FirstFragment : com.rwazi.app.todo.base.BaseFragment<FragmentHomeBinding, 
 
     private fun setupSearchView() {
         binding.searchView.setOnQueryTextListener(object :
-            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.onSearchQueryChanged(query ?: "")
                 return true
@@ -100,7 +106,7 @@ class FirstFragment : com.rwazi.app.todo.base.BaseFragment<FragmentHomeBinding, 
 
         viewLifecycleOwner.lifecycleScope.launch {
             adapter.loadStateFlow.collectLatest { loadStates ->
-                val isListEmpty = loadStates.refresh is androidx.paging.LoadState.NotLoading && adapter.itemCount == 0
+                val isListEmpty = loadStates.refresh is LoadState.NotLoading && adapter.itemCount == 0
                 binding.llEmptyState.visibility = if (isListEmpty) View.VISIBLE else View.GONE
                 binding.rvNotes.visibility = if (isListEmpty) View.GONE else View.VISIBLE
             }
@@ -111,11 +117,11 @@ class FirstFragment : com.rwazi.app.todo.base.BaseFragment<FragmentHomeBinding, 
         val dialogView =
             LayoutInflater.from(requireContext()).inflate(R.layout.dialog_add_note, null)
         val etTitle =
-            dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.etTitle)
+            dialogView.findViewById<TextInputEditText>(R.id.etTitle)
         val etContent =
-            dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.etContent)
+            dialogView.findViewById<TextInputEditText>(R.id.etContent)
 
-        androidx.appcompat.app.AlertDialog.Builder(requireContext())
+        AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.add_new_note))
             .setView(dialogView)
             .setPositiveButton(getString(R.string.add)) { _, _ ->

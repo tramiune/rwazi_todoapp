@@ -9,15 +9,16 @@ import androidx.navigation.fragment.findNavController
 import com.rwazi.app.todo.R
 import com.rwazi.app.todo.base.BaseFragment
 import com.rwazi.app.todo.databinding.FragmentEditNoteBinding
+import com.rwazi.app.todo.ui.viewmodel.EditNoteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class EditNoteFragment : BaseFragment<FragmentEditNoteBinding, NoteViewModel>(
+class EditNoteFragment : BaseFragment<FragmentEditNoteBinding, EditNoteViewModel>(
     FragmentEditNoteBinding::inflate
 ) {
-    override val viewModel: NoteViewModel by viewModels()
+    override val viewModel: EditNoteViewModel by viewModels()
     private var noteId: String? = null
 
     override fun initControl(view: View, savedInstanceState: Bundle?) {

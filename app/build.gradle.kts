@@ -116,6 +116,7 @@ dependencies {
     // Lottie
     implementation(libs.lottie)
 
+    implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.appcompat.v161)
 
 }
