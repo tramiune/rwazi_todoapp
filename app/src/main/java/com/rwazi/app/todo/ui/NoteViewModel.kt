@@ -19,8 +19,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoteViewModel @Inject constructor(
-    private val repository: NoteRepository
-) : ViewModel() {
+    private val getNotesUseCase: com.rwazi.app.todo.domain.usecase.GetNotesUseCase,
+    private val addNoteUseCase: com.rwazi.app.todo.domain.usecase.AddNoteUseCase,
+    private val deleteNoteUseCase: com.rwazi.app.todo.domain.usecase.DeleteNoteUseCase,
+    private val updateNoteUseCase: com.rwazi.app.todo.domain.usecase.UpdateNoteUseCase,
+    private val getNoteByIdUseCase: com.rwazi.app.todo.domain.usecase.GetNoteByIdUseCase,
+    private val getNoteFlowUseCase: com.rwazi.app.todo.domain.usecase.GetNoteFlowUseCase
+) : androidx.lifecycle.ViewModel() {
+
+    fun getNoteFlow(id: String) = getNoteFlowUseCase(id)
+    suspend fun getNoteById(id: String) = getNoteByIdUseCase(id)
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
@@ -35,7 +43,7 @@ class NoteViewModel @Inject constructor(
     ) { query, sort ->
         query to sort
     }.flatMapLatest { (query, sort) ->
-        repository.getNotesPaged(query, sort)
+        getNotesUseCase(query, sort)
     }.cachedIn(viewModelScope)
 
     fun onSearchQueryChanged(query: String) {
@@ -53,13 +61,19 @@ class NoteViewModel @Inject constructor(
                 content = content,
                 backgroundColor = backgroundColor
             )
-            repository.addNote(note)
+            addNoteUseCase(note)
+        }
+    }
+
+    fun updateNote(note: NoteEntity) {
+        viewModelScope.launch {
+            updateNoteUseCase(note)
         }
     }
 
     fun deleteNote(id: String) {
         viewModelScope.launch {
-            repository.deleteNote(id)
+            deleteNoteUseCase(id)
         }
     }
 }

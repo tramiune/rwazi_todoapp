@@ -19,28 +19,16 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class FirstFragment : Fragment() {
-
-    private var _binding: FragmentFirstBinding? = null
-    private val binding get() = _binding!!
-
-    private val viewModel: NoteViewModel by viewModels()
+class FirstFragment : com.rwazi.app.todo.base.BaseFragment<FragmentFirstBinding, NoteViewModel>(
+    FragmentFirstBinding::inflate
+) {
+    override val viewModel: NoteViewModel by viewModels()
     private lateinit var adapter: NoteAdapter
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     @javax.inject.Inject
     lateinit var authRepository: com.rwazi.app.todo.data.repository.AuthRepository
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        
+    override fun initControl(view: View, savedInstanceState: Bundle?) {
         binding.root.setBackgroundColor(ColorUtils.getRandomAppBackgroundColor())
 
         setupRecyclerView()
@@ -54,8 +42,8 @@ class FirstFragment : Fragment() {
     private fun setupSort() {
         binding.btnSort.setOnClickListener {
             val popup = androidx.appcompat.widget.PopupMenu(requireContext(), it)
-            popup.menu.add(0, 0, 0, "Newest First")
-            popup.menu.add(0, 1, 1, "Oldest First")
+            popup.menu.add(0, 0, 0, getString(R.string.sort_newest))
+            popup.menu.add(0, 1, 1, getString(R.string.sort_oldest))
             
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
@@ -79,7 +67,12 @@ class FirstFragment : Fragment() {
 
     private fun setupRecyclerView() {
         adapter = NoteAdapter(
-            onNoteClick = { /* Handle edit if needed */ },
+            onNoteClick = { note ->
+                val bundle = Bundle().apply {
+                    putString("noteId", note.id)
+                }
+                findNavController().navigate(R.id.action_FirstFragment_to_EditNoteFragment, bundle)
+            },
             onNoteDelete = { note ->
                 viewModel.deleteNote(note.id)
             }
@@ -88,7 +81,7 @@ class FirstFragment : Fragment() {
     }
 
     private fun setupSearchView() {
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.onSearchQueryChanged(query ?: "")
                 return true
@@ -117,13 +110,13 @@ class FirstFragment : Fragment() {
 
     private fun showAddNoteDialog() {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_add_note, null)
-        val etTitle = dialogView.findViewById<TextInputEditText>(R.id.etTitle)
-        val etContent = dialogView.findViewById<TextInputEditText>(R.id.etContent)
+        val etTitle = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.etTitle)
+        val etContent = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.etContent)
 
-        AlertDialog.Builder(requireContext())
-            .setTitle("Add New Note")
+        androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.add_new_note))
             .setView(dialogView)
-            .setPositiveButton("Add") { _, _ ->
+            .setPositiveButton(getString(R.string.add)) { _, _ ->
                 val title = etTitle.text?.toString() ?: ""
                 val content = etContent.text?.toString() ?: ""
                 if (title.isNotBlank() || content.isNotBlank()) {
@@ -134,12 +127,7 @@ class FirstFragment : Fragment() {
                     )
                 }
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

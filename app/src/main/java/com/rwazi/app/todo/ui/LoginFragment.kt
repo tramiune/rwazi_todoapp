@@ -21,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>(
+class LoginFragment : com.rwazi.app.todo.base.BaseFragment<FragmentLoginBinding, AuthViewModel>(
     FragmentLoginBinding::inflate
 ) {
     override val viewModel: AuthViewModel by viewModels()
@@ -44,7 +44,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>(
             findNavController().navigate(R.id.action_LoginFragment_to_FirstFragment)
             return
         }
-        binding.loginRoot.setBackgroundColor(ColorUtils.getRandomSoftColor())
+        binding.loginRoot.setBackgroundColor(com.rwazi.app.todo.util.ColorUtils.getRandomSoftColor())
         
         binding.btnGoogleSignIn.setOnClickListener {
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

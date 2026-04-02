@@ -144,6 +144,14 @@ class NoteRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getNoteById(id: String): NoteEntity? {
+        return noteDao.getNoteById(id)
+    }
+
+    override fun getNoteFlow(id: String): Flow<NoteEntity?> {
+        return noteDao.getNoteFlow(id)
+    }
+
     override suspend fun deleteNote(id: String) {
         noteDao.softDeleteNote(id)
         try {
