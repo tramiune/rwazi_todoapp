@@ -3,7 +3,9 @@ package com.rwazi.app.todo.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.rwazi.app.todo.data.local.NoteDao
 import com.rwazi.app.todo.data.local.NoteEntity
 import com.rwazi.app.todo.data.local.SyncStatus
@@ -33,7 +35,7 @@ class NoteRepositoryImpl @Inject constructor(
     private val repositoryScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     private var syncJobStarted = false
-    private var snapshotListener: com.google.firebase.firestore.ListenerRegistration? = null
+    private var snapshotListener: ListenerRegistration? = null
 
     init {
         repositoryScope.launch {
@@ -59,13 +61,30 @@ class NoteRepositoryImpl @Inject constructor(
                     return@addSnapshotListener
                 }
 
-                snapshot?.documents?.mapNotNull { it.toObject(com.rwazi.app.todo.data.remote.NoteRemote::class.java) }?.let { remotes ->
+                snapshot?.documentChanges?.forEach { dc ->
+                    val remote = dc.document.toObject(com.rwazi.app.todo.data.remote.NoteRemote::class.java)
+                    val entity = remote.toEntity(SyncStatus.SYNCED)
+
                     repositoryScope.launch {
-                        val entities = remotes.map { it.toEntity(SyncStatus.SYNCED) }
-                        entities.forEach { entity ->
-                            val local = noteDao.getNoteById(entity.id)
-                            if (local == null || entity.updatedAt > (local.updatedAt)) {
-                                noteDao.insertNote(entity)
+                        when (dc.type) {
+                            DocumentChange.Type.ADDED -> {
+                                val local = noteDao.getNoteById(entity.id)
+                                if (local == null) {
+                                    noteDao.insertNote(entity)
+                                } else if (local.syncStatus == SyncStatus.SYNCED || entity.updatedAt > local.updatedAt) {
+                                  // In case the note existed locally but was outdated
+                                  noteDao.insertNote(entity)
+                                }
+                            }
+                            DocumentChange.Type.MODIFIED -> {
+                                val local = noteDao.getNoteById(entity.id)
+                                // If local is null, or if local is already SYNCED, or if remote is newer, then update local
+                                if (local == null || local.syncStatus == SyncStatus.SYNCED || entity.updatedAt > local.updatedAt) {
+                                    noteDao.insertNote(entity)
+                                }
+                            }
+                            DocumentChange.Type.REMOVED -> {
+                                noteDao.deleteNotePermanently(entity.id)
                             }
                         }
                     }

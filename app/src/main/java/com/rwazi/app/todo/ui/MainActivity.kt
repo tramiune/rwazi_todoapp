@@ -7,7 +7,6 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.rwazi.app.todo.base.BaseActivity
 import com.rwazi.app.todo.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity :
@@ -15,12 +14,9 @@ class MainActivity :
         ActivityMainBinding::inflate
     ) {
 
-    @javax.inject.Inject
-    lateinit var auth: com.google.firebase.auth.FirebaseAuth
-
     override val classTypeOfViewModel: Class<MainViewModel>
         get() = MainViewModel::class.java
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
