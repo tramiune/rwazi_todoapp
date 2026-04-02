@@ -97,6 +97,14 @@ class FirstFragment : com.rwazi.app.todo.base.BaseFragment<FragmentHomeBinding, 
                 adapter.submitData(pagingData)
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            adapter.loadStateFlow.collectLatest { loadStates ->
+                val isListEmpty = loadStates.refresh is androidx.paging.LoadState.NotLoading && adapter.itemCount == 0
+                binding.llEmptyState.visibility = if (isListEmpty) View.VISIBLE else View.GONE
+                binding.rvNotes.visibility = if (isListEmpty) View.GONE else View.VISIBLE
+            }
+        }
     }
 
     private fun showAddNoteDialog() {

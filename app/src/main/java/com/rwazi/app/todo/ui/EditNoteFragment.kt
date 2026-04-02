@@ -22,40 +22,48 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding, NoteViewModel>(
 
     override fun initControl(view: View, savedInstanceState: Bundle?) {
         noteId = arguments?.getString("noteId")
-        
+
         if (noteId == null) {
             findNavController().popBackStack()
             return
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getNoteFlow(noteId!!).collectLatest { note ->
-                note?.let {
-                    binding.etTitle.setText(it.title)
-                    binding.etContent.setText(it.content)
-                    
-                    val isNightMode = (requireContext().resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) == android.content.res.Configuration.UI_MODE_NIGHT_YES
-                    if (isNightMode) {
-                        binding.editNoteRoot.setBackgroundColor(android.graphics.Color.parseColor("#121212")) // Dark background
-                    } else {
-                        binding.editNoteRoot.setBackgroundColor(it.backgroundColor)
-                    }
-                }
-            }
+        setupButtons()
+        observeNote()
+    }
+
+    private fun setupButtons() {
+        binding.btnBack.setOnClickListener {
+            findNavController().popBackStack()
         }
 
         binding.btnUpdate.setOnClickListener {
-            val title = binding.etTitle.text?.toString() ?: ""
-            val content = binding.etContent.text?.toString() ?: ""
-            
+            val title = binding.etTitle.text.toString()
+            val content = binding.etContent.text.toString()
+
             if (title.isNotBlank() || content.isNotBlank()) {
                 viewLifecycleOwner.lifecycleScope.launch {
                     val currentNote = viewModel.getNoteById(noteId!!)
                     currentNote?.let {
                         viewModel.updateNote(it.copy(title = title, content = content))
-                        Toast.makeText(requireContext(), "Note updated", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "Note updated",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         findNavController().popBackStack()
                     }
+                }
+            }
+        }
+    }
+
+    private fun observeNote() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getNoteFlow(noteId!!).collectLatest { note ->
+                note?.let {
+                    binding.etTitle.setText(it.title)
+                    binding.etContent.setText(it.content)
                 }
             }
         }

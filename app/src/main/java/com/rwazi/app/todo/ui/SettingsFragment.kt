@@ -41,6 +41,10 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, NoteViewModel>(
             }
         }
 
+        binding.btnBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         binding.btnLogout.setOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch {
                 authRepository.signOut()
