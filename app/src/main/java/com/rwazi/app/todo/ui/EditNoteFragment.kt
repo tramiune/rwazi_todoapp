@@ -33,7 +33,13 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding, NoteViewModel>(
                 note?.let {
                     binding.etTitle.setText(it.title)
                     binding.etContent.setText(it.content)
-                    binding.editNoteRoot.setBackgroundColor(it.backgroundColor)
+                    
+                    val isNightMode = (requireContext().resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) == android.content.res.Configuration.UI_MODE_NIGHT_YES
+                    if (isNightMode) {
+                        binding.editNoteRoot.setBackgroundColor(android.graphics.Color.parseColor("#121212")) // Dark background
+                    } else {
+                        binding.editNoteRoot.setBackgroundColor(it.backgroundColor)
+                    }
                 }
             }
         }

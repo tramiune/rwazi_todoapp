@@ -42,7 +42,13 @@ class NoteAdapter(
                 tvTitle.text = note.title
                 tvContent.text = note.content
                 tvDate.text = dateFormat.format(Date(note.createdAt))
-                root.setCardBackgroundColor(note.backgroundColor)
+                
+                val isNightMode = (root.context.resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) == android.content.res.Configuration.UI_MODE_NIGHT_YES
+                if (isNightMode) {
+                    root.setCardBackgroundColor(android.graphics.Color.parseColor("#333333")) // Standard dark sticky note
+                } else {
+                    root.setCardBackgroundColor(note.backgroundColor)
+                }
                 
                 root.setOnClickListener { onNoteClick(note) }
                 btnDelete.setOnClickListener { onNoteDelete(note) }

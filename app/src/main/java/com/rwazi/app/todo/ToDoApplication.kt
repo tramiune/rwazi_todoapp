@@ -18,6 +18,16 @@ class ToDoApplication : Application(), androidx.work.Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
+        
+        val sharedPrefs = getSharedPreferences("app_settings", android.content.Context.MODE_PRIVATE)
+        if (sharedPrefs.contains("dark_mode")) {
+            val isDarkMode = sharedPrefs.getBoolean("dark_mode", false)
+            if (isDarkMode) {
+                androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
     }
 
 }

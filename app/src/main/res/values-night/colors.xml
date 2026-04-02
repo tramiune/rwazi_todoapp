@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FFFFFFFF</color> <!-- Invert text for simplicity -->
+    <color name="white">#FF000000</color>
+    <color name="colorPrimary">#6A11CB</color>
+    <color name="colorSecondary">#2575FC</color>
+    <color name="colorAccent">#6A11CB</color>
+    <color name="colorBackground">#121212</color>
+    <color name="colorSurface">#1E1E1E</color>
+
+    <color name="gradientStart">#000000</color>
+    <color name="gradientEnd">#1A1A1A</color>
+    
+    <color name="searchBackground">#2C2C2C</color>
+</resources>

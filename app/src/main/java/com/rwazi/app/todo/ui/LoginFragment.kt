@@ -44,7 +44,6 @@ class LoginFragment : com.rwazi.app.todo.base.BaseFragment<FragmentLoginBinding,
             findNavController().navigate(R.id.action_LoginFragment_to_FirstFragment)
             return
         }
-        binding.loginRoot.setBackgroundColor(com.rwazi.app.todo.util.ColorUtils.getRandomSoftColor())
         
         binding.btnGoogleSignIn.setOnClickListener {
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

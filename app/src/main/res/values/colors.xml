@@ -2,4 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#2575FC</color>
+    <color name="colorSecondary">#6A11CB</color>
+    <color name="colorAccent">#6A11CB</color>
+    <color name="colorBackground">#F8F9FA</color>
+    <color name="colorSurface">#FFFFFF</color>
+    
+    <color name="gradientStart">#E9ECEF</color>
+    <color name="gradientEnd">#F8F9FA</color>
+    
+    <color name="searchBackground">#E0E0E0</color>
 </resources>
