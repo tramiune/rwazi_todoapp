@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/editNoteRoot"
     android:background="@drawable/bg_premium_gradient"
-    android:padding="24dp">
+    android:padding="@dimen/_24sdp">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilTitle"
@@ -28,8 +28,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_16sdp"
         android:hint="Content"
         app:layout_constraintBottom_toTopOf="@+id/btnUpdate"
         app:layout_constraintTop_toBottomOf="@+id/tilTitle">
@@ -44,9 +44,9 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnUpdate"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="@dimen/_60sdp"
         android:text="@string/update"
-        app:cornerRadius="12dp"
+        app:cornerRadius="@dimen/_12sdp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

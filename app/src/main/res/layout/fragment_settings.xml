@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_premium_gradient"
-    android:padding="24dp">
+    android:padding="@dimen/_24sdp">
 
     <TextView
         android:id="@+id/tvSettingsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="@dimen/_32sdp"
         android:text="Settings"
         android:textAppearance="?attr/textAppearanceHeadline4"
         android:textStyle="bold"
@@ -22,20 +22,20 @@
         android:id="@+id/cardTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="2dp"
+        android:layout_marginTop="@dimen/_32sdp"
+        app:cardCornerRadius="@dimen/_24sdp"
+        app:cardElevation="@dimen/_2sdp"
         app:layout_constraintTop_toBottomOf="@+id/tvSettingsTitle">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp">
+            android:padding="@dimen/_20sdp">
 
             <ImageView
                 android:id="@+id/ivThemeIcon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
                 android:src="@drawable/ic_sort"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +44,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="@dimen/_16sdp"
                 android:text="Dark Mode"
                 android:textAppearance="?attr/textAppearanceSubtitle1"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -67,11 +67,11 @@
         android:id="@+id/btnLogout"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginBottom="32dp"
+        android:layout_height="@dimen/_60sdp"
+        android:layout_marginBottom="@dimen/_32sdp"
         android:text="@string/logout"
         android:textColor="@color/design_default_color_error"
-        app:cornerRadius="16dp"
+        app:cornerRadius="@dimen/_16sdp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

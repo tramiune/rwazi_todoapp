@@ -62,28 +62,33 @@ class NoteRepositoryImpl @Inject constructor(
                 }
 
                 snapshot?.documentChanges?.forEach { dc ->
-                    val remote = dc.document.toObject(com.rwazi.app.todo.data.remote.NoteRemote::class.java)
+                    val remote = dc.document.toObject(com.rwazi.app.todo.data.remote.NoteRemote::class.java)?.copy(id = dc.document.id) ?: return@forEach
                     val entity = remote.toEntity(SyncStatus.SYNCED)
 
                     repositoryScope.launch {
+                        Timber.d("Sync: Received ${dc.type} for ${entity.id} (Title: ${entity.title}, updatedAt: ${entity.updatedAt})")
                         when (dc.type) {
                             DocumentChange.Type.ADDED -> {
                                 val local = noteDao.getNoteById(entity.id)
-                                if (local == null) {
+                                if (local == null || local.syncStatus == SyncStatus.SYNCED || entity.updatedAt > local.updatedAt) {
+                                    Timber.d("Sync: Adding/Updating local for ${entity.id}")
                                     noteDao.insertNote(entity)
-                                } else if (local.syncStatus == SyncStatus.SYNCED || entity.updatedAt > local.updatedAt) {
-                                  // In case the note existed locally but was outdated
-                                  noteDao.insertNote(entity)
+                                } else {
+                                    Timber.d("Sync: Ignoring remote ADDED for ${entity.id} (local is PENDING and newer)")
                                 }
                             }
                             DocumentChange.Type.MODIFIED -> {
                                 val local = noteDao.getNoteById(entity.id)
-                                // If local is null, or if local is already SYNCED, or if remote is newer, then update local
+                                // If local is null (unexpected), or SYNCED, or remote is newer
                                 if (local == null || local.syncStatus == SyncStatus.SYNCED || entity.updatedAt > local.updatedAt) {
+                                    Timber.d("Sync: Modifying local for ${entity.id} (Reason: localNull=${local==null}, SYNCED=${local?.syncStatus==SyncStatus.SYNCED}, remoteNewer=${entity.updatedAt > (local?.updatedAt ?: 0L)})")
                                     noteDao.insertNote(entity)
+                                } else {
+                                    Timber.d("Sync: Ignoring remote MODIFIED for ${entity.id} (local is PENDING and newer)")
                                 }
                             }
                             DocumentChange.Type.REMOVED -> {
+                                Timber.d("Sync: Removing local for ${entity.id}")
                                 noteDao.deleteNotePermanently(entity.id)
                             }
                         }
