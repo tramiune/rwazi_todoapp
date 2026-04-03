@@ -1,80 +1,90 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loginRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/_32sdp"
-    android:background="@android:color/transparent"
-    android:id="@+id/loginRoot">
+    android:fillViewport="true"
+    android:background="@android:color/transparent">
 
-    <ImageView
-        android:id="@+id/ivLogo"
-        android:layout_width="@dimen/_120sdp"
-        android:layout_height="@dimen/_120sdp"
-        android:src="@drawable/app_icon_premium"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toTopOf="@+id/tvAppTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
-
-    <TextView
-        android:id="@+id/tvAppTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_24sdp"
-        android:text="@string/login_welcome"
-        android:textColor="?attr/colorOnSurface"
-        android:textAppearance="?attr/textAppearanceHeadline3"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/tvAppDesc"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivLogo" />
-
-    <TextView
-        android:id="@+id/tvAppDesc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:text="@string/login_subtitle"
-        android:textColor="?attr/colorOnSurface"
-        android:alpha="0.7"
-        android:textAppearance="?attr/textAppearanceBody1"
-        app:layout_constraintBottom_toTopOf="@+id/btnGoogleSignIn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAppTitle" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnGoogleSignIn"
-        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/loginContainer"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_60sdp"
-        android:layout_marginTop="@dimen/_48sdp"
-        android:backgroundTint="@android:color/white"
-        android:text="@string/google_sign_in"
-        android:textColor="@android:color/black"
-        android:textAllCaps="false"
-        app:icon="@drawable/ic_google"
-        app:iconTint="@null"
-        app:iconGravity="textStart"
-        app:cornerRadius="@dimen/_16sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAppDesc" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:padding="@dimen/_32sdp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:src="@drawable/app_icon_premium"
+            android:scaleType="fitCenter"
+            app:layout_constraintVertical_bias="0.3"
+            app:layout_constraintBottom_toTopOf="@+id/tvAppTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tvAppTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:text="@string/login_welcome"
+            android:textColor="?attr/colorOnSurface"
+            android:textAppearance="?attr/textAppearanceHeadline3"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tvAppDesc"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivLogo" />
+
+        <TextView
+            android:id="@+id/tvAppDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:text="@string/login_subtitle"
+            android:textColor="?attr/colorOnSurface"
+            android:alpha="0.7"
+            android:textAppearance="?attr/textAppearanceBody1"
+            app:layout_constraintBottom_toTopOf="@+id/btnGoogleSignIn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvAppTitle" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGoogleSignIn"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_marginTop="@dimen/_32sdp"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:backgroundTint="@android:color/white"
+            android:text="@string/google_sign_in"
+            android:textColor="@android:color/black"
+            android:textAllCaps="false"
+            app:icon="@drawable/ic_google"
+            app:iconTint="@null"
+            app:iconGravity="textStart"
+            app:cornerRadius="@dimen/_16sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvAppDesc" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:indeterminateTint="?attr/colorControlNormal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
