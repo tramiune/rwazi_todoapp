@@ -1,27 +1,24 @@
 package com.rwazi.app.todo.ui.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import com.google.android.material.textfield.TextInputEditText
 import com.rwazi.app.todo.R
 import com.rwazi.app.todo.base.BaseFragment
 import com.rwazi.app.todo.base.extension.click
+import com.rwazi.app.todo.base.extension.collectInStarted
 import com.rwazi.app.todo.base.extension.goneView
 import com.rwazi.app.todo.base.extension.visibleView
+import com.rwazi.app.todo.databinding.DialogAddNoteBinding
 import com.rwazi.app.todo.databinding.FragmentHomeBinding
 import com.rwazi.app.todo.ui.home.adapter.NoteAdapter
 import com.rwazi.app.todo.util.ColorUtils
 import com.rwazi.app.todo.util.SortOrder
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
@@ -29,14 +26,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
 ) {
     override val classTypeOfViewModel: Class<HomeViewModel>
         get() = HomeViewModel::class.java
-    private lateinit var adapter: NoteAdapter
+    private val adapter = NoteAdapter(
+        onNoteClick = { note ->
+            val action = HomeFragmentDirections.actionHomeFragmentToEditNoteFragment(note.id)
+            findNavController().navigate(action)
+        },
+        onNoteDelete = { note ->
+            viewModel.deleteNote(note.id)
+        }
+    )
 
     override fun initControl(view: View, savedInstanceState: Bundle?) {
         setupRecyclerView()
+        setupSearchView()
     }
 
-    override fun listener() {
-        setupSearchView()
+    override fun setupClick() {
         setupFab()
         setupSettings()
         setupSort()
@@ -65,35 +70,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
 
     private fun setupSettings() {
         binding.btnSettings.click {
-            findNavController().navigate(R.id.action_HomeFragment_to_SettingsFragment)
+            val action = HomeFragmentDirections.actionHomeFragmentToSettingsFragment()
+            findNavController().navigate(action)
         }
     }
 
     private fun setupRecyclerView() {
-        adapter = NoteAdapter(
-            onNoteClick = { note ->
-                val bundle = Bundle().apply {
-                    putString("noteId", note.id)
-                }
-                findNavController().navigate(R.id.action_HomeFragment_to_EditNoteFragment, bundle)
-            },
-            onNoteDelete = { note ->
-                viewModel.deleteNote(note.id)
-            }
-        )
         binding.rvNotes.adapter = adapter
     }
 
     private fun setupSearchView() {
-        binding.searchView.setOnQueryTextListener(object :
-            SearchView.OnQueryTextListener {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.onSearchQueryChanged(query ?: "")
+                viewModel.onSearchQueryChanged(query.orEmpty())
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                viewModel.onSearchQueryChanged(newText ?: "")
+                viewModel.onSearchQueryChanged(newText.orEmpty())
                 return true
             }
         })
@@ -106,41 +100,32 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
     }
 
     private fun observeNotes() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.notes.collectLatest { pagingData ->
-                adapter.submitData(pagingData)
-            }
+        viewModel.notes.collectInStarted(this) { pagingData ->
+            adapter.submitData(pagingData)
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            adapter.loadStateFlow.collectLatest { loadStates ->
-                val isListEmpty =
-                    loadStates.refresh is LoadState.NotLoading && adapter.itemCount == 0
-                if (isListEmpty) {
-                    binding.llEmptyState.visibleView()
-                    binding.rvNotes.goneView()
-                } else {
-                    binding.llEmptyState.goneView()
-                    binding.rvNotes.visibleView()
-                }
+        adapter.loadStateFlow.collectInStarted(this) { loadStates ->
+            val isListEmpty =
+                loadStates.refresh is LoadState.NotLoading && adapter.itemCount == 0
+            if (isListEmpty) {
+                binding.llEmptyState.visibleView()
+                binding.rvNotes.goneView()
+            } else {
+                binding.llEmptyState.goneView()
+                binding.rvNotes.visibleView()
             }
         }
     }
 
     private fun showAddNoteDialog() {
-        val dialogView =
-            LayoutInflater.from(requireContext()).inflate(R.layout.dialog_add_note, null)
-        val etTitle =
-            dialogView.findViewById<TextInputEditText>(R.id.etTitle)
-        val etContent =
-            dialogView.findViewById<TextInputEditText>(R.id.etContent)
+        val dialogBinding = DialogAddNoteBinding.inflate(layoutInflater)
 
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.add_new_note))
-            .setView(dialogView)
+            .setView(dialogBinding.root)
             .setPositiveButton(getString(R.string.add)) { _, _ ->
-                val title = etTitle.text?.toString() ?: ""
-                val content = etContent.text?.toString() ?: ""
+                val title = dialogBinding.etTitle.text?.toString().orEmpty()
+                val content = dialogBinding.etContent.text?.toString().orEmpty()
                 if (title.isNotBlank() || content.isNotBlank()) {
                     viewModel.addNote(
                         title = title,

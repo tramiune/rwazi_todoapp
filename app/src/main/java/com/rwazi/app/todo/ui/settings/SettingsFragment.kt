@@ -26,7 +26,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
 
     override fun initControl(view: View, savedInstanceState: Bundle?) {}
 
-    override fun listener() {
+    override fun setupClick() {
         setupListeners()
     }
 

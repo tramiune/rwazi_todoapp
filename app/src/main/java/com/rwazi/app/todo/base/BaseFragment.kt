@@ -25,7 +25,7 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel>(val bindingFac
     protected abstract val classTypeOfViewModel: Class<VM>
     open val shouldObserveViewModelState: Boolean = true
 
-    open fun listener() {}
+    open fun setupClick() {}
     open fun observer() {}
 
     abstract fun initControl(view: View, savedInstanceState: Bundle?)
@@ -46,7 +46,7 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel>(val bindingFac
             observeViewModelState(viewModel)
         }
         initControl(view, savedInstanceState)
-        listener()
+        setupClick()
         observer()
     }
 

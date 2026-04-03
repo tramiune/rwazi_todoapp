@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.rwazi.app.todo.base.BaseFragment
 import com.rwazi.app.todo.base.type.ProgressType
 import com.rwazi.app.todo.base.type.ViewState
@@ -21,18 +22,17 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding, EditNoteViewModel
     override val classTypeOfViewModel: Class<EditNoteViewModel>
         get() = EditNoteViewModel::class.java
 
-    private var noteId: String? = null
+    private val args: EditNoteFragmentArgs by navArgs()
 
     override fun initControl(view: View, savedInstanceState: Bundle?) {
-        noteId = arguments?.getString("noteId")
-
-        if (noteId == null) {
+        val noteId = args.noteId
+        if (noteId.isBlank()) {
             findNavController().popBackStack()
             return
         }
     }
 
-    override fun listener() {
+    override fun setupClick() {
         setupButtons()
     }
 
@@ -51,7 +51,7 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding, EditNoteViewModel
 
             if (title.isNotBlank() || content.isNotBlank()) {
                 viewLifecycleOwner.lifecycleScope.launch {
-                    val currentNote = viewModel.getNoteById(noteId!!)
+                    val currentNote = viewModel.getNoteById(args.noteId)
                     currentNote?.let {
                         viewModel.updateNote(it.copy(title = title, content = content))
                         Toast.makeText(
@@ -68,7 +68,7 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding, EditNoteViewModel
 
     private fun observeNote() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getNoteFlow(noteId!!).collectLatest { note ->
+            viewModel.getNoteFlow(args.noteId).collectLatest { note ->
                 note?.let {
                     binding.etTitle.setText(it.title)
                     binding.etContent.setText(it.content)

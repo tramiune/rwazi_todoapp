@@ -32,12 +32,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LogInViewModel>(
 
     override fun initControl(view: View, savedInstanceState: Bundle?) {
         if (viewModel.isLoggedIn()) {
-            findNavController().navigate(R.id.action_LoginFragment_to_HomeFragment)
+            val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
+            findNavController().navigate(action)
             return
         }
     }
 
-    override fun listener() {
+    override fun setupClick() {
         binding.btnGoogleSignIn.click {
             startGoogleSignIn()
         }
@@ -82,7 +83,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LogInViewModel>(
         viewModel.effect.collectInStarted(this) { effect ->
             when (effect) {
                 is LogInViewModel.LoginEffect.Success -> {
-                    findNavController().navigate(R.id.action_LoginFragment_to_HomeFragment)
+                    val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
+                    findNavController().navigate(action)
                 }
             }
         }
