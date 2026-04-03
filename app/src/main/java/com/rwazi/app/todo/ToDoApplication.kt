@@ -1,8 +1,10 @@
 package com.rwazi.app.todo
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
@@ -38,8 +40,15 @@ class ToDoApplication : Application(), Provider {
 
     private fun observeTheme() {
         CoroutineScope(Dispatchers.Main).launch {
-            dataStorageManager.themeFlow.first()?.let { isDarkMode ->
-                setDefaultNightMode(if (isDarkMode) MODE_NIGHT_YES else MODE_NIGHT_NO)
+            dataStorageManager.themeFlow.collect { isDarkMode ->
+                val mode = when (isDarkMode) {
+                    true -> MODE_NIGHT_YES
+                    false -> MODE_NIGHT_NO
+                    else -> MODE_NIGHT_FOLLOW_SYSTEM
+                }
+                if (AppCompatDelegate.getDefaultNightMode() != mode) {
+                    setDefaultNightMode(mode)
+                }
             }
         }
     }

@@ -47,12 +47,9 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
     }
 
     private fun setupListeners() {
-        binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.setThemeMode(isChecked)
-            if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        binding.switchDarkMode.setOnCheckedChangeListener { button, isChecked ->
+            if (button.isPressed) {
+                viewModel.setThemeMode(isChecked)
             }
         }
 

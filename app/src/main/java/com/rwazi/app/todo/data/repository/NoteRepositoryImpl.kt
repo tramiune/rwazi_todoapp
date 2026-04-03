@@ -4,7 +4,11 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import androidx.work.*
+import androidx.work.Constraints
+import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
@@ -66,7 +70,9 @@ class NoteRepositoryImpl @Inject constructor(
                 }
 
                 snapshot?.documentChanges?.forEach { dc ->
-                    val remote = dc.document.toObject(NoteRemote::class.java)?.copy(id = dc.document.id) ?: return@forEach
+                    val remote =
+                        dc.document.toObject(NoteRemote::class.java).copy(id = dc.document.id)
+                            ?: return@forEach
                     val entity = remote.toEntity(SyncStatus.SYNCED)
 
                     repositoryScope.launch {
@@ -81,6 +87,7 @@ class NoteRepositoryImpl @Inject constructor(
                                     Timber.d("Sync: Ignoring remote ADDED for ${entity.id} (local is PENDING and newer)")
                                 }
                             }
+
                             DocumentChange.Type.MODIFIED -> {
                                 val local = noteDao.getNoteById(entity.id)
                                 if (local == null || local.syncStatus == SyncStatus.SYNCED || entity.updatedAt > local.updatedAt) {
@@ -90,6 +97,7 @@ class NoteRepositoryImpl @Inject constructor(
                                     Timber.d("Sync: Ignoring remote MODIFIED for ${entity.id} (local is PENDING and newer)")
                                 }
                             }
+
                             DocumentChange.Type.REMOVED -> {
                                 Timber.d("Sync: Removing local for ${entity.id}")
                                 noteDao.deleteNotePermanently(entity.id)
