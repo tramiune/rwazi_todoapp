@@ -18,18 +18,18 @@ interface NoteDao {
     fun getAllNotesPagedAsc(): PagingSource<Int, NoteEntity>
 
     @Query("""
-        SELECT * FROM notes 
-        WHERE isDeleted = 0 
-        AND (title LIKE '%' || :query || '%' OR content LIKE '%' || :query || '%')
-        ORDER BY createdAt DESC
+        SELECT notes.* FROM notes
+        JOIN notes_fts ON notes.id = notes_fts.rowid
+        WHERE notes.isDeleted = 0 AND notes_fts MATCH :query || '*'
+        ORDER BY notes.createdAt DESC
     """)
     fun searchNotesPagedDesc(query: String): PagingSource<Int, NoteEntity>
 
     @Query("""
-        SELECT * FROM notes 
-        WHERE isDeleted = 0 
-        AND (title LIKE '%' || :query || '%' OR content LIKE '%' || :query || '%')
-        ORDER BY createdAt ASC
+        SELECT notes.* FROM notes
+        JOIN notes_fts ON notes.id = notes_fts.rowid
+        WHERE notes.isDeleted = 0 AND notes_fts MATCH :query || '*'
+        ORDER BY notes.createdAt ASC
     """)
     fun searchNotesPagedAsc(query: String): PagingSource<Int, NoteEntity>
 
