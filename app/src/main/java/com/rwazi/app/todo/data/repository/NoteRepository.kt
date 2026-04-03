@@ -13,4 +13,5 @@ interface NoteRepository {
     suspend fun getNoteById(id: String): Note?
     fun getNoteFlow(id: String): Flow<Note?>
     suspend fun syncNotes()
+    suspend fun clearLocalData()
 }

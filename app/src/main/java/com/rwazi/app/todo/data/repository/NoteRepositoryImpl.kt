@@ -221,5 +221,11 @@ class NoteRepositoryImpl @Inject constructor(
             syncRequest
         )
     }
+
+    override suspend fun clearLocalData() {
+        stopRealtimeSync()
+        noteDao.clearAllNotes()
+        workManager.cancelUniqueWork(AppConstants.WORK_SYNC_NOTES)
+    }
 }
 
