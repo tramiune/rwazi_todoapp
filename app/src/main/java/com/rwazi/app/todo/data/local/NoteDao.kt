@@ -19,7 +19,7 @@ interface NoteDao {
 
     @Query("""
         SELECT notes.* FROM notes
-        JOIN notes_fts ON notes.id = notes_fts.rowid
+        JOIN notes_fts ON notes.id = notes_fts.entityId
         WHERE notes.isDeleted = 0 AND notes_fts MATCH :query || '*'
         ORDER BY notes.createdAt DESC
     """)
@@ -27,7 +27,7 @@ interface NoteDao {
 
     @Query("""
         SELECT notes.* FROM notes
-        JOIN notes_fts ON notes.id = notes_fts.rowid
+        JOIN notes_fts ON notes.id = notes_fts.entityId
         WHERE notes.isDeleted = 0 AND notes_fts MATCH :query || '*'
         ORDER BY notes.createdAt ASC
     """)
@@ -43,20 +43,80 @@ interface NoteDao {
     fun getNoteFlow(id: String): Flow<NoteEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertNote(note: NoteEntity)
+    suspend fun insertNoteOnly(note: NoteEntity)
+
+    @androidx.room.Transaction
+    suspend fun insertNote(note: NoteEntity) {
+        insertNoteOnly(note)
+        // Update FTS table
+        deleteNoteFts(note.id)
+        if (!note.isDeleted) {
+            insertNoteFts(NoteFtsEntity(note.id, note.title, note.content))
+        }
+    }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertNotes(notes: List<NoteEntity>)
+    suspend fun insertNotesOnly(notes: List<NoteEntity>)
+
+    @androidx.room.Transaction
+    suspend fun insertNotes(notes: List<NoteEntity>) {
+        insertNotesOnly(notes)
+        notes.forEach { note ->
+            deleteNoteFts(note.id)
+            if (!note.isDeleted) {
+                insertNoteFts(NoteFtsEntity(note.id, note.title, note.content))
+            }
+        }
+    }
 
     @Update
-    suspend fun updateNote(note: NoteEntity)
+    suspend fun updateNoteOnly(note: NoteEntity)
+
+    @androidx.room.Transaction
+    suspend fun updateNote(note: NoteEntity) {
+        updateNoteOnly(note)
+        deleteNoteFts(note.id)
+        if (!note.isDeleted) {
+            insertNoteFts(NoteFtsEntity(note.id, note.title, note.content))
+        }
+    }
 
     @Query("UPDATE notes SET isDeleted = 1, syncStatus = 'PENDING' WHERE id = :id")
-    suspend fun softDeleteNote(id: String)
+    suspend fun softDeleteNoteOnly(id: String)
+
+    @androidx.room.Transaction
+    suspend fun softDeleteNote(id: String) {
+        softDeleteNoteOnly(id)
+        deleteNoteFts(id)
+    }
 
     @Query("DELETE FROM notes WHERE id = :id")
-    suspend fun deleteNotePermanently(id: String)
+    suspend fun deleteNotePermanentlyOnly(id: String)
+
+    @androidx.room.Transaction
+    suspend fun deleteNotePermanently(id: String) {
+        deleteNotePermanentlyOnly(id)
+        deleteNoteFts(id)
+    }
 
     @Query("DELETE FROM notes")
-    suspend fun clearAllNotes()
+    suspend fun clearAllNotesOnly()
+
+    @androidx.room.Transaction
+    suspend fun clearAllNotes() {
+        clearAllNotesOnly()
+        clearAllNotesFts()
+    }
+
+    // ─── FTS Auxiliary Methods ──────────────────────────────────────────────────
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertNoteFts(fts: NoteFtsEntity)
+
+    @Query("DELETE FROM notes_fts WHERE entityId = :id")
+    suspend fun deleteNoteFts(id: String)
+
+    @Query("DELETE FROM notes_fts")
+    suspend fun clearAllNotesFts()
 }
+

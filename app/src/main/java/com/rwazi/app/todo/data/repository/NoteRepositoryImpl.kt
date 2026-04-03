@@ -15,6 +15,7 @@ import com.rwazi.app.todo.data.local.SyncStatus
 import com.rwazi.app.todo.data.mapper.toDomain
 import com.rwazi.app.todo.data.mapper.toEntity
 import com.rwazi.app.todo.data.mapper.toRemote
+import com.rwazi.app.todo.data.remote.NoteRemote
 import com.rwazi.app.todo.data.remote.NoteRemoteDataSource
 import com.rwazi.app.todo.data.sync.SyncWorker
 import com.rwazi.app.todo.ui.model.Note
@@ -131,7 +132,7 @@ class NoteRepositoryImpl @Inject constructor(
      */
     private suspend fun performRemoteAction(
         note: Note,
-        action: suspend (String, com.rwazi.app.todo.data.remote.NoteRemote) -> Unit
+        action: suspend (String, NoteRemote) -> Unit
     ) {
         val entity = note.toEntity(SyncStatus.PENDING)
         noteDao.insertNote(entity)
