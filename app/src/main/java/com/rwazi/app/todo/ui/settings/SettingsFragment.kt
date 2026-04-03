@@ -1,5 +1,6 @@
-package com.rwazi.app.todo.ui
+package com.rwazi.app.todo.ui.settings
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
@@ -9,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.rwazi.app.todo.R
 import com.rwazi.app.todo.base.BaseFragment
 import com.rwazi.app.todo.databinding.FragmentSettingsBinding
-import com.rwazi.app.todo.ui.viewmodel.SettingsViewModel
+import com.rwazi.app.todo.ui.settings.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -28,9 +29,9 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
     private fun observeTheme() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.themeFlow.collectLatest { isDarkMode ->
-                val systemDarkMode = (requireContext().resources.configuration.uiMode and 
-                    android.content.res.Configuration.UI_MODE_NIGHT_MASK) == android.content.res.Configuration.UI_MODE_NIGHT_YES
-                
+                val systemDarkMode = (requireContext().resources.configuration.uiMode and
+                    Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+
                 val currentMode = isDarkMode ?: systemDarkMode
                 binding.switchDarkMode.isChecked = currentMode
             }

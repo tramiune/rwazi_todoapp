@@ -14,7 +14,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.rwazi.app.todo.R
 import com.rwazi.app.todo.base.BaseFragment
 import com.rwazi.app.todo.databinding.FragmentHomeBinding
-import com.rwazi.app.todo.ui.NoteAdapter
+import com.rwazi.app.todo.ui.home.adapter.NoteAdapter
 import com.rwazi.app.todo.ui.home.HomeViewModel
 import com.rwazi.app.todo.util.ColorUtils
 import com.rwazi.app.todo.util.SortOrder

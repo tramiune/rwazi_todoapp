@@ -1,4 +1,4 @@
-package com.rwazi.app.todo.ui
+package com.rwazi.app.todo.ui.edit
 
 import android.os.Bundle
 import android.view.View
@@ -6,10 +6,9 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.rwazi.app.todo.R
 import com.rwazi.app.todo.base.BaseFragment
 import com.rwazi.app.todo.databinding.FragmentEditNoteBinding
-import com.rwazi.app.todo.ui.viewmodel.EditNoteViewModel
+import com.rwazi.app.todo.ui.edit.EditNoteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

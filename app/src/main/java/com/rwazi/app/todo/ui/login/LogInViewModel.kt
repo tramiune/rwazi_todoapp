@@ -1,4 +1,4 @@
-package com.rwazi.app.todo.ui.viewmodel
+package com.rwazi.app.todo.ui.login
 
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthCredential
@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(
+class LogInViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : BaseViewModel() {
 

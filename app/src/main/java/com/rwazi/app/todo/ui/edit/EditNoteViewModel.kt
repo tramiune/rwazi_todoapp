@@ -1,4 +1,4 @@
-package com.rwazi.app.todo.ui.viewmodel
+package com.rwazi.app.todo.ui.edit
 
 import androidx.lifecycle.viewModelScope
 import com.rwazi.app.todo.base.BaseViewModel

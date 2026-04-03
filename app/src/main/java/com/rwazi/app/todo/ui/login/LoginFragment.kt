@@ -1,4 +1,4 @@
-package com.rwazi.app.todo.ui
+package com.rwazi.app.todo.ui.login
 
 import android.os.Bundle
 import android.view.View
@@ -16,15 +16,15 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.rwazi.app.todo.R
 import com.rwazi.app.todo.base.BaseFragment
 import com.rwazi.app.todo.databinding.FragmentLoginBinding
-import com.rwazi.app.todo.ui.viewmodel.AuthViewModel
+import com.rwazi.app.todo.ui.login.LogInViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>(
+class LoginFragment : BaseFragment<FragmentLoginBinding, LogInViewModel>(
     FragmentLoginBinding::inflate
 ) {
-    override val viewModel: AuthViewModel by viewModels()
+    override val viewModel: LogInViewModel by viewModels()
 
     private val googleSignInLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -44,7 +44,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>(
             findNavController().navigate(R.id.action_LoginFragment_to_FirstFragment)
             return
         }
-        
+
         binding.btnGoogleSignIn.setOnClickListener {
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -58,14 +58,14 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>(
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.authState.collect { result ->
                     when (result) {
-                        is AuthViewModel.AuthResult.Loading -> {
+                        is LogInViewModel.AuthResult.Loading -> {
                             binding.progressBar.visibility = View.VISIBLE
                             binding.btnGoogleSignIn.isEnabled = false
                         }
-                        is AuthViewModel.AuthResult.Success -> {
+                        is LogInViewModel.AuthResult.Success -> {
                             findNavController().navigate(R.id.action_LoginFragment_to_FirstFragment)
                         }
-                        is AuthViewModel.AuthResult.Error -> {
+                        is LogInViewModel.AuthResult.Error -> {
                             binding.progressBar.visibility = View.GONE
                             binding.btnGoogleSignIn.isEnabled = true
                             Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()
