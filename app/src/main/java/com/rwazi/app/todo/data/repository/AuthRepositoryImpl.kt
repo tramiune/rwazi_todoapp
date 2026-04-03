@@ -1,5 +1,7 @@
 package com.rwazi.app.todo.data.repository
 
+import com.rwazi.app.todo.domain.repository.AuthRepository
+
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser

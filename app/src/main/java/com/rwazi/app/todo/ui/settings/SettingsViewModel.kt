@@ -1,8 +1,10 @@
 package com.rwazi.app.todo.ui.settings
 
 import com.rwazi.app.todo.base.BaseViewModel
-import com.rwazi.app.todo.data.repository.AuthRepository
-import com.rwazi.app.todo.data.repository.NoteRepository
+import com.rwazi.app.todo.domain.repository.AuthRepository
+
+import com.rwazi.app.todo.domain.repository.NoteRepository
+
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

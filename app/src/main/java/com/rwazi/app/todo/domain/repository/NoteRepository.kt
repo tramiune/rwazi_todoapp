@@ -1,8 +1,8 @@
-package com.rwazi.app.todo.data.repository
+package com.rwazi.app.todo.domain.repository
 
 import androidx.paging.PagingData
-import com.rwazi.app.todo.ui.model.Note
-import com.rwazi.app.todo.util.SortOrder
+import com.rwazi.app.todo.domain.model.Note
+import com.rwazi.app.todo.domain.model.SortOrder
 import kotlinx.coroutines.flow.Flow
 
 interface NoteRepository {
@@ -10,8 +10,8 @@ interface NoteRepository {
     suspend fun addNote(note: Note)
     suspend fun updateNote(note: Note)
     suspend fun deleteNote(id: String)
+    suspend fun clearLocalData()
     suspend fun getNoteById(id: String): Note?
     fun getNoteFlow(id: String): Flow<Note?>
     suspend fun syncNotes()
-    suspend fun clearLocalData()
 }

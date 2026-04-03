@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import com.rwazi.app.todo.ui.model.Note
+import com.rwazi.app.todo.domain.model.Note
 import com.rwazi.app.todo.databinding.ItemNoteBinding
 
 class NoteAdapter(

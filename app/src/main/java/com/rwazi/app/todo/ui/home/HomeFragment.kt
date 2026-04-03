@@ -17,7 +17,8 @@ import com.rwazi.app.todo.databinding.DialogAddNoteBinding
 import com.rwazi.app.todo.databinding.FragmentHomeBinding
 import com.rwazi.app.todo.ui.home.adapter.NoteAdapter
 import com.rwazi.app.todo.util.ColorUtils
-import com.rwazi.app.todo.util.SortOrder
+import com.rwazi.app.todo.domain.model.SortOrder
+
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

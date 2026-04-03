@@ -1,8 +1,8 @@
 package com.rwazi.app.todo.di.source
 
-import com.rwazi.app.todo.data.repository.AuthRepository
+import com.rwazi.app.todo.domain.repository.AuthRepository
 import com.rwazi.app.todo.data.repository.AuthRepositoryImpl
-import com.rwazi.app.todo.data.repository.NoteRepository
+import com.rwazi.app.todo.domain.repository.NoteRepository
 import com.rwazi.app.todo.data.repository.NoteRepositoryImpl
 import dagger.Binds
 import dagger.Module
