@@ -11,6 +11,11 @@ import com.rwazi.app.todo.databinding.FragmentSettingsBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+import androidx.fragment.app.activityViewModels
+import com.rwazi.app.todo.ui.main.MainViewModel
+import android.graphics.Color
+import com.rwazi.app.todo.base.extension.collectInStarted
+
 @AndroidEntryPoint
 class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel>(
     FragmentSettingsBinding::inflate

@@ -14,17 +14,21 @@ import com.rwazi.app.todo.base.extension.collectInStarted
 import com.rwazi.app.todo.base.extension.goneView
 import com.rwazi.app.todo.base.extension.visibleView
 import com.rwazi.app.todo.databinding.DialogAddNoteBinding
+import androidx.fragment.app.activityViewModels
+import com.rwazi.app.todo.ui.main.MainViewModel
+import android.graphics.Color
 import com.rwazi.app.todo.databinding.FragmentHomeBinding
+import com.rwazi.app.todo.domain.model.SortOrder
 import com.rwazi.app.todo.ui.home.adapter.NoteAdapter
 import com.rwazi.app.todo.util.ColorUtils
-import com.rwazi.app.todo.domain.model.SortOrder
-
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
     FragmentHomeBinding::inflate
 ) {
+    private val mainViewModel: MainViewModel by activityViewModels()
+
     override val classTypeOfViewModel: Class<HomeViewModel>
         get() = HomeViewModel::class.java
     private val adapter = NoteAdapter(
@@ -38,7 +42,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
     )
 
     override fun initControl(view: View, savedInstanceState: Bundle?) {
-        binding.root.setBackgroundColor(ColorUtils.getRandomSoftColor())
         setupRecyclerView()
         setupSearchView()
     }

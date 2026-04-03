@@ -18,6 +18,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
+import androidx.fragment.app.activityViewModels
+import com.rwazi.app.todo.ui.main.MainViewModel
+import android.graphics.Color
+
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentLoginBinding, LogInViewModel>(
     FragmentLoginBinding::inflate
@@ -56,6 +60,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LogInViewModel>(
     }
 
     override fun observer() {
+        observeLogin()
+    }
+
+    private fun observeLogin() {
         viewModel.effect.collectInStarted(this) { effect ->
             when (effect) {
                 is LogInViewModel.LoginEffect.Success -> {

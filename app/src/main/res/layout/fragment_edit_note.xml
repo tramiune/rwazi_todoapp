@@ -4,7 +4,7 @@
     android:id="@+id/editNoteRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_premium_gradient"
+    android:background="@android:color/transparent"
     android:padding="@dimen/_16sdp">
 
     <ImageButton
@@ -14,6 +14,7 @@
         android:layout_marginTop="@dimen/status_bar_height"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/back"
+        android:padding="@dimen/_12sdp"
         android:src="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -25,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_8sdp"
         android:text="@string/edit_note_label"
+        android:textColor="?attr/colorOnSurface"
         android:textAppearance="?attr/textAppearanceHeadline5"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/btnBack"
@@ -56,6 +58,8 @@
                 android:hint="@string/title_hint"
                 android:inputType="textCapSentences"
                 android:maxLines="2"
+                android:textColor="?attr/colorOnSurface"
+                android:textColorHint="?attr/colorOnSurface"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent" />

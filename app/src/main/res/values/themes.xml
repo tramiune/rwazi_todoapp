@@ -16,4 +16,124 @@
         <item name="windowSplashScreenAnimatedIcon">@drawable/app_icon_premium</item>
         <item name="postSplashScreenTheme">@style/Theme.ToDoApp</item>
     </style>
+
+    <!-- Palette 1: Indigo Night (Dark) -->
+    <style name="Theme.ToDoApp.Palette.IndigoNight" parent="Base.Theme.ToDoApp">
+        <item name="colorPrimary">#3F51B5</item>
+        <item name="colorSecondary">#303F9F</item>
+        <item name="colorOnSurface">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/white</item>
+    </style>
+
+    <!-- Palette 2: Ocean Deep (Dark) -->
+    <style name="Theme.ToDoApp.Palette.OceanDeep" parent="Base.Theme.ToDoApp">
+        <item name="colorPrimary">#0288D1</item>
+        <item name="colorSecondary">#01579B</item>
+        <item name="colorOnSurface">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/white</item>
+    </style>
+
+    <!-- Palette 3: Forest Whisper (Dark) -->
+    <style name="Theme.ToDoApp.Palette.ForestWhisper" parent="Base.Theme.ToDoApp">
+        <item name="colorPrimary">#388E3C</item>
+        <item name="colorSecondary">#1B5E20</item>
+        <item name="colorOnSurface">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/white</item>
+    </style>
+
+    <!-- Palette 4: Soft Cloud (Light) -->
+    <style name="Theme.ToDoApp.Palette.SoftCloud" parent="Base.Theme.ToDoApp">
+        <item name="colorPrimary">#607D8B</item>
+        <item name="colorSecondary">#455A64</item>
+        <item name="colorOnSurface">@android:color/black</item>
+        <item name="colorControlNormal">@android:color/black</item>
+    </style>
+
+    <!-- Palette 5: Peach Sunset (Light) -->
+    <style name="Theme.ToDoApp.Palette.PeachSunset" parent="Base.Theme.ToDoApp">
+        <item name="colorPrimary">#FF7043</item>
+        <item name="colorSecondary">#F4511E</item>
+        <item name="colorOnSurface">@android:color/black</item>
+        <item name="colorControlNormal">@android:color/black</item>
+    </style>
+
+    <!-- Palette 6: Midnight Blue (Dark) -->
+    <style name="Theme.ToDoApp.Palette.MidnightBlue" parent="Base.Theme.ToDoApp">
+        <item name="colorPrimary">#1E88E5</item>
+        <item name="colorSecondary">#1565C0</item>
+        <item name="colorOnSurface">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/white</item>
+    </style>
+
+    <!-- Palette 7: Rosewood (Dark) -->
+    <style name="Theme.ToDoApp.Palette.Rosewood" parent="Base.Theme.ToDoApp">
+        <item name="colorPrimary">#D81B60</item>
+        <item name="colorSecondary">#880E4F</item>
+        <item name="colorOnSurface">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/white</item>
+    </style>
+
+    <!-- Palette 8: Teal Depth (Dark) -->
+    <style name="Theme.ToDoApp.Palette.TealDepth" parent="Base.Theme.ToDoApp">
+        <item name="colorPrimary">#00897B</item>
+        <item name="colorSecondary">#004D40</item>
+        <item name="colorOnSurface">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/white</item>
+    </style>
+
+    <!-- Palette 9: Royal Purple (Dark) -->
+    <style name="Theme.ToDoApp.Palette.RoyalPurple" parent="Base.Theme.ToDoApp">
+        <item name="colorPrimary">#8E24AA</item>
+        <item name="colorSecondary">#4A148C</item>
+        <item name="colorOnSurface">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/white</item>
+    </style>
+
+    <!-- Palette 10: Charcoal (Dark) -->
+    <style name="Theme.ToDoApp.Palette.Charcoal" parent="Base.Theme.ToDoApp">
+        <item name="colorPrimary">#546E7A</item>
+        <item name="colorSecondary">#263238</item>
+        <item name="colorOnSurface">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/white</item>
+    </style>
+
+    <!-- Palette 11: Mint Breeze (Light) -->
+    <style name="Theme.ToDoApp.Palette.MintBreeze" parent="Base.Theme.ToDoApp">
+        <item name="colorPrimary">#4DB6AC</item>
+        <item name="colorSecondary">#00796B</item>
+        <item name="colorOnSurface">@android:color/black</item>
+        <item name="colorControlNormal">@android:color/black</item>
+    </style>
+
+    <!-- Palette 12: Lavender Mist (Light) -->
+    <style name="Theme.ToDoApp.Palette.LavenderMist" parent="Base.Theme.ToDoApp">
+        <item name="colorPrimary">#9575CD</item>
+        <item name="colorSecondary">#512DA8</item>
+        <item name="colorOnSurface">@android:color/black</item>
+        <item name="colorControlNormal">@android:color/black</item>
+    </style>
+
+    <!-- Palette 13: Golden Sand (Light) -->
+    <style name="Theme.ToDoApp.Palette.GoldenSand" parent="Base.Theme.ToDoApp">
+        <item name="colorPrimary">#FFB300</item>
+        <item name="colorSecondary">#FF8F00</item>
+        <item name="colorOnSurface">@android:color/black</item>
+        <item name="colorControlNormal">@android:color/black</item>
+    </style>
+
+    <!-- Palette 14: Sakura Pink (Light) -->
+    <style name="Theme.ToDoApp.Palette.SakuraPink" parent="Base.Theme.ToDoApp">
+        <item name="colorPrimary">#F06292</item>
+        <item name="colorSecondary">#C2185B</item>
+        <item name="colorOnSurface">@android:color/black</item>
+        <item name="colorControlNormal">@android:color/black</item>
+    </style>
+
+    <!-- Palette 15: Sky Serenity (Light) -->
+    <style name="Theme.ToDoApp.Palette.SkySerenity" parent="Base.Theme.ToDoApp">
+        <item name="colorPrimary">#4FC3F7</item>
+        <item name="colorSecondary">#0288D1</item>
+        <item name="colorOnSurface">@android:color/black</item>
+        <item name="colorControlNormal">@android:color/black</item>
+    </style>
 </resources>

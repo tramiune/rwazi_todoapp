@@ -1,5 +1,6 @@
 package com.rwazi.app.todo.base
 
+import ThemePalette
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.activity.enableEdgeToEdge
@@ -13,6 +14,9 @@ abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel>(
     private val bindingFactory: (LayoutInflater) -> VB,
 ) : AppCompatActivity() {
 
+    protected var palette: ThemePalette? = null
+    protected open val isDynamicTheme: Boolean = false
+
     protected lateinit var binding: VB
         private set
 
@@ -23,6 +27,10 @@ abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel>(
 
     @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (isDynamicTheme) {
+            setupDynamicTheme()
+        }
+        
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         viewModel = ViewModelProvider(this)[classTypeOfViewModel]
@@ -33,8 +41,21 @@ abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel>(
         listener()
     }
 
+    private fun setupDynamicTheme() {
+        palette = DynamicBackgroundUtils.getRandomPalette()
+        palette?.let {
+            setTheme(it.themeResId)
+            // Note: System bars will be set in hideSystemUI using the palette info
+        }
+    }
+
     private fun hideSystemUI() {
         val controller = WindowInsetsControllerCompat(window, window.decorView)
+
+        palette?.let {
+            controller.isAppearanceLightStatusBars = it.isLight
+            controller.isAppearanceLightNavigationBars = it.isLight
+        }
 
         when (typeFullScreen) {
             TypeFullScreen.HIDE_NAVIGATION_BAR -> {
