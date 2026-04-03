@@ -1,19 +1,14 @@
 package com.rwazi.app.todo.ui.settings
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rwazi.app.todo.R
 import com.rwazi.app.todo.base.BaseFragment
 import com.rwazi.app.todo.base.extension.click
-import com.rwazi.app.todo.base.type.ProgressType
-import com.rwazi.app.todo.base.type.ViewState
 import com.rwazi.app.todo.databinding.FragmentSettingsBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -23,36 +18,9 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
     override val classTypeOfViewModel: Class<SettingsViewModel>
         get() = SettingsViewModel::class.java
 
-
     override fun initControl(view: View, savedInstanceState: Bundle?) {}
 
     override fun setupClick() {
-        setupListeners()
-    }
-
-    override fun observer() {
-        observeTheme()
-    }
-
-    private fun observeTheme() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.themeFlow.collectLatest { isDarkMode ->
-                val systemDarkMode = (requireContext().resources.configuration.uiMode and
-                        Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
-
-                val currentMode = isDarkMode ?: systemDarkMode
-                binding.switchDarkMode.isChecked = currentMode
-            }
-        }
-    }
-
-    private fun setupListeners() {
-        binding.switchDarkMode.setOnCheckedChangeListener { button, isChecked ->
-            if (button.isPressed) {
-                viewModel.setThemeMode(isChecked)
-            }
-        }
-
         binding.btnBack.click {
             findNavController().popBackStack()
         }
@@ -64,5 +32,4 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
             }
         }
     }
-
 }

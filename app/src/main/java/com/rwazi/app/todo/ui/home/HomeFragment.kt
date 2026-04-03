@@ -37,6 +37,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
     )
 
     override fun initControl(view: View, savedInstanceState: Bundle?) {
+        binding.root.setBackgroundColor(ColorUtils.getRandomSoftColor())
         setupRecyclerView()
         setupSearchView()
     }

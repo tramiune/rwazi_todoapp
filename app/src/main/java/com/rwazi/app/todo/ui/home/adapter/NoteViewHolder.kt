@@ -4,7 +4,7 @@ import android.content.res.Configuration
 import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.RecyclerView
 import com.rwazi.app.todo.base.extension.click
-import com.rwazi.app.todo.domain.model.Note
+import com.rwazi.app.todo.ui.model.Note
 import com.rwazi.app.todo.databinding.ItemNoteBinding
 import java.text.SimpleDateFormat
 import java.util.Date
