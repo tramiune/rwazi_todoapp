@@ -10,6 +10,8 @@ import com.rwazi.app.todo.domain.model.Note
 import com.rwazi.app.todo.domain.model.SortOrder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -25,9 +27,9 @@ class HomeViewModel @Inject constructor(
     private val _searchQuery = MutableStateFlow("")
     private val _sortOrder = MutableStateFlow(SortOrder.NEWEST_FIRST)
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     val notes: Flow<PagingData<Note>> = combine(
-        _searchQuery,
+        _searchQuery.debounce(300),
         _sortOrder
     ) { query, sort ->
         query to sort
