@@ -10,25 +10,23 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration
 import com.rwazi.app.todo.data.local.NoteDao
 import com.rwazi.app.todo.data.local.SyncStatus
 import com.rwazi.app.todo.data.mapper.toDomain
 import com.rwazi.app.todo.data.mapper.toEntity
 import com.rwazi.app.todo.data.mapper.toRemote
-import com.rwazi.app.todo.data.remote.NoteRemote
+import com.rwazi.app.todo.data.remote.NoteRemoteDataSource
 import com.rwazi.app.todo.data.sync.SyncWorker
 import com.rwazi.app.todo.ui.model.Note
 import com.rwazi.app.todo.util.AppConstants
 import com.rwazi.app.todo.util.SortOrder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -36,23 +34,21 @@ import javax.inject.Singleton
 @Singleton
 class NoteRepositoryImpl @Inject constructor(
     private val noteDao: NoteDao,
-    private val firestore: FirebaseFirestore,
+    private val remoteDataSource: NoteRemoteDataSource,
     private val authRepository: AuthRepository,
     private val workManager: WorkManager
 ) : NoteRepository {
 
     private val repositoryScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-
-    private var syncJobStarted = false
-    private var snapshotListener: ListenerRegistration? = null
+    private var syncJob: Job? = null
 
     init {
         repositoryScope.launch {
             authRepository.getAuthState().collect { user ->
                 val uid = user?.uid
-                if (uid != null && !syncJobStarted) {
+                if (uid != null) {
                     startRealtimeSync(uid)
-                } else if (uid == null) {
+                } else {
                     stopRealtimeSync()
                 }
             }
@@ -60,71 +56,39 @@ class NoteRepositoryImpl @Inject constructor(
     }
 
     private fun startRealtimeSync(uid: String) {
-        if (syncJobStarted) return
-        syncJobStarted = true
-
-        snapshotListener = firestore.collection(AppConstants.COLLECTION_USERS).document(uid).collection(AppConstants.COLLECTION_NOTES)
-            .addSnapshotListener { snapshot, e ->
-                if (e != null) {
-                    Timber.e(e, "Snapshot listener failed")
-                    return@addSnapshotListener
-                }
-
-                snapshot?.documentChanges?.forEach { dc ->
-                    val remote =
-                        dc.document.toObject(NoteRemote::class.java).copy(id = dc.document.id)
+        if (syncJob?.isActive == true) return
+        
+        syncJob = repositoryScope.launch {
+            remoteDataSource.getNoteChanges(uid).collect { changes ->
+                changes.forEach { (type, remote) ->
                     val entity = remote.toEntity(SyncStatus.SYNCED)
-
-                    repositoryScope.launch {
-                        Timber.d("Sync: Received ${dc.type} for ${entity.id} (Title: ${entity.title}, updatedAt: ${entity.updatedAt})")
-                        when (dc.type) {
-                            DocumentChange.Type.ADDED -> {
-                                val local = noteDao.getNoteById(entity.id)
-                                if (local == null || local.syncStatus == SyncStatus.SYNCED || entity.updatedAt > local.updatedAt) {
-                                    Timber.d("Sync: Adding/Updating local for ${entity.id}")
-                                    noteDao.insertNote(entity)
-                                } else {
-                                    Timber.d("Sync: Ignoring remote ADDED for ${entity.id} (local is PENDING and newer)")
-                                }
+                    
+                    Timber.d("Sync: Received $type for ${entity.id} (updatedAt: ${entity.updatedAt})")
+                    when (type) {
+                        DocumentChange.Type.ADDED, DocumentChange.Type.MODIFIED -> {
+                            val local = noteDao.getNoteById(entity.id)
+                            if (local == null || local.syncStatus == SyncStatus.SYNCED || entity.updatedAt > local.updatedAt) {
+                                noteDao.insertNote(entity)
                             }
-
-                            DocumentChange.Type.MODIFIED -> {
-                                val local = noteDao.getNoteById(entity.id)
-                                if (local == null || local.syncStatus == SyncStatus.SYNCED || entity.updatedAt > local.updatedAt) {
-                                    Timber.d("Sync: Modifying local for ${entity.id}")
-                                    noteDao.insertNote(entity)
-                                } else {
-                                    Timber.d("Sync: Ignoring remote MODIFIED for ${entity.id} (local is PENDING and newer)")
-                                }
-                            }
-
-                            DocumentChange.Type.REMOVED -> {
-                                Timber.d("Sync: Removing local for ${entity.id}")
-                                noteDao.deleteNotePermanently(entity.id)
-                            }
+                        }
+                        DocumentChange.Type.REMOVED -> {
+                            noteDao.deleteNotePermanently(entity.id)
                         }
                     }
                 }
             }
+        }
     }
 
     private fun stopRealtimeSync() {
-        snapshotListener?.remove()
-        snapshotListener = null
-        syncJobStarted = false
-    }
-
-    private val currentUserId: String?
-        get() = authRepository.currentUser?.uid
-
-    private fun getNotesCollection() = currentUserId?.let { uid ->
-        firestore.collection(AppConstants.COLLECTION_USERS).document(uid).collection(AppConstants.COLLECTION_NOTES)
+        syncJob?.cancel()
+        syncJob = null
     }
 
     override fun getNotesPaged(query: String, sortOrder: SortOrder): Flow<PagingData<Note>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 20,
+                pageSize = AppConstants.SYNC_PAGE_SIZE,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {
@@ -144,67 +108,55 @@ class NoteRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addNote(note: Note) {
-        val entity = note.toEntity(SyncStatus.PENDING)
-        noteDao.insertNote(entity)
-        try {
-            val collection = getNotesCollection()
-            if (collection == null) {
-                Timber.w("NoteRepository: User not logged in, syncing skipped (will retry via Worker)")
-                return
-            }
-            collection.document(entity.id).set(entity.toRemote()).await()
-            noteDao.updateNote(entity.copy(syncStatus = SyncStatus.SYNCED))
-            Timber.d("NoteRepository: Note synced successfully to Firestore")
-        } catch (e: Exception) {
-            Timber.e(e, "Failed to sync added note to Firestore")
-        } finally {
-            syncNotes()
+        performRemoteAction(note) { uid, remote ->
+            remoteDataSource.saveNote(uid, remote)
         }
     }
 
     override suspend fun updateNote(note: Note) {
-        val entity = note.toEntity(SyncStatus.PENDING).copy(updatedAt = System.currentTimeMillis())
-        noteDao.updateNote(entity)
-        try {
-            val collection = getNotesCollection()
-            if (collection == null) {
-                Timber.w("NoteRepository: User not logged in, update deferred")
-                return
-            }
-            collection.document(entity.id).set(entity.toRemote()).await()
-            noteDao.updateNote(entity.copy(syncStatus = SyncStatus.SYNCED))
-            Timber.d("NoteRepository: Note updated successfully in Firestore")
-        } catch (e: Exception) {
-            Timber.e(e, "Failed to sync updated note to Firestore")
-        } finally {
-            syncNotes()
+        performRemoteAction(note.copy(updatedAt = System.currentTimeMillis())) { uid, remote ->
+            remoteDataSource.saveNote(uid, remote)
         }
-    }
-
-    override suspend fun getNoteById(id: String): Note? {
-        return noteDao.getNoteById(id)?.toDomain()
-    }
-
-    override fun getNoteFlow(id: String): Flow<Note?> {
-        return noteDao.getNoteFlow(id).map { it?.toDomain() }
     }
 
     override suspend fun deleteNote(id: String) {
-        noteDao.softDeleteNote(id)
+        val note = noteDao.getNoteById(id)?.toDomain() ?: return
+        performRemoteAction(note.copy(isDeleted = true)) { uid, _ ->
+            remoteDataSource.updateNoteField(uid, id, "deleted", true)
+        }
+    }
+
+    /**
+     * Common helper to orchestrate local update -> remote sync -> status update.
+     */
+    private suspend fun performRemoteAction(
+        note: Note,
+        action: suspend (String, com.rwazi.app.todo.data.remote.NoteRemote) -> Unit
+    ) {
+        val entity = note.toEntity(SyncStatus.PENDING)
+        noteDao.insertNote(entity)
+
+        val uid = authRepository.currentUser?.uid
+        if (uid == null) {
+            Timber.w("Repository: User not logged in, sync deferred to Worker")
+            syncNotes()
+            return
+        }
+
         try {
-            val collection = getNotesCollection()
-            if (collection == null) {
-                Timber.w("NoteRepository: User not logged in, delete deferred")
-                return
-            }
-            collection.document(id).update("deleted", true).await()
-            Timber.d("NoteRepository: Note marked as deleted in Firestore")
+            action(uid, entity.toRemote())
+            noteDao.updateNote(entity.copy(syncStatus = SyncStatus.SYNCED))
+            Timber.d("Repository: Remote action successful for ${entity.id}")
         } catch (e: Exception) {
-            Timber.e(e, "Failed to sync deleted note to Firestore")
+            Timber.e(e, "Repository: Remote action failed for ${entity.id}")
         } finally {
             syncNotes()
         }
     }
+
+    override suspend fun getNoteById(id: String): Note? = noteDao.getNoteById(id)?.toDomain()
+
+    override fun getNoteFlow(id: String): Flow<Note?> = noteDao.getNoteFlow(id).map { it?.toDomain() }
 
     override suspend fun syncNotes() {
         val constraints = Constraints.Builder()
