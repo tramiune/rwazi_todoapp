@@ -23,7 +23,7 @@ class SyncWorker @AssistedInject constructor(
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
-        val uid = authRepository.currentUser?.uid ?: run {
+        val uid = authRepository.currentUser?.id ?: run {
             Timber.w("SyncWorker: User not logged in, retrying...")
             return Result.retry()
         }

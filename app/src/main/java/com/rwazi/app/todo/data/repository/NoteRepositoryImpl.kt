@@ -46,7 +46,7 @@ class NoteRepositoryImpl @Inject constructor(
     init {
         repositoryScope.launch {
             authRepository.getAuthState().collect { user ->
-                val uid = user?.uid
+                val uid = user?.id
                 if (uid != null) {
                     startRealtimeSync(uid)
                 } else {
@@ -137,7 +137,7 @@ class NoteRepositoryImpl @Inject constructor(
         val entity = note.toEntity(SyncStatus.PENDING)
         noteDao.insertNote(entity)
 
-        val uid = authRepository.currentUser?.uid
+        val uid = authRepository.currentUser?.id
         if (uid == null) {
             Timber.w("Repository: User not logged in, sync deferred to Worker")
             syncNotes()

@@ -10,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
-import com.google.firebase.auth.GoogleAuthProvider
 import com.rwazi.app.todo.R
 import com.rwazi.app.todo.base.BaseFragment
 import com.rwazi.app.todo.base.extension.click
@@ -73,9 +72,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LogInViewModel>(
             credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
         ) {
             val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
-            val authCredential =
-                GoogleAuthProvider.getCredential(googleIdTokenCredential.idToken, null)
-            viewModel.signInWithGoogle(authCredential)
+            viewModel.signInWithGoogle(googleIdTokenCredential.idToken)
         }
     }
 

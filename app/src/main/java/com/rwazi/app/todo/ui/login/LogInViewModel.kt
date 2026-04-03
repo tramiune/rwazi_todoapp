@@ -2,7 +2,7 @@ package com.rwazi.app.todo.ui.login
 
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.FirebaseUser
+import com.rwazi.app.todo.domain.model.User
 import com.rwazi.app.todo.base.BaseViewModel
 import com.rwazi.app.todo.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +17,7 @@ class LogInViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     sealed interface LoginEffect {
-        data class Success(val user: FirebaseUser) : LoginEffect
+        data class Success(val user: User) : LoginEffect
     }
 
     private val _effect = MutableSharedFlow<LoginEffect>()
@@ -25,10 +25,10 @@ class LogInViewModel @Inject constructor(
 
     fun isLoggedIn(): Boolean = authRepository.currentUser != null
 
-    fun signInWithGoogle(credential: AuthCredential) {
+    fun signInWithGoogle(idToken: String) {
         justExecute(
             action = {
-                authRepository.signInWithCredential(credential).getOrThrow()
+                authRepository.signInWithGoogle(idToken).getOrThrow()
             },
             onSuccess = { user ->
                 viewModelScope.launch { _effect.emit(LoginEffect.Success(user)) }
