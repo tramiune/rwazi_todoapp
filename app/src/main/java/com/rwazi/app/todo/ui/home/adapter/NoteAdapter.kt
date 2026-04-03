@@ -4,13 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import com.rwazi.app.todo.data.local.NoteEntity
+import com.rwazi.app.todo.domain.model.Note
 import com.rwazi.app.todo.databinding.ItemNoteBinding
 
 class NoteAdapter(
-    private val onNoteClick: (NoteEntity) -> Unit,
-    private val onNoteDelete: (NoteEntity) -> Unit
-) : PagingDataAdapter<NoteEntity, NoteViewHolder>(NoteDiffCallback()) {
+    private val onNoteClick: (Note) -> Unit,
+    private val onNoteDelete: (Note) -> Unit
+) : PagingDataAdapter<Note, NoteViewHolder>(NoteDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val binding = ItemNoteBinding.inflate(
@@ -28,12 +28,12 @@ class NoteAdapter(
         }
     }
 
-    class NoteDiffCallback : DiffUtil.ItemCallback<NoteEntity>() {
-        override fun areItemsTheSame(oldItem: NoteEntity, newItem: NoteEntity): Boolean {
+    class NoteDiffCallback : DiffUtil.ItemCallback<Note>() {
+        override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: NoteEntity, newItem: NoteEntity): Boolean {
+        override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean {
             return oldItem == newItem
         }
     }

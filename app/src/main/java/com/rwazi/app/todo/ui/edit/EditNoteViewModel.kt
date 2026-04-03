@@ -1,30 +1,24 @@
 package com.rwazi.app.todo.ui.edit
 
-import androidx.lifecycle.viewModelScope
 import com.rwazi.app.todo.base.BaseViewModel
-import com.rwazi.app.todo.data.local.NoteEntity
-import com.rwazi.app.todo.domain.usecase.GetNoteByIdUseCase
-import com.rwazi.app.todo.domain.usecase.GetNoteFlowUseCase
-import com.rwazi.app.todo.domain.usecase.UpdateNoteUseCase
+import com.rwazi.app.todo.data.repository.NoteRepository
+import com.rwazi.app.todo.domain.model.Note
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class EditNoteViewModel @Inject constructor(
-    private val getNoteByIdUseCase: GetNoteByIdUseCase,
-    private val getNoteFlowUseCase: GetNoteFlowUseCase,
-    private val updateNoteUseCase: UpdateNoteUseCase
+    private val noteRepository: NoteRepository
 ) : BaseViewModel() {
 
-    fun getNoteFlow(id: String): Flow<NoteEntity?> = getNoteFlowUseCase(id)
+    fun getNoteFlow(id: String): Flow<Note?> = noteRepository.getNoteFlow(id)
 
-    suspend fun getNoteById(id: String): NoteEntity? = getNoteByIdUseCase(id)
+    suspend fun getNoteById(id: String): Note? = noteRepository.getNoteById(id)
 
-    fun updateNote(note: NoteEntity) {
+    fun updateNote(note: Note) {
         justExecute(
-            action = { updateNoteUseCase(note) },
+            action = { noteRepository.updateNote(note) },
             onSuccess = { /* Data update handled via Flow */ }
         )
     }

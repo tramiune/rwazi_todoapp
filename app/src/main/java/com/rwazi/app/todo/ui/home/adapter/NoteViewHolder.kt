@@ -4,7 +4,7 @@ import android.content.res.Configuration
 import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.RecyclerView
 import com.rwazi.app.todo.base.extension.click
-import com.rwazi.app.todo.data.local.NoteEntity
+import com.rwazi.app.todo.domain.model.Note
 import com.rwazi.app.todo.databinding.ItemNoteBinding
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -12,13 +12,13 @@ import java.util.Locale
 
 class NoteViewHolder(
     private val binding: ItemNoteBinding,
-    private val onNoteClick: (NoteEntity) -> Unit,
-    private val onNoteDelete: (NoteEntity) -> Unit
+    private val onNoteClick: (Note) -> Unit,
+    private val onNoteDelete: (Note) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
     private val dateFormat = SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault())
 
-    fun bind(note: NoteEntity) {
+    fun bind(note: Note) {
         binding.apply {
             tvTitle.text = note.title
             tvContent.text = note.content
