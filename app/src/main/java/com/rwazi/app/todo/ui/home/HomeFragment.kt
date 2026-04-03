@@ -6,16 +6,16 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.google.android.material.textfield.TextInputEditText
 import com.rwazi.app.todo.R
 import com.rwazi.app.todo.base.BaseFragment
+import com.rwazi.app.todo.base.type.ProgressType
+import com.rwazi.app.todo.base.type.ViewState
 import com.rwazi.app.todo.databinding.FragmentHomeBinding
 import com.rwazi.app.todo.ui.home.adapter.NoteAdapter
-import com.rwazi.app.todo.ui.home.HomeViewModel
 import com.rwazi.app.todo.util.ColorUtils
 import com.rwazi.app.todo.util.SortOrder
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +26,8 @@ import kotlinx.coroutines.launch
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
     FragmentHomeBinding::inflate
 ) {
-    override val viewModel: HomeViewModel by viewModels()
+    override val classTypeOfViewModel: Class<HomeViewModel>
+        get() = HomeViewModel::class.java
     private lateinit var adapter: NoteAdapter
 
     override fun initControl(view: View, savedInstanceState: Bundle?) {
@@ -106,7 +107,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
 
         viewLifecycleOwner.lifecycleScope.launch {
             adapter.loadStateFlow.collectLatest { loadStates ->
-                val isListEmpty = loadStates.refresh is LoadState.NotLoading && adapter.itemCount == 0
+                val isListEmpty =
+                    loadStates.refresh is LoadState.NotLoading && adapter.itemCount == 0
                 binding.llEmptyState.visibility = if (isListEmpty) View.VISIBLE else View.GONE
                 binding.rvNotes.visibility = if (isListEmpty) View.GONE else View.VISIBLE
             }
@@ -138,4 +140,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
             .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
+
+    override fun showProgressView(progress: ProgressType) {}
+    override fun hideProgress(idle: ViewState.Idle) {}
+    override fun displayError(error: ViewState.Error) {}
 }

@@ -4,13 +4,13 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rwazi.app.todo.R
 import com.rwazi.app.todo.base.BaseFragment
+import com.rwazi.app.todo.base.type.ProgressType
+import com.rwazi.app.todo.base.type.ViewState
 import com.rwazi.app.todo.databinding.FragmentSettingsBinding
-import com.rwazi.app.todo.ui.settings.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -19,7 +19,9 @@ import kotlinx.coroutines.launch
 class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel>(
     FragmentSettingsBinding::inflate
 ) {
-    override val viewModel: SettingsViewModel by viewModels()
+    override val classTypeOfViewModel: Class<SettingsViewModel>
+        get() = SettingsViewModel::class.java
+
 
     override fun initControl(view: View, savedInstanceState: Bundle?) {
         observeTheme()
@@ -30,7 +32,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.themeFlow.collectLatest { isDarkMode ->
                 val systemDarkMode = (requireContext().resources.configuration.uiMode and
-                    Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+                        Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
 
                 val currentMode = isDarkMode ?: systemDarkMode
                 binding.switchDarkMode.isChecked = currentMode
@@ -59,4 +61,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
             }
         }
     }
+
+    override fun showProgressView(progress: ProgressType) {}
+    override fun hideProgress(idle: ViewState.Idle) {}
+    override fun displayError(error: ViewState.Error) {}
 }
