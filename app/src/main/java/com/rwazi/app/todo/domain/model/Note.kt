@@ -1,4 +1,4 @@
-package com.rwazi.app.todo.ui.model
+package com.rwazi.app.todo.domain.model
 
 data class Note(
     val id: String,

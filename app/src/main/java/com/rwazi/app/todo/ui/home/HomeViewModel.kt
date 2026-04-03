@@ -4,9 +4,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.rwazi.app.todo.base.BaseViewModel
-import com.rwazi.app.todo.data.repository.NoteRepository
-import com.rwazi.app.todo.ui.model.Note
-import com.rwazi.app.todo.util.SortOrder
+import com.rwazi.app.todo.domain.repository.NoteRepository
+
+import com.rwazi.app.todo.domain.model.Note
+import com.rwazi.app.todo.domain.model.SortOrder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow

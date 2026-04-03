@@ -1,8 +1,9 @@
 package com.rwazi.app.todo.ui.edit
 
 import com.rwazi.app.todo.base.BaseViewModel
-import com.rwazi.app.todo.data.repository.NoteRepository
-import com.rwazi.app.todo.ui.model.Note
+import com.rwazi.app.todo.domain.repository.NoteRepository
+
+import com.rwazi.app.todo.domain.model.Note
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

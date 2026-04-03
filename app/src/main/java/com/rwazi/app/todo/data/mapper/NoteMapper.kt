@@ -3,7 +3,7 @@ package com.rwazi.app.todo.data.mapper
 import com.rwazi.app.todo.data.local.NoteEntity
 import com.rwazi.app.todo.data.local.SyncStatus
 import com.rwazi.app.todo.data.remote.NoteRemote
-import com.rwazi.app.todo.ui.model.Note
+import com.rwazi.app.todo.domain.model.Note
 import java.util.UUID
 
 // ─── NoteEntity ↔ Domain ────────────────────────────────────────────────────

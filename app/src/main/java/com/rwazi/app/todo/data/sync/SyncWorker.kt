@@ -8,7 +8,8 @@ import com.rwazi.app.todo.data.local.NoteDao
 import com.rwazi.app.todo.data.local.SyncStatus
 import com.rwazi.app.todo.data.mapper.toRemote
 import com.rwazi.app.todo.data.remote.NoteRemoteDataSource
-import com.rwazi.app.todo.data.repository.AuthRepository
+import com.rwazi.app.todo.domain.repository.AuthRepository
+
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import timber.log.Timber

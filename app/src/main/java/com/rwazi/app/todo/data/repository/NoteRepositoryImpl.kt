@@ -1,5 +1,8 @@
 package com.rwazi.app.todo.data.repository
 
+import com.rwazi.app.todo.domain.repository.NoteRepository
+import com.rwazi.app.todo.domain.repository.AuthRepository
+
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -18,9 +21,10 @@ import com.rwazi.app.todo.data.mapper.toRemote
 import com.rwazi.app.todo.data.remote.NoteRemote
 import com.rwazi.app.todo.data.remote.NoteRemoteDataSource
 import com.rwazi.app.todo.data.sync.SyncWorker
-import com.rwazi.app.todo.ui.model.Note
+import com.rwazi.app.todo.domain.model.Note
 import com.rwazi.app.todo.util.AppConstants
-import com.rwazi.app.todo.util.SortOrder
+import com.rwazi.app.todo.domain.model.SortOrder
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

@@ -4,7 +4,8 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthCredential
 import com.rwazi.app.todo.domain.model.User
 import com.rwazi.app.todo.base.BaseViewModel
-import com.rwazi.app.todo.data.repository.AuthRepository
+import com.rwazi.app.todo.domain.repository.AuthRepository
+
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
