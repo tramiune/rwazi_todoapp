@@ -46,8 +46,13 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
-    <string name="unknown_error">Unknown Error</string>
-    <string name="check_your_internet_connection_and_try_again">Check your internet connection and try again</string>
+    <string name="unknown_error">Something went wrong. Please try again.</string>
+    <string name="check_your_internet_connection_and_try_again">No internet connection. Please check your network and try again.</string>
+    <string name="error_auth_failed">Authentication failed. Please check your credentials.</string>
+    <string name="error_google_sign_in_failed">Google Sign-in failed. Please try again.</string>
+    <string name="error_user_not_found">No account found with this email.</string>
+    <string name="error_wrong_password">Incorrect password. Please try again.</string>
+    <string name="error_too_many_requests">Too many attempts. Please try again later.</string>
     
     <string name="sort_newest">Newest First</string>
     <string name="sort_oldest">Oldest First</string>
