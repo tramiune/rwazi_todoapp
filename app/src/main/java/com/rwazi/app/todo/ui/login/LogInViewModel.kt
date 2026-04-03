@@ -6,8 +6,11 @@ import com.google.firebase.auth.FirebaseUser
 import com.rwazi.app.todo.base.BaseViewModel
 import com.rwazi.app.todo.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,28 +19,35 @@ class LogInViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : BaseViewModel() {
 
-    private val _authState = MutableStateFlow<AuthResult>(AuthResult.Initial)
-    val authState: StateFlow<AuthResult> = _authState
+    data class LoginUiState(
+        val isLoading: Boolean = false
+    )
+
+    sealed interface LoginEffect {
+        data class Success(val user: FirebaseUser) : LoginEffect
+        data class Error(val message: String) : LoginEffect
+    }
+
+    private val _uiState = MutableStateFlow(LoginUiState())
+    val uiState: StateFlow<LoginUiState> = _uiState
+
+    private val _effect = MutableSharedFlow<LoginEffect>()
+    val effect = _effect.asSharedFlow()
 
     fun isLoggedIn(): Boolean = authRepository.currentUser != null
 
     fun signInWithGoogle(credential: AuthCredential) {
         viewModelScope.launch {
-            _authState.value = AuthResult.Loading
+            _uiState.update { it.copy(isLoading = true) }
             authRepository.signInWithCredential(credential)
                 .onSuccess {
-                    _authState.value = AuthResult.Success(it)
+                    _uiState.update { state -> state.copy(isLoading = false) }
+                    _effect.emit(LoginEffect.Success(it))
                 }
                 .onFailure {
-                    _authState.value = AuthResult.Error(it.message ?: "SignIn Failed")
+                    _uiState.update { state -> state.copy(isLoading = false) }
+                    _effect.emit(LoginEffect.Error(it.message ?: "SignIn Failed"))
                 }
         }
-    }
-
-    sealed class AuthResult {
-        object Initial : AuthResult()
-        object Loading : AuthResult()
-        data class Success(val user: FirebaseUser) : AuthResult()
-        data class Error(val message: String) : AuthResult()
     }
 }
