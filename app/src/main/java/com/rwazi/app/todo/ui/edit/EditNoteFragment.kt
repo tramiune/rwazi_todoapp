@@ -12,6 +12,7 @@ import com.rwazi.app.todo.databinding.FragmentEditNoteBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import com.rwazi.app.todo.base.extension.click
 
 @AndroidEntryPoint
 class EditNoteFragment : BaseFragment<FragmentEditNoteBinding, EditNoteViewModel>(
@@ -40,11 +41,11 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding, EditNoteViewModel
     }
 
     private fun setupButtons() {
-        binding.btnBack.setOnClickListener {
+        binding.btnBack.click {
             findNavController().popBackStack()
         }
 
-        binding.btnUpdate.setOnClickListener {
+        binding.btnUpdate.click {
             val title = binding.etTitle.text.toString()
             val content = binding.etContent.text.toString()
 

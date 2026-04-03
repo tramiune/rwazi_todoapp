@@ -12,8 +12,9 @@ import androidx.paging.LoadState
 import com.google.android.material.textfield.TextInputEditText
 import com.rwazi.app.todo.R
 import com.rwazi.app.todo.base.BaseFragment
-import com.rwazi.app.todo.base.type.ProgressType
-import com.rwazi.app.todo.base.type.ViewState
+import com.rwazi.app.todo.base.extension.click
+import com.rwazi.app.todo.base.extension.goneView
+import com.rwazi.app.todo.base.extension.visibleView
 import com.rwazi.app.todo.databinding.FragmentHomeBinding
 import com.rwazi.app.todo.ui.home.adapter.NoteAdapter
 import com.rwazi.app.todo.util.ColorUtils
@@ -46,25 +47,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
     }
 
     private fun setupSort() {
-        binding.btnSort.setOnClickListener {
-            val popup = PopupMenu(requireContext(), it)
-            popup.menu.add(0, 0, 0, getString(R.string.sort_newest))
-            popup.menu.add(0, 1, 1, getString(R.string.sort_oldest))
+        binding.btnSort.click {
+            val popup = it?.let { anchor -> PopupMenu(requireContext(), anchor) }
+            popup?.menu?.add(0, 0, 0, getString(R.string.sort_newest))
+            popup?.menu?.add(0, 1, 1, getString(R.string.sort_oldest))
 
-            popup.setOnMenuItemClickListener { item ->
+            popup?.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     0 -> viewModel.setSortOrder(SortOrder.NEWEST_FIRST)
                     1 -> viewModel.setSortOrder(SortOrder.OLDEST_FIRST)
                 }
                 true
             }
-            popup.show()
+            popup?.show()
         }
     }
 
     private fun setupSettings() {
-        binding.btnSettings.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SettingsFragment)
+        binding.btnSettings.click {
+            findNavController().navigate(R.id.action_HomeFragment_to_SettingsFragment)
         }
     }
 
@@ -74,7 +75,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
                 val bundle = Bundle().apply {
                     putString("noteId", note.id)
                 }
-                findNavController().navigate(R.id.action_FirstFragment_to_EditNoteFragment, bundle)
+                findNavController().navigate(R.id.action_HomeFragment_to_EditNoteFragment, bundle)
             },
             onNoteDelete = { note ->
                 viewModel.deleteNote(note.id)
@@ -99,7 +100,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
     }
 
     private fun setupFab() {
-        binding.fabAddNote.setOnClickListener {
+        binding.fabAddNote.click {
             showAddNoteDialog()
         }
     }
@@ -115,8 +116,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
             adapter.loadStateFlow.collectLatest { loadStates ->
                 val isListEmpty =
                     loadStates.refresh is LoadState.NotLoading && adapter.itemCount == 0
-                binding.llEmptyState.visibility = if (isListEmpty) View.VISIBLE else View.GONE
-                binding.rvNotes.visibility = if (isListEmpty) View.GONE else View.VISIBLE
+                if (isListEmpty) {
+                    binding.llEmptyState.visibleView()
+                    binding.rvNotes.goneView()
+                } else {
+                    binding.llEmptyState.goneView()
+                    binding.rvNotes.visibleView()
+                }
             }
         }
     }

@@ -23,8 +23,9 @@ class EditNoteViewModel @Inject constructor(
     suspend fun getNoteById(id: String): NoteEntity? = getNoteByIdUseCase(id)
 
     fun updateNote(note: NoteEntity) {
-        viewModelScope.launch {
-            updateNoteUseCase(note)
-        }
+        justExecute(
+            action = { updateNoteUseCase(note) },
+            onSuccess = { /* Data update handled via Flow */ }
+        )
     }
 }

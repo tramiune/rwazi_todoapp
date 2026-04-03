@@ -13,10 +13,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,12 +23,8 @@ class HomeViewModel @Inject constructor(
     private val addNoteUseCase: AddNoteUseCase,
     private val deleteNoteUseCase: DeleteNoteUseCase
 ) : BaseViewModel() {
-
     private val _searchQuery = MutableStateFlow("")
-    val searchQuery: StateFlow<String> = _searchQuery
-
     private val _sortOrder = MutableStateFlow(SortOrder.NEWEST_FIRST)
-    val sortOrder: StateFlow<SortOrder> = _sortOrder
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val notes: Flow<PagingData<NoteEntity>> = combine(
@@ -51,19 +45,21 @@ class HomeViewModel @Inject constructor(
     }
 
     fun addNote(title: String, content: String, backgroundColor: Int) {
-        viewModelScope.launch {
-            val note = NoteEntity(
-                title = title,
-                content = content,
-                backgroundColor = backgroundColor
-            )
-            addNoteUseCase(note)
-        }
+        val note = NoteEntity(
+            title = title,
+            content = content,
+            backgroundColor = backgroundColor
+        )
+        justExecute(
+            action = { addNoteUseCase(note) },
+            onSuccess = { /* Success auto-updates via Flow */ }
+        )
     }
 
     fun deleteNote(id: String) {
-        viewModelScope.launch {
-            deleteNoteUseCase(id)
-        }
+        justExecute(
+            action = { deleteNoteUseCase(id) },
+            onSuccess = { /* Success auto-updates via Flow */ }
+        )
     }
 }

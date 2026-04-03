@@ -2,7 +2,6 @@ package com.rwazi.app.todo.ui.login
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
@@ -33,46 +32,49 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LogInViewModel>(
 
     override fun initControl(view: View, savedInstanceState: Bundle?) {
         if (viewModel.isLoggedIn()) {
-            findNavController().navigate(R.id.action_LoginFragment_to_FirstFragment)
+            findNavController().navigate(R.id.action_LoginFragment_to_HomeFragment)
             return
         }
     }
 
     override fun listener() {
         binding.btnGoogleSignIn.click {
-            val credentialManager = CredentialManager.create(requireContext())
+            startGoogleSignIn()
+        }
+    }
 
-            val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
-                .setFilterByAuthorizedAccounts(false)
-                .setServerClientId(getString(R.string.default_web_client_id))
-                .build()
+    private fun startGoogleSignIn() {
+        val credentialManager = CredentialManager.create(requireContext())
+        val googleIdOption = GetGoogleIdOption.Builder()
+            .setFilterByAuthorizedAccounts(false)
+            .setServerClientId(getString(R.string.default_web_client_id))
+            .build()
 
-            val request: GetCredentialRequest = GetCredentialRequest.Builder()
-                .addCredentialOption(googleIdOption)
-                .build()
+        val request = GetCredentialRequest.Builder()
+            .addCredentialOption(googleIdOption)
+            .build()
 
-            lifecycleScope.launch {
-                try {
-                    val result = credentialManager.getCredential(
-                        request = request,
-                        context = requireActivity(),
-                    )
-
-                    val credential = result.credential
-                    if (credential is CustomCredential &&
-                        credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
-                    ) {
-
-                        val googleIdTokenCredential =
-                            GoogleIdTokenCredential.createFrom(credential.data)
-                        val authCredential =
-                            GoogleAuthProvider.getCredential(googleIdTokenCredential.idToken, null)
-                        viewModel.signInWithGoogle(authCredential)
-                    }
-                } catch (e: GetCredentialException) {
-                    viewModel.handleError(e)
-                }
+        lifecycleScope.launch {
+            try {
+                val result = credentialManager.getCredential(
+                    request = request,
+                    context = requireActivity(),
+                )
+                handleSignInResult(result.credential)
+            } catch (e: GetCredentialException) {
+                viewModel.handleError(e)
             }
+        }
+    }
+
+    private fun handleSignInResult(credential: androidx.credentials.Credential) {
+        if (credential is CustomCredential &&
+            credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
+        ) {
+            val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+            val authCredential =
+                GoogleAuthProvider.getCredential(googleIdTokenCredential.idToken, null)
+            viewModel.signInWithGoogle(authCredential)
         }
     }
 
@@ -80,7 +82,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LogInViewModel>(
         viewModel.effect.collectInStarted(this) { effect ->
             when (effect) {
                 is LogInViewModel.LoginEffect.Success -> {
-                    findNavController().navigate(R.id.action_LoginFragment_to_FirstFragment)
+                    findNavController().navigate(R.id.action_LoginFragment_to_HomeFragment)
                 }
             }
         }

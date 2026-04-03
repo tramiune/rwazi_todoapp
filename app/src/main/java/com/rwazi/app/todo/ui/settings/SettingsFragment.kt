@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rwazi.app.todo.R
 import com.rwazi.app.todo.base.BaseFragment
+import com.rwazi.app.todo.base.extension.click
 import com.rwazi.app.todo.base.type.ProgressType
 import com.rwazi.app.todo.base.type.ViewState
 import com.rwazi.app.todo.databinding.FragmentSettingsBinding
@@ -55,11 +56,11 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
             }
         }
 
-        binding.btnBack.setOnClickListener {
+        binding.btnBack.click {
             findNavController().popBackStack()
         }
 
-        binding.btnLogout.setOnClickListener {
+        binding.btnLogout.click {
             viewLifecycleOwner.lifecycleScope.launch {
                 viewModel.signOut()
                 findNavController().navigate(R.id.LoginFragment)
