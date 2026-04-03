@@ -71,10 +71,13 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel>(val bindingFac
         super.onDestroyView()
     }
 
-    abstract fun showProgressView(progress: ProgressType)
+    open fun showProgressView(progress: ProgressType) {}
 
-    abstract fun hideProgress(idle: ViewState.Idle)
+    open fun hideProgress(idle: ViewState.Idle) {}
 
-    abstract fun displayError(error: ViewState.Error)
-
+    open fun displayError(error: ViewState.Error) {
+        if (error.showError) {
+            showToast(error.error)
+        }
+    }
 }

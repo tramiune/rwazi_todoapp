@@ -23,9 +23,14 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
         get() = SettingsViewModel::class.java
 
 
-    override fun initControl(view: View, savedInstanceState: Bundle?) {
-        observeTheme()
+    override fun initControl(view: View, savedInstanceState: Bundle?) {}
+
+    override fun listener() {
         setupListeners()
+    }
+
+    override fun observer() {
+        observeTheme()
     }
 
     private fun observeTheme() {
@@ -62,7 +67,4 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
         }
     }
 
-    override fun showProgressView(progress: ProgressType) {}
-    override fun hideProgress(idle: ViewState.Idle) {}
-    override fun displayError(error: ViewState.Error) {}
 }

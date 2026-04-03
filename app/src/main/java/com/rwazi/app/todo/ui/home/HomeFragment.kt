@@ -32,10 +32,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
 
     override fun initControl(view: View, savedInstanceState: Bundle?) {
         setupRecyclerView()
+    }
+
+    override fun listener() {
         setupSearchView()
         setupFab()
         setupSettings()
         setupSort()
+    }
+
+    override fun observer() {
         observeNotes()
     }
 
@@ -141,7 +147,4 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
             .show()
     }
 
-    override fun showProgressView(progress: ProgressType) {}
-    override fun hideProgress(idle: ViewState.Idle) {}
-    override fun displayError(error: ViewState.Error) {}
 }

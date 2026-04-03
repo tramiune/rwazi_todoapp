@@ -7,15 +7,17 @@ import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.exceptions.GetCredentialException
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.GoogleAuthProvider
 import com.rwazi.app.todo.R
 import com.rwazi.app.todo.base.BaseFragment
+import com.rwazi.app.todo.base.extension.click
+import com.rwazi.app.todo.base.extension.collectInStarted
+import com.rwazi.app.todo.base.extension.goneView
+import com.rwazi.app.todo.base.extension.visibleView
 import com.rwazi.app.todo.base.type.ProgressType
 import com.rwazi.app.todo.base.type.ViewState
 import com.rwazi.app.todo.databinding.FragmentLoginBinding
@@ -34,8 +36,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LogInViewModel>(
             findNavController().navigate(R.id.action_LoginFragment_to_FirstFragment)
             return
         }
+    }
 
-        binding.btnGoogleSignIn.setOnClickListener {
+    override fun listener() {
+        binding.btnGoogleSignIn.click {
             val credentialManager = CredentialManager.create(requireContext())
 
             val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
@@ -70,33 +74,25 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LogInViewModel>(
                 }
             }
         }
+    }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.effect.collect { effect ->
-                    when (effect) {
-                        is LogInViewModel.LoginEffect.Success -> {
-                            findNavController().navigate(R.id.action_LoginFragment_to_FirstFragment)
-                        }
-                    }
+    override fun observer() {
+        viewModel.effect.collectInStarted(this) { effect ->
+            when (effect) {
+                is LogInViewModel.LoginEffect.Success -> {
+                    findNavController().navigate(R.id.action_LoginFragment_to_FirstFragment)
                 }
             }
         }
     }
 
     override fun showProgressView(progress: ProgressType) {
-        binding.progressBar.visibility = View.VISIBLE
+        binding.progressBar.visibleView()
         binding.btnGoogleSignIn.isEnabled = false
     }
-    
+
     override fun hideProgress(idle: ViewState.Idle) {
-        binding.progressBar.visibility = View.GONE
+        binding.progressBar.goneView()
         binding.btnGoogleSignIn.isEnabled = true
-    }
-    
-    override fun displayError(error: ViewState.Error) {
-        if (error.showError) {
-            Toast.makeText(requireContext(), error.error, Toast.LENGTH_SHORT).show()
-        }
     }
 }

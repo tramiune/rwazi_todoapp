@@ -29,8 +29,13 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding, EditNoteViewModel
             findNavController().popBackStack()
             return
         }
+    }
 
+    override fun listener() {
         setupButtons()
+    }
+
+    override fun observer() {
         observeNote()
     }
 
@@ -71,7 +76,4 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding, EditNoteViewModel
         }
     }
 
-    override fun showProgressView(progress: ProgressType) {}
-    override fun hideProgress(idle: ViewState.Idle) {}
-    override fun displayError(error: ViewState.Error) {}
 }
