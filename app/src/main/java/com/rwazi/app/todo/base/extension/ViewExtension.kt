@@ -5,8 +5,9 @@ import android.view.View
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import com.rwazi.app.todo.util.AppConstants
 
-private var timeDelayDefault = 300L
+private var timeDelayDefault = AppConstants.CLICK_DELAY
 private var lastClickTime: Long = 0
 
 fun View.click(timeDelay: Long = timeDelayDefault, action: (view: View?) -> Unit) {

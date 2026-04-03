@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.rwazi.app.todo.data.local.AppDatabase
 import com.rwazi.app.todo.data.local.NoteDao
+import com.rwazi.app.todo.util.AppConstants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,7 +22,7 @@ object DatabaseModule {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
-            "todo_database"
+            AppConstants.DATABASE_NAME
         ).build()
     }
 

@@ -58,4 +58,19 @@
     <string name="logout">Logout</string>
     <string name="login_welcome">Welcome to Notes</string>
     <string name="login_subtitle">Sync your notes safely in the cloud</string>
+    
+    <!-- New Strings -->
+    <string name="no_notes_found">No notes found</string>
+    <string name="tap_to_add_first_note">Tap the + button to add your first note</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="about_rwazi_todo">About Rwazi Todo</string>
+    <string name="about_description">Stay organized and productive with our premium note-taking experience.</string>
+    <string name="delete_note">Delete Note</string>
+    <string name="back">Back</string>
+    <string name="sort_notes">Sort Notes</string>
+    <string name="add_note">Add Note</string>
+    <string name="title_hint">Title</string>
+    <string name="content_hint">Content</string>
+    <string name="start_typing_hint">Start typing...</string>
+    <string name="settings">Settings</string>
 </resources>

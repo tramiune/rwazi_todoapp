@@ -9,6 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.rwazi.app.todo.data.local.NoteDao
 import com.rwazi.app.todo.data.local.SyncStatus
 import com.rwazi.app.todo.data.mapper.toRemote
+import com.rwazi.app.todo.util.AppConstants
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.tasks.await
@@ -31,7 +32,7 @@ class SyncWorker @AssistedInject constructor(
         val notesToSync = noteDao.getNotesToSync()
         if (notesToSync.isEmpty()) return Result.success()
 
-        val collection = firestore.collection("users").document(uid).collection("notes")
+        val collection = firestore.collection(AppConstants.COLLECTION_USERS).document(uid).collection(AppConstants.COLLECTION_NOTES)
 
         return try {
             notesToSync.forEach { note ->

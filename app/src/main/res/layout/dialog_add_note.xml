@@ -8,7 +8,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Title">
+        android:hint="@string/title_hint">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etTitle"
@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_8sdp"
-        android:hint="Content">
+        android:hint="@string/content_hint">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etContent"

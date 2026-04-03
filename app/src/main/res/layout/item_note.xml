@@ -33,7 +33,7 @@
             android:layout_width="@dimen/_32sdp"
             android:layout_height="@dimen/_32sdp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Delete Note"
+            android:contentDescription="@string/delete_note"
             android:src="@drawable/ic_delete"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

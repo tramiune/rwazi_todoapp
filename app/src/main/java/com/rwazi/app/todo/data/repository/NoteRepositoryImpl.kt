@@ -20,6 +20,7 @@ import com.rwazi.app.todo.data.mapper.toRemote
 import com.rwazi.app.todo.data.remote.NoteRemote
 import com.rwazi.app.todo.data.sync.SyncWorker
 import com.rwazi.app.todo.ui.model.Note
+import com.rwazi.app.todo.util.AppConstants
 import com.rwazi.app.todo.util.SortOrder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -62,7 +63,7 @@ class NoteRepositoryImpl @Inject constructor(
         if (syncJobStarted) return
         syncJobStarted = true
 
-        snapshotListener = firestore.collection("users").document(uid).collection("notes")
+        snapshotListener = firestore.collection(AppConstants.COLLECTION_USERS).document(uid).collection(AppConstants.COLLECTION_NOTES)
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
                     Timber.e(e, "Snapshot listener failed")
@@ -72,7 +73,6 @@ class NoteRepositoryImpl @Inject constructor(
                 snapshot?.documentChanges?.forEach { dc ->
                     val remote =
                         dc.document.toObject(NoteRemote::class.java).copy(id = dc.document.id)
-                            ?: return@forEach
                     val entity = remote.toEntity(SyncStatus.SYNCED)
 
                     repositoryScope.launch {
@@ -118,7 +118,7 @@ class NoteRepositoryImpl @Inject constructor(
         get() = authRepository.currentUser?.uid
 
     private fun getNotesCollection() = currentUserId?.let { uid ->
-        firestore.collection("users").document(uid).collection("notes")
+        firestore.collection(AppConstants.COLLECTION_USERS).document(uid).collection(AppConstants.COLLECTION_NOTES)
     }
 
     override fun getNotesPaged(query: String, sortOrder: SortOrder): Flow<PagingData<Note>> {
@@ -216,9 +216,10 @@ class NoteRepositoryImpl @Inject constructor(
             .build()
 
         workManager.enqueueUniqueWork(
-            "note_sync",
+            AppConstants.WORK_SYNC_NOTES,
             ExistingWorkPolicy.REPLACE,
             syncRequest
         )
     }
 }
+
