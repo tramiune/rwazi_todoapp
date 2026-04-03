@@ -20,12 +20,6 @@ class MainActivity :
     override val classTypeOfViewModel: Class<MainViewModel>
         get() = MainViewModel::class.java
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
-        super.onCreate(savedInstanceState)
-    }
-
-
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun initControl(savedInstanceState: Bundle?) {
         palette?.let {
