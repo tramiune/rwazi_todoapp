@@ -22,7 +22,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textAppearance="?attr/textAppearanceHeadline6"
-            android:textStyle="bold"
+            style="@style/TextAppearance.ToDoApp.Headline6"
             app:layout_constraintEnd_toStartOf="@+id/btnDelete"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -46,7 +46,7 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:ellipsize="end"
             android:maxLines="10"
-            android:textAppearance="?attr/textAppearanceBody2"
+            style="@style/TextAppearance.ToDoApp.Body1"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle"
             tools:text="This is the content of the note. It can be quite long since we implement infinite scroll." />
 
@@ -55,8 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_12sdp"
-            android:fontFamily="sans-serif-light"
-            android:textSize="@dimen/_12ssp"
+            style="@style/TextAppearance.ToDoApp.Caption"
             app:layout_constraintTop_toBottomOf="@+id/tvContent"
             tools:text="Oct 12, 2023 10:00" />
 

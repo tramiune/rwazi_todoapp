@@ -25,9 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_8sdp"
         android:text="@string/settings"
-        android:textColor="?attr/colorOnSurface"
-        android:textAppearance="?attr/textAppearanceHeadline5"
-        android:textStyle="bold"
+        style="@style/TextAppearance.ToDoApp.Headline6"
         app:layout_constraintBottom_toBottomOf="@+id/btnBack"
         app:layout_constraintStart_toEndOf="@+id/btnBack"
         app:layout_constraintTop_toTopOf="@+id/btnBack" />

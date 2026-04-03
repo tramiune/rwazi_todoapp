@@ -102,22 +102,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_16sdp"
-            android:alpha="0.8"
-            android:text="@string/no_notes_found"
-            android:textColor="?attr/colorOnSurface"
-            android:textAppearance="?attr/textAppearanceSubtitle1"
-            android:textStyle="bold" />
+            style="@style/TextAppearance.ToDoApp.Subtitle1"
+            android:textStyle="bold"
+            android:text="@string/no_notes_found" />
 
         <TextView
             android:id="@+id/tvEmptyDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
-            android:alpha="0.6"
             android:gravity="center"
-            android:text="@string/tap_to_add_first_note"
-            android:textColor="?attr/colorOnSurface"
-            android:textAppearance="?attr/textAppearanceCaption" />
+            style="@style/TextAppearance.ToDoApp.Caption"
+            android:text="@string/tap_to_add_first_note" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
