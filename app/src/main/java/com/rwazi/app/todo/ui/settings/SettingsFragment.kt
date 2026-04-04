@@ -12,6 +12,9 @@ import com.rwazi.app.todo.databinding.FragmentSettingsBinding
 import com.rwazi.app.todo.ui.settings.adapter.ThemePaletteAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
+import com.rwazi.app.todo.base.extension.goneView
+import com.rwazi.app.todo.base.extension.visibleView
+
 @AndroidEntryPoint
 class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel>(
     FragmentSettingsBinding::inflate
@@ -30,7 +33,11 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
     override fun observer() {
         viewModel.isAutoTheme.collectInStarted(this) { isAuto ->
             binding.switchAutoTheme.isChecked = isAuto
-            binding.rvPalettes.visibility = if (isAuto) View.GONE else View.VISIBLE
+            if (isAuto) {
+                binding.rvPalettes.goneView()
+            } else {
+                binding.rvPalettes.visibleView()
+            }
         }
 
         viewModel.themePalettes.collectInStarted(this) { palettes ->
