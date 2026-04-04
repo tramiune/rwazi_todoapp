@@ -1,6 +1,10 @@
+package com.rwazi.app.todo.util
+
 import androidx.annotation.StyleRes
 import androidx.core.graphics.toColorInt
 import com.rwazi.app.todo.R
+import javax.inject.Inject
+import javax.inject.Singleton
 
 data class ThemePalette(
     @StyleRes val themeResId: Int,
@@ -8,7 +12,8 @@ data class ThemePalette(
     val isLight: Boolean
 )
 
-object DynamicBackgroundUtils {
+@Singleton
+class DynamicBackgroundUtils @Inject constructor() {
 
     // Curated "Premium" Palettes that match the themes in themes.xml
     private val THEME_PALETTES = listOf(

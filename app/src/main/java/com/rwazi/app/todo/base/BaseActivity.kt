@@ -1,7 +1,7 @@
 package com.rwazi.app.todo.base
 
-import DynamicBackgroundUtils
-import ThemePalette
+import com.rwazi.app.todo.util.DynamicBackgroundUtils
+import com.rwazi.app.todo.util.ThemePalette
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.activity.enableEdgeToEdge
@@ -11,10 +11,14 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
+import javax.inject.Inject
 
 abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel>(
     private val bindingFactory: (LayoutInflater) -> VB,
 ) : AppCompatActivity() {
+
+    @Inject
+    lateinit var themeUtils: DynamicBackgroundUtils
 
     protected var palette: ThemePalette? = null
     protected open val isDynamicTheme: Boolean = false
@@ -33,10 +37,10 @@ abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel>(
         if (isSplashScreen) {
             installSplashScreen()
         }
+        super.onCreate(savedInstanceState)
         if (isDynamicTheme) {
             setupDynamicTheme()
         }
-        super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         viewModel = ViewModelProvider(this)[classTypeOfViewModel]
         binding = bindingFactory(layoutInflater)
@@ -54,7 +58,7 @@ abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel>(
     }
 
     private fun setupDynamicTheme() {
-        palette = DynamicBackgroundUtils.getRandomPalette()
+        palette = themeUtils.getRandomPalette()
         palette?.let {
             setTheme(it.themeResId)
             // Note: System bars will be set in hideSystemUI using the palette info
