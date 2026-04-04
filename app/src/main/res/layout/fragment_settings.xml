@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_8sdp"
                 app:cardCornerRadius="@dimen/_12sdp"
-                app:cardElevation="@dimen/_2sdp"
+                app:cardElevation="@dimen/_1sdp"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
@@ -92,7 +92,7 @@
                 android:layout_marginHorizontal="@dimen/padding_horizontal"
                 android:layout_marginVertical="@dimen/_8sdp"
                 app:cardCornerRadius="@dimen/_12sdp"
-                app:cardElevation="@dimen/_2sdp"
+                app:cardElevation="@dimen/_1sdp"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
