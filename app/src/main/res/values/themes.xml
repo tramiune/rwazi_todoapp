@@ -126,8 +126,8 @@
         <item name="iconTintColor">@color/colorNeutral1</item>
         <item name="searchBarBackground">@color/searchBackground</item>
         <item name="dividerColor">#0D000000</item>
-        <item name="android:windowBackground">@color/colorBackground</item>
-        <item name="colorSurface">@android:color/white</item>
+        <item name="android:windowBackground">#ECEFF1</item>
+        <item name="colorSurface">#ECEFF1</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
@@ -143,8 +143,8 @@
         <item name="iconTintColor">@color/colorNeutral1</item>
         <item name="searchBarBackground">@color/searchBackground</item>
         <item name="dividerColor">#0D000000</item>
-        <item name="android:windowBackground">@color/colorBackground</item>
-        <item name="colorSurface">@android:color/white</item>
+        <item name="android:windowBackground">#FFE0B2</item>
+        <item name="colorSurface">#FFE0B2</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
@@ -245,8 +245,8 @@
         <item name="iconTintColor">@color/colorNeutral1</item>
         <item name="searchBarBackground">@color/searchBackground</item>
         <item name="dividerColor">#0D000000</item>
-        <item name="android:windowBackground">@color/colorBackground</item>
-        <item name="colorSurface">@android:color/white</item>
+        <item name="android:windowBackground">#E0F2F1</item>
+        <item name="colorSurface">#E0F2F1</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
@@ -262,8 +262,8 @@
         <item name="iconTintColor">@color/colorNeutral1</item>
         <item name="searchBarBackground">@color/searchBackground</item>
         <item name="dividerColor">#0D000000</item>
-        <item name="android:windowBackground">@color/colorBackground</item>
-        <item name="colorSurface">@android:color/white</item>
+        <item name="android:windowBackground">#F3E5F5</item>
+        <item name="colorSurface">#F3E5F5</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
@@ -279,8 +279,8 @@
         <item name="iconTintColor">@color/colorNeutral1</item>
         <item name="searchBarBackground">@color/searchBackground</item>
         <item name="dividerColor">#0D000000</item>
-        <item name="android:windowBackground">@color/colorBackground</item>
-        <item name="colorSurface">@android:color/white</item>
+        <item name="android:windowBackground">#FFF8E1</item>
+        <item name="colorSurface">#FFF8E1</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
@@ -296,8 +296,8 @@
         <item name="iconTintColor">@color/colorNeutral1</item>
         <item name="searchBarBackground">@color/searchBackground</item>
         <item name="dividerColor">#0D000000</item>
-        <item name="android:windowBackground">@color/colorBackground</item>
-        <item name="colorSurface">@android:color/white</item>
+        <item name="android:windowBackground">#FCE4EC</item>
+        <item name="colorSurface">#FCE4EC</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
@@ -313,8 +313,8 @@
         <item name="iconTintColor">@color/colorNeutral1</item>
         <item name="searchBarBackground">@color/searchBackground</item>
         <item name="dividerColor">#0D000000</item>
-        <item name="android:windowBackground">@color/colorBackground</item>
-        <item name="colorSurface">@android:color/white</item>
+        <item name="android:windowBackground">#E1F5FE</item>
+        <item name="colorSurface">#E1F5FE</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
     <style name="ShapeAppearance.Circle" parent="">

@@ -24,9 +24,11 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
 
     private val paletteAdapter by lazy {
         ThemePaletteAdapter { palette ->
-            viewModel.updateSelectedTheme(palette.themeResId)
-            // Recreate activity to apply theme immediately
-            activity?.recreate()
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.updateSelectedTheme(palette.themeResId)
+                // Wait for the change to persist before recreating
+                activity?.recreate()
+            }
         }
     }
 
@@ -54,10 +56,12 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
 
         binding.switchAutoTheme.setOnCheckedChangeListener { view, isChecked ->
             if (view.isPressed) { // Only handle manual user touch
-                viewModel.updateAutoTheme(isChecked)
-                if (isChecked) {
-                    // Apply a random theme immediately when switching to Auto
-                    activity?.recreate()
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.updateAutoTheme(isChecked)
+                    if (isChecked) {
+                        // Apply a random theme immediately when switching to Auto
+                        activity?.recreate()
+                    }
                 }
             }
         }

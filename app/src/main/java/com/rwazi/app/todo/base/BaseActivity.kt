@@ -49,7 +49,7 @@ abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel>(
         }
         super.onCreate(savedInstanceState)
         if (isDynamicTheme) {
-            setupDynamicTheme()
+            setupDynamicTheme(savedInstanceState)
         }
         enableEdgeToEdge()
         viewModel = ViewModelProvider(this)[classTypeOfViewModel]
@@ -67,8 +67,27 @@ abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel>(
         }
     }
 
-    private fun setupDynamicTheme() {
-        palette = themeUtils.getRandomPalette()
+    private fun setupDynamicTheme(savedInstanceState: Bundle?) {
+        val savedThemeResId = savedInstanceState?.getInt("KEY_THEME_RES_ID", 0) ?: 0
+        
+        runBlocking {
+            if (savedThemeResId != 0) {
+                // Restore theme from rotation
+                palette = themeUtils.getPalette(savedThemeResId)
+            }
+            
+            if (palette == null) {
+                val isAuto = dataStorageManager.isAutoTheme.first()
+                val selectedResId = dataStorageManager.selectedThemeResId.first()
+
+                palette = if (isAuto) {
+                    themeUtils.getRandomPalette()
+                } else {
+                    themeUtils.getPalette(selectedResId) ?: themeUtils.getRandomPalette()
+                }
+            }
+        }
+
         palette?.let {
             setTheme(it.themeResId)
             // Note: System bars will be set in hideSystemUI using the palette info
