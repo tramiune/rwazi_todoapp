@@ -46,6 +46,13 @@ abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel>(
         listener()
     }
 
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            hideSystemUI()
+        }
+    }
+
     private fun setupDynamicTheme() {
         palette = DynamicBackgroundUtils.getRandomPalette()
         palette?.let {
