@@ -12,11 +12,12 @@ import com.rwazi.app.todo.base.BaseFragment
 import com.rwazi.app.todo.base.extension.click
 import com.rwazi.app.todo.base.extension.collectInStarted
 import com.rwazi.app.todo.base.extension.goneView
+import com.rwazi.app.todo.base.extension.showIfNotExists
 import com.rwazi.app.todo.base.extension.visibleView
-import com.rwazi.app.todo.databinding.DialogAddNoteBinding
 import com.rwazi.app.todo.databinding.FragmentHomeBinding
 import com.rwazi.app.todo.domain.model.SortOrder
 import com.rwazi.app.todo.ui.home.adapter.NoteAdapter
+import com.rwazi.app.todo.ui.home.dialog.AddNoteDialog
 import com.rwazi.app.todo.util.ColorUtils
 import com.rwazi.app.todo.util.GlideCommons
 import dagger.hilt.android.AndroidEntryPoint
@@ -135,24 +136,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
     }
 
     private fun showAddNoteDialog() {
-        val dialogBinding = DialogAddNoteBinding.inflate(layoutInflater)
-
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.add_new_note))
-            .setView(dialogBinding.root)
-            .setPositiveButton(getString(R.string.add)) { _, _ ->
-                val title = dialogBinding.etTitle.text?.toString().orEmpty()
-                val content = dialogBinding.etContent.text?.toString().orEmpty()
-                if (title.isNotBlank() || content.isNotBlank()) {
-                    viewModel.addNote(
-                        title = title,
-                        content = content,
-                        backgroundColor = ColorUtils.getRandomNoteColor()
-                    )
-                }
-            }
-            .setNegativeButton(getString(R.string.cancel), null)
-            .show()
+        AddNoteDialog().showIfNotExists(childFragmentManager)
     }
 
 }
