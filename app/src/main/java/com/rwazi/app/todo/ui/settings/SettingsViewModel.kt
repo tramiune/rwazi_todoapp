@@ -26,6 +26,7 @@ class SettingsViewModel @Inject constructor(
 
     sealed class SettingsEffect {
         object SignedOut : SettingsEffect()
+        object ThemeChanged : SettingsEffect()
     }
 
     val isAutoTheme = dataStorageManager.isAutoTheme.stateIn(
@@ -45,12 +46,16 @@ class SettingsViewModel @Inject constructor(
     fun updateAutoTheme(isAuto: Boolean) {
         viewModelScope.launch {
             dataStorageManager.updateAutoTheme(isAuto)
+            if (isAuto) {
+                _effect.emit(SettingsEffect.ThemeChanged)
+            }
         }
     }
 
     fun updateSelectedTheme(themeResId: Int) {
         viewModelScope.launch {
             dataStorageManager.updateSelectedTheme(themeResId)
+            _effect.emit(SettingsEffect.ThemeChanged)
         }
     }
 

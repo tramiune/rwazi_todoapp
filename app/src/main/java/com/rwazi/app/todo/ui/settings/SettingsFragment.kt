@@ -25,11 +25,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
 
     private val paletteAdapter by lazy {
         ThemePaletteAdapter { palette ->
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.updateSelectedTheme(palette.themeResId)
-                // Wait for the change to persist before recreating
-                activity?.recreate()
-            }
+            viewModel.updateSelectedTheme(palette.themeResId)
         }
     }
 
@@ -50,6 +46,9 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
                 is SettingsViewModel.SettingsEffect.SignedOut -> {
                     findNavController().navigate(R.id.LoginFragment)
                 }
+                is SettingsViewModel.SettingsEffect.ThemeChanged -> {
+                    activity?.recreate()
+                }
             }
         }
     }
@@ -65,13 +64,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
 
         binding.switchAutoTheme.setOnCheckedChangeListener { view, isChecked ->
             if (view.isPressed) { // Only handle manual user touch
-                viewLifecycleOwner.lifecycleScope.launch {
-                    viewModel.updateAutoTheme(isChecked)
-                    if (isChecked) {
-                        // Apply a random theme immediately when switching to Auto
-                        activity?.recreate()
-                    }
-                }
+                viewModel.updateAutoTheme(isChecked)
             }
         }
 
