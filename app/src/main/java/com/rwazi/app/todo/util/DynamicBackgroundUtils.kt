@@ -95,6 +95,20 @@ class DynamicBackgroundUtils @Inject constructor() {
     )
 
     /**
+     * Returns the full list of curated theme palettes.
+     */
+    fun getPalettes(): List<ThemePalette> {
+        return THEME_PALETTES
+    }
+
+    /**
+     * Gets a specific palette by its theme resource ID.
+     */
+    fun getPalette(themeResId: Int): ThemePalette? {
+        return THEME_PALETTES.find { it.themeResId == themeResId }
+    }
+
+    /**
      * Randomly picks one of the curated theme palettes.
      */
     fun getRandomPalette(): ThemePalette {

@@ -13,8 +13,11 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.rwazi.app.todo.base.extension.hideKeyboard
+import com.rwazi.app.todo.data.local.DataStorageManager
 import com.rwazi.app.todo.util.DynamicBackgroundUtils
 import com.rwazi.app.todo.util.ThemePalette
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel>(
@@ -23,6 +26,9 @@ abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel>(
 
     @Inject
     lateinit var themeUtils: DynamicBackgroundUtils
+
+    @Inject
+    lateinit var dataStorageManager: DataStorageManager
 
     protected var palette: ThemePalette? = null
     protected open val isDynamicTheme: Boolean = false

@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_8sdp"
         android:text="@string/settings"
+        android:textColor="?attr/textColorPrimary"
         style="@style/TextAppearance.ToDoApp.Headline6"
         app:layout_constraintBottom_toBottomOf="@+id/btnBack"
         app:layout_constraintStart_toEndOf="@+id/btnBack"
@@ -42,13 +43,73 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Add more setting cards here for aesthetics -->
+            <!-- Theme Settings Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_4sdp"
                 android:layout_marginVertical="@dimen/_8sdp"
-                android:alpha="0.8"
+                app:cardCornerRadius="@dimen/_20sdp"
+                app:cardElevation="@dimen/_2sdp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_16sdp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/theme_settings"
+                        android:textAppearance="?attr/textAppearanceSubtitle1"
+                        android:textColor="?attr/textColorPrimary"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/auto_change_theme"
+                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textColor="?attr/textColorPrimary" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switchAutoTheme"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvPalettes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:clipToPadding="false"
+                        android:visibility="gone"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        app:spanCount="5"
+                        tools:listitem="@layout/item_theme_palette"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- About Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_4sdp"
+                android:layout_marginVertical="@dimen/_8sdp"
                 app:cardCornerRadius="@dimen/_20sdp"
                 app:cardElevation="@dimen/_2sdp"
                 app:strokeWidth="0dp">
@@ -64,6 +125,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/about_rwazi_todo"
                         android:textAppearance="?attr/textAppearanceSubtitle1"
+                        android:textColor="?attr/textColorPrimary"
                         android:textStyle="bold" />
 
                     <TextView
@@ -72,7 +134,8 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:alpha="0.6"
                         android:text="@string/about_description"
-                        android:textAppearance="?attr/textAppearanceBody2" />
+                        android:textAppearance="?attr/textAppearanceBody2"
+                        android:textColor="?attr/textColorSecondary" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>

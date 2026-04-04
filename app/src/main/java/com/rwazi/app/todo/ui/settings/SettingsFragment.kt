@@ -11,10 +11,9 @@ import com.rwazi.app.todo.databinding.FragmentSettingsBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-import androidx.fragment.app.activityViewModels
-import com.rwazi.app.todo.ui.main.MainViewModel
-import android.graphics.Color
+import androidx.recyclerview.widget.GridLayoutManager
 import com.rwazi.app.todo.base.extension.collectInStarted
+import com.rwazi.app.todo.ui.settings.adapter.ThemePaletteAdapter
 
 @AndroidEntryPoint
 class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel>(
@@ -23,11 +22,44 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
     override val classTypeOfViewModel: Class<SettingsViewModel>
         get() = SettingsViewModel::class.java
 
-    override fun initControl(view: View, savedInstanceState: Bundle?) {}
+    private val paletteAdapter by lazy {
+        ThemePaletteAdapter { palette ->
+            viewModel.updateSelectedTheme(palette.themeResId)
+            // Recreate activity to apply theme immediately
+            activity?.recreate()
+        }
+    }
+
+    override fun initControl(view: View, savedInstanceState: Bundle?) {
+        setupRecyclerView()
+    }
+
+    override fun observer() {
+        viewModel.isAutoTheme.collectInStarted(this) { isAuto ->
+            binding.switchAutoTheme.isChecked = isAuto
+            binding.rvPalettes.visibility = if (isAuto) View.GONE else View.VISIBLE
+        }
+
+        viewModel.selectedThemeResId.collectInStarted(this) { resId ->
+            paletteAdapter.setSelectedTheme(resId)
+        }
+
+        paletteAdapter.submitList(viewModel.themePalettes)
+    }
 
     override fun setupClick() {
         binding.btnBack.click {
             findNavController().popBackStack()
+        }
+
+        binding.switchAutoTheme.setOnCheckedChangeListener { view, isChecked ->
+            if (view.isPressed) { // Only handle manual user touch
+                viewModel.updateAutoTheme(isChecked)
+                if (isChecked) {
+                    // Apply a random theme immediately when switching to Auto
+                    activity?.recreate()
+                }
+            }
         }
 
         binding.btnLogout.click {
@@ -35,6 +67,13 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
                 viewModel.signOut()
                 findNavController().navigate(R.id.LoginFragment)
             }
+        }
+    }
+
+    private fun setupRecyclerView() {
+        binding.rvPalettes.apply {
+            adapter = paletteAdapter
+            layoutManager = GridLayoutManager(requireContext(), 5)
         }
     }
 }
