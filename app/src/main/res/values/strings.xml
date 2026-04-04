@@ -44,4 +44,5 @@
     <string name="content_hint">Content</string>
     <string name="start_typing_hint">Start typing...</string>
     <string name="save_changes">Save Changes</string>
+    <string name="note_updated">Note updated</string>
 </resources>

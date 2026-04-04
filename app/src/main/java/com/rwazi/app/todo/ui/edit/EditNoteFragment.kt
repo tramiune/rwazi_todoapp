@@ -19,6 +19,9 @@ import com.rwazi.app.todo.base.extension.click
 class EditNoteFragment : BaseFragment<FragmentEditNoteBinding, EditNoteViewModel>(
     FragmentEditNoteBinding::inflate
 ) {
+
+    override val shouldObserveViewModelState: Boolean = false
+
     override val classTypeOfViewModel: Class<EditNoteViewModel>
         get() = EditNoteViewModel::class.java
 
@@ -38,6 +41,7 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding, EditNoteViewModel
 
     override fun observer() {
         observeNote()
+        observeEffects()
     }
 
     private fun setupButtons() {
@@ -48,21 +52,7 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding, EditNoteViewModel
         binding.btnUpdate.click {
             val title = binding.etTitle.text.toString()
             val content = binding.etContent.text.toString()
-
-            if (title.isNotBlank() || content.isNotBlank()) {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    val currentNote = viewModel.getNoteById(args.noteId)
-                    currentNote?.let {
-                        viewModel.updateNote(it.copy(title = title, content = content))
-                        Toast.makeText(
-                            requireContext(),
-                            "Note updated",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        findNavController().popBackStack()
-                    }
-                }
-            }
+            viewModel.updateNote(args.noteId, title, content)
         }
     }
 
@@ -72,6 +62,19 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding, EditNoteViewModel
                 note?.let {
                     binding.etTitle.setText(it.title)
                     binding.etContent.setText(it.content)
+                }
+            }
+        }
+    }
+
+    private fun observeEffects() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.effect.collectLatest { effect ->
+                when (effect) {
+                    is EditNoteViewModel.EditEffect.UpdateSuccess -> {
+                        showToast(getString(com.rwazi.app.todo.R.string.note_updated), Toast.LENGTH_SHORT)
+                        findNavController().popBackStack()
+                    }
                 }
             }
         }

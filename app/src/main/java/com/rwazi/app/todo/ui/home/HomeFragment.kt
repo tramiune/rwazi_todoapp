@@ -25,6 +25,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
     FragmentHomeBinding::inflate
 ) {
 
+    override val shouldObserveViewModelState: Boolean = false
+
     override val classTypeOfViewModel: Class<HomeViewModel>
         get() = HomeViewModel::class.java
     private val adapter = NoteAdapter(

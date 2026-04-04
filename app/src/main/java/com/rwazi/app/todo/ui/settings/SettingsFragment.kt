@@ -18,6 +18,8 @@ import kotlinx.coroutines.launch
 class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel>(
     FragmentSettingsBinding::inflate
 ) {
+
+    override val shouldObserveViewModelState: Boolean = false
     override val classTypeOfViewModel: Class<SettingsViewModel>
         get() = SettingsViewModel::class.java
 

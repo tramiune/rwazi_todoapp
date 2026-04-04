@@ -1,11 +1,14 @@
 package com.rwazi.app.todo.ui.edit
 
+import androidx.lifecycle.viewModelScope
 import com.rwazi.app.todo.base.BaseViewModel
 import com.rwazi.app.todo.domain.repository.NoteRepository
 
 import com.rwazi.app.todo.domain.model.Note
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -13,14 +16,30 @@ class EditNoteViewModel @Inject constructor(
     private val noteRepository: NoteRepository
 ) : BaseViewModel() {
 
+    private val _effect = kotlinx.coroutines.flow.MutableSharedFlow<EditEffect>()
+    val effect = _effect.asSharedFlow()
+
+    sealed class EditEffect {
+        object UpdateSuccess : EditEffect()
+    }
+
     fun getNoteFlow(id: String): Flow<Note?> = noteRepository.getNoteFlow(id)
 
-    suspend fun getNoteById(id: String): Note? = noteRepository.getNoteById(id)
+    fun updateNote(id: String, title: String, content: String) {
+        if (title.isBlank() && content.isBlank()) return
 
-    fun updateNote(note: Note) {
         justExecute(
-            action = { noteRepository.updateNote(note) },
-            onSuccess = { /* Data update handled via Flow */ }
+            action = { 
+                val currentNote = noteRepository.getNoteById(id)
+                currentNote?.let {
+                    noteRepository.updateNote(it.copy(title = title, content = content))
+                }
+            },
+            onSuccess = { 
+                viewModelScope.launch {
+                    _effect.emit(EditEffect.UpdateSuccess)
+                }
+            }
         )
     }
 }
