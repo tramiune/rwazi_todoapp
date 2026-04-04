@@ -122,8 +122,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
         }
 
         adapter.loadStateFlow.collectInStarted(this) { loadStates ->
-            val isListEmpty =
-                loadStates.refresh is LoadState.NotLoading && adapter.itemCount == 0
+            val isListEmpty = loadStates.refresh is LoadState.NotLoading && 
+                              loadStates.append.endOfPaginationReached && 
+                              adapter.itemCount == 0
+
             if (isListEmpty) {
                 binding.llEmptyState.visibleView()
                 binding.rvNotes.goneView()
