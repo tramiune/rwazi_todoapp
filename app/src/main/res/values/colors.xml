@@ -12,4 +12,7 @@
     <color name="gradientEnd">#F8F9FA</color>
     
     <color name="searchBackground">#E0E0E0</color>
+    <color name="colorNeutral1">#333333</color>
+    <color name="colorNeutral2">#666666 </color>
+    <color name="colorNeutral3">#AAAAAA</color>
 </resources>

@@ -5,9 +5,9 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_10sdp"
-    app:cardCornerRadius="@dimen/_24sdp"
-    app:cardElevation="@dimen/_4sdp"
+    android:layout_margin="@dimen/_8sdp"
+    app:cardCornerRadius="@dimen/_8sdp"
+    app:cardElevation="@dimen/_1sdp"
     app:strokeWidth="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +23,7 @@
             android:maxLines="2"
             android:textAppearance="?attr/textAppearanceHeadline6"
             style="@style/TextAppearance.ToDoApp.Headline6"
-            android:textColor="?attr/textColorDarkOnly"
+            android:textColor="@color/black"
             app:layout_constraintEnd_toStartOf="@+id/btnDelete"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -46,7 +46,7 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:ellipsize="end"
             android:maxLines="10"
-            android:textColor="?attr/textColorDarkOnly"
+            android:textColor="@color/colorNeutral1"
             style="@style/TextAppearance.ToDoApp.Body1"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle"
             tools:text="This is the content of the note." />
@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
-            android:textColor="?attr/textColorDarkOnly"
+            android:textColor="@color/colorNeutral1"
             style="@style/TextAppearance.ToDoApp.Caption"
             app:layout_constraintTop_toBottomOf="@+id/divider"
             tools:text="Oct 12, 2023 10:00" />

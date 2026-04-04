@@ -1,4 +1,5 @@
 <resources>
     <dimen name="fab_margin">@dimen/_16sdp</dimen>
     <dimen name="status_bar_height">@dimen/_32sdp</dimen>
+    <dimen name="padding_horizontal">@dimen/_12sdp</dimen>
 </resources>
