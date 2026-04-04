@@ -6,23 +6,31 @@ import androidx.paging.cachedIn
 import com.rwazi.app.todo.base.BaseViewModel
 import com.rwazi.app.todo.domain.repository.NoteRepository
 
+import com.rwazi.app.todo.domain.repository.AuthRepository
 import com.rwazi.app.todo.domain.model.Note
 import com.rwazi.app.todo.domain.model.SortOrder
+import com.rwazi.app.todo.domain.model.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.stateIn
 import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val noteRepository: NoteRepository
+    private val noteRepository: NoteRepository,
+    private val authRepository: AuthRepository
 ) : BaseViewModel() {
+
+    val currentUser: Flow<User?> = authRepository.getAuthState()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), authRepository.currentUser)
 
     private val _searchQuery = MutableStateFlow("")
     private val _sortOrder = MutableStateFlow(SortOrder.NEWEST_FIRST)

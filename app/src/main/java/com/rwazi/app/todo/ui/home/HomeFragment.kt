@@ -18,6 +18,7 @@ import com.rwazi.app.todo.databinding.FragmentHomeBinding
 import com.rwazi.app.todo.domain.model.SortOrder
 import com.rwazi.app.todo.ui.home.adapter.NoteAdapter
 import com.rwazi.app.todo.util.ColorUtils
+import com.rwazi.app.todo.util.GlideCommons
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -44,12 +45,34 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
 
     override fun setupClick() {
         setupFab()
-        setupSettings()
         setupSort()
+        setupAvatarClick()
     }
 
     override fun observer() {
         observeNotes()
+        observeUser()
+    }
+
+    private fun setupAvatarClick() {
+        binding.ivAvatar.click {
+            val action = HomeFragmentDirections.actionHomeFragmentToSettingsFragment()
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun observeUser() {
+        viewModel.currentUser.collectInStarted(this) { user ->
+            user?.photoUrl?.let { url ->
+                GlideCommons.loadSimple(
+                    context = requireContext(),
+                    path = url,
+                    imageView = binding.ivAvatar,
+                    placeholder = R.drawable.ic_logo_premium,
+                    errorImage = R.drawable.ic_logo_premium
+                )
+            }
+        }
     }
 
     private fun setupSort() {
@@ -66,13 +89,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
                 true
             }
             popup?.show()
-        }
-    }
-
-    private fun setupSettings() {
-        binding.btnSettings.click {
-            val action = HomeFragmentDirections.actionHomeFragmentToSettingsFragment()
-            findNavController().navigate(action)
         }
     }
 

@@ -29,26 +29,26 @@
         android:layout_height="@dimen/_36sdp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/sort_notes"
-        android:padding="@dimen/_12sdp"
+        android:padding="@dimen/_10sdp"
         android:src="@drawable/ic_sort"
         app:layout_constraintBottom_toBottomOf="@+id/searchView"
-        app:layout_constraintEnd_toStartOf="@+id/btnSettings"
+        app:layout_constraintEnd_toStartOf="@+id/ivAvatar"
         app:layout_constraintTop_toTopOf="@+id/searchView"
         app:tint="?attr/colorControlNormal" />
 
-    <ImageButton
-        android:id="@+id/btnSettings"
-        android:layout_width="@dimen/_36sdp"
-        android:layout_height="@dimen/_36sdp"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivAvatar"
+        android:layout_width="@dimen/_32sdp"
+        android:layout_height="@dimen/_32sdp"
         android:layout_marginEnd="@dimen/padding_horizontal"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/settings"
-        android:padding="@dimen/_12sdp"
-        android:src="@drawable/ic_settings"
+        android:src="@drawable/ic_logo_premium"
         app:layout_constraintBottom_toBottomOf="@+id/searchView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/searchView"
-        app:tint="?attr/colorControlNormal" />
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Circle"
+        app:strokeColor="?attr/dividerColor"
+        app:strokeWidth="1dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvNotes"
