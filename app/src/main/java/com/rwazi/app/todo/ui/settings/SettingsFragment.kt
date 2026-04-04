@@ -4,16 +4,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.rwazi.app.todo.R
 import com.rwazi.app.todo.base.BaseFragment
 import com.rwazi.app.todo.base.extension.click
 import com.rwazi.app.todo.base.extension.collectInStarted
+import com.rwazi.app.todo.base.extension.goneView
+import com.rwazi.app.todo.base.extension.visibleView
 import com.rwazi.app.todo.databinding.FragmentSettingsBinding
 import com.rwazi.app.todo.ui.settings.adapter.ThemePaletteAdapter
 import dagger.hilt.android.AndroidEntryPoint
-
-import com.rwazi.app.todo.base.extension.goneView
-import com.rwazi.app.todo.base.extension.visibleView
 
 @AndroidEntryPoint
 class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel>(
@@ -47,7 +45,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
         viewModel.effect.collectInStarted(this) { effect ->
             when (effect) {
                 is SettingsViewModel.SettingsEffect.SignedOut -> {
-                    findNavController().navigate(R.id.LoginFragment)
+                    val action = SettingsFragmentDirections.actionSettingsFragmentToLoginFragment()
+                    findNavController().navigate(action)
                 }
                 is SettingsViewModel.SettingsEffect.ThemeChanged -> {
                     activity?.recreate()
