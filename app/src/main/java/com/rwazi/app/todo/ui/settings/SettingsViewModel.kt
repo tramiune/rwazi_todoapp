@@ -34,16 +34,22 @@ class SettingsViewModel @Inject constructor(
 
     val themePalettes = themeUtils.getPalettes()
 
-    suspend fun updateAutoTheme(isAuto: Boolean) {
-        dataStorageManager.updateAutoTheme(isAuto)
+    fun updateAutoTheme(isAuto: Boolean) {
+        viewModelScope.launch {
+            dataStorageManager.updateAutoTheme(isAuto)
+        }
     }
 
-    suspend fun updateSelectedTheme(themeResId: Int) {
-        dataStorageManager.updateSelectedTheme(themeResId)
+    fun updateSelectedTheme(themeResId: Int) {
+        viewModelScope.launch {
+            dataStorageManager.updateSelectedTheme(themeResId)
+        }
     }
 
-    suspend fun signOut() {
-        noteRepository.clearLocalData()
-        authRepository.signOut()
+    fun signOut() {
+        viewModelScope.launch {
+            noteRepository.clearLocalData()
+            authRepository.signOut()
+        }
     }
 }
