@@ -2,7 +2,6 @@ package com.rwazi.app.todo.ui.settings
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.rwazi.app.todo.R
@@ -12,7 +11,6 @@ import com.rwazi.app.todo.base.extension.collectInStarted
 import com.rwazi.app.todo.databinding.FragmentSettingsBinding
 import com.rwazi.app.todo.ui.settings.adapter.ThemePaletteAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel>(
@@ -35,11 +33,9 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
             binding.rvPalettes.visibility = if (isAuto) View.GONE else View.VISIBLE
         }
 
-        viewModel.selectedThemeResId.collectInStarted(this) { resId ->
-            paletteAdapter.setSelectedTheme(resId)
+        viewModel.themePalettes.collectInStarted(this) { palettes ->
+            paletteAdapter.submitList(palettes)
         }
-
-        paletteAdapter.submitList(viewModel.themePalettes)
 
         viewModel.effect.collectInStarted(this) { effect ->
             when (effect) {

@@ -9,7 +9,8 @@ import javax.inject.Singleton
 data class ThemePalette(
     @StyleRes val themeResId: Int,
     val backgroundColor: Int,
-    val isLight: Boolean
+    val isLight: Boolean,
+    val isSelected: Boolean = false
 )
 
 @Singleton

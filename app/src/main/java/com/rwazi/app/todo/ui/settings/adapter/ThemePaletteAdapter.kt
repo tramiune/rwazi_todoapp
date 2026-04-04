@@ -11,14 +11,7 @@ import com.rwazi.app.todo.util.ThemePalette
 
 class ThemePaletteAdapter(
     private val onPaletteClick: (ThemePalette) -> Unit
-) : ListAdapter<ThemePalette, ThemePaletteAdapter.PaletteViewHolder>(PaletteDiffCallback()) {
-
-    private var selectedThemeResId: Int = 0
-
-    fun setSelectedTheme(resId: Int) {
-        selectedThemeResId = resId
-        notifyDataSetChanged()
-    }
+) : ListAdapter<ThemePalette, PaletteViewHolder>(PaletteDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PaletteViewHolder {
         val binding = ItemThemePaletteBinding.inflate(
@@ -26,26 +19,11 @@ class ThemePaletteAdapter(
             parent,
             false
         )
-        return PaletteViewHolder(binding)
+        return PaletteViewHolder(binding, onPaletteClick)
     }
 
     override fun onBindViewHolder(holder: PaletteViewHolder, position: Int) {
         holder.bind(getItem(position))
-    }
-
-    inner class PaletteViewHolder(private val binding: ItemThemePaletteBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(palette: ThemePalette) {
-            binding.ivPaletteColor.setBackgroundColor(palette.backgroundColor)
-            
-            val isSelected = palette.themeResId == selectedThemeResId
-            binding.ivSelected.isVisible = isSelected
-            
-            binding.root.setOnClickListener {
-                onPaletteClick(palette)
-            }
-        }
     }
 
     class PaletteDiffCallback : DiffUtil.ItemCallback<ThemePalette>() {
