@@ -3,17 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
-    android:padding="@dimen/_16sdp">
+    android:background="@android:color/transparent">
 
     <ImageButton
         android:id="@+id/btnBack"
-        android:layout_width="@dimen/_48sdp"
-        android:layout_height="@dimen/_48sdp"
+        android:layout_width="@dimen/_36sdp"
+        android:layout_height="@dimen/_36sdp"
         android:layout_marginTop="@dimen/status_bar_height"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/back"
         android:padding="@dimen/_12sdp"
+        android:layout_marginStart="@dimen/_8sdp"
         android:src="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
