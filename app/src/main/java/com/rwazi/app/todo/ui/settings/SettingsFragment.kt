@@ -4,16 +4,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.rwazi.app.todo.R
 import com.rwazi.app.todo.base.BaseFragment
 import com.rwazi.app.todo.base.extension.click
+import com.rwazi.app.todo.base.extension.collectInStarted
 import com.rwazi.app.todo.databinding.FragmentSettingsBinding
+import com.rwazi.app.todo.ui.settings.adapter.ThemePaletteAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-
-import androidx.recyclerview.widget.GridLayoutManager
-import com.rwazi.app.todo.base.extension.collectInStarted
-import com.rwazi.app.todo.ui.settings.adapter.ThemePaletteAdapter
 
 @AndroidEntryPoint
 class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel>(
@@ -32,10 +31,6 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
         }
     }
 
-    override fun initControl(view: View, savedInstanceState: Bundle?) {
-        setupRecyclerView()
-    }
-
     override fun observer() {
         viewModel.isAutoTheme.collectInStarted(this) { isAuto ->
             binding.switchAutoTheme.isChecked = isAuto
@@ -47,6 +42,10 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
         }
 
         paletteAdapter.submitList(viewModel.themePalettes)
+    }
+
+    override fun initControl(view: View, savedInstanceState: Bundle?) {
+        setupRecyclerView()
     }
 
     override fun setupClick() {

@@ -9,7 +9,6 @@
         android:id="@+id/btnBack"
         android:layout_width="@dimen/_36sdp"
         android:layout_height="@dimen/_36sdp"
-        android:layout_marginTop="@dimen/status_bar_height"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/back"
         android:padding="@dimen/_12sdp"

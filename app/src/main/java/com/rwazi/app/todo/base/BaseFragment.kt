@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.createViewModelLazy
 import androidx.lifecycle.lifecycleScope
@@ -24,6 +26,12 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel>(val bindingFac
     protected lateinit var binding: VB private set
     protected abstract val classTypeOfViewModel: Class<VM>
     open val shouldObserveViewModelState: Boolean = true
+    
+    /**
+     * Set to true to automatically apply status bar padding to the root view.
+     * Default is true. Override this if you want full-screen content without top padding.
+     */
+    open val shouldApplyWindowInsets: Boolean = true
 
     open fun setupClick() {}
     open fun observer() {}
@@ -42,6 +50,16 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel>(val bindingFac
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        
+        if (shouldApplyWindowInsets) {
+            val originalPaddingTop = view.paddingTop
+            ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowInsets ->
+                val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+                v.setPadding(v.paddingLeft, insets.top + originalPaddingTop, v.paddingRight, v.paddingBottom)
+                windowInsets
+            }
+        }
+
         if (shouldObserveViewModelState) {
             observeViewModelState(viewModel)
         }
