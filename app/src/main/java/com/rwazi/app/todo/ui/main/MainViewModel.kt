@@ -12,10 +12,4 @@ import kotlinx.coroutines.flow.asStateFlow
 class MainViewModel @Inject constructor(
 ) : BaseViewModel() {
 
-    private val _isLightMode = MutableStateFlow(false)
-    val isLightMode: StateFlow<Boolean> = _isLightMode.asStateFlow()
-
-    fun setLightMode(isLight: Boolean) {
-        _isLightMode.value = isLight
-    }
 }

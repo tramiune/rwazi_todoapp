@@ -25,7 +25,7 @@
     <string name="cancel">Cancel</string>
     <string name="google_sign_in">Sign in with Google</string>
     <string name="logout">Logout</string>
-    <string name="login_welcome">Welcome to\nRwazi Notes</string>
+    <string name="login_welcome">Welcome to Rwazi Notes</string>
     <string name="login_subtitle">Sync your notes safely in the cloud</string>
     
     <!-- New Strings -->

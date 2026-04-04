@@ -3,7 +3,6 @@ package com.rwazi.app.todo.ui.main
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.rwazi.app.todo.base.BaseActivity
 import com.rwazi.app.todo.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,6 +15,7 @@ class MainActivity :
     ) {
 
     override val isDynamicTheme: Boolean = true
+    override val isSplashScreen: Boolean = true
 
     override val classTypeOfViewModel: Class<MainViewModel>
         get() = MainViewModel::class.java
@@ -24,7 +24,6 @@ class MainActivity :
     override fun initControl(savedInstanceState: Bundle?) {
         palette?.let {
             binding.rootView.setBackgroundColor(it.backgroundColor)
-            viewModel.setLightMode(it.isLight)
         }
     }
 }

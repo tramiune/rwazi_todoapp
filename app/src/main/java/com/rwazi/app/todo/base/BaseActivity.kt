@@ -1,5 +1,6 @@
 package com.rwazi.app.todo.base
 
+import DynamicBackgroundUtils
 import ThemePalette
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel>(
 
     protected var palette: ThemePalette? = null
     protected open val isDynamicTheme: Boolean = false
+    protected open val isSplashScreen: Boolean = false
 
     protected lateinit var binding: VB
         private set
@@ -28,7 +30,9 @@ abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel>(
 
     @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
+        if (isSplashScreen) {
+            installSplashScreen()
+        }
         if (isDynamicTheme) {
             setupDynamicTheme()
         }
