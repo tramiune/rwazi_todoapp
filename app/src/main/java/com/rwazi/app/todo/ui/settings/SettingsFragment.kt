@@ -44,6 +44,14 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
         }
 
         paletteAdapter.submitList(viewModel.themePalettes)
+
+        viewModel.effect.collectInStarted(this) { effect ->
+            when (effect) {
+                is SettingsViewModel.SettingsEffect.SignedOut -> {
+                    findNavController().navigate(R.id.LoginFragment)
+                }
+            }
+        }
     }
 
     override fun initControl(view: View, savedInstanceState: Bundle?) {
@@ -68,10 +76,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
         }
 
         binding.btnLogout.click {
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.signOut()
-                findNavController().navigate(R.id.LoginFragment)
-            }
+            viewModel.signOut()
         }
     }
 

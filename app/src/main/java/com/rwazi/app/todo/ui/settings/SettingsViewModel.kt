@@ -9,6 +9,7 @@ import com.rwazi.app.todo.util.DynamicBackgroundUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,6 +20,13 @@ class SettingsViewModel @Inject constructor(
     private val themeUtils: DynamicBackgroundUtils,
     private val noteRepository: NoteRepository
 ) : BaseViewModel() {
+
+    private val _effect = kotlinx.coroutines.flow.MutableSharedFlow<SettingsEffect>()
+    val effect = _effect.asSharedFlow()
+
+    sealed class SettingsEffect {
+        object SignedOut : SettingsEffect()
+    }
 
     val isAutoTheme = dataStorageManager.isAutoTheme.stateIn(
         scope = viewModelScope,
@@ -50,6 +58,7 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             noteRepository.clearLocalData()
             authRepository.signOut()
+            _effect.emit(SettingsEffect.SignedOut)
         }
     }
 }
