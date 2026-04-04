@@ -1,13 +1,13 @@
 package com.rwazi.app.todo.ui.home.dialog
 
 import androidx.fragment.app.viewModels
-import com.rwazi.app.todo.base.BaseDialogFragmentAR
+import com.rwazi.app.todo.base.BaseDialogFragment
 import com.rwazi.app.todo.base.extension.click
 import com.rwazi.app.todo.databinding.DialogAddNoteBinding
 import com.rwazi.app.todo.ui.home.HomeViewModel
 import com.rwazi.app.todo.util.ColorUtils
 
-class AddNoteDialog : BaseDialogFragmentAR<DialogAddNoteBinding>() {
+class AddNoteDialog : BaseDialogFragment<DialogAddNoteBinding>() {
 
     private val viewModel: HomeViewModel by viewModels(ownerProducer = { requireParentFragment() })
 

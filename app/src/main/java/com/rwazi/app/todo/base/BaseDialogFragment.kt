@@ -12,7 +12,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.viewbinding.ViewBinding
 import java.lang.reflect.ParameterizedType
 
-abstract class BaseDialogFragmentAR<B : ViewBinding> : DialogFragment() {
+abstract class BaseDialogFragment<B : ViewBinding> : DialogFragment() {
 
     private var _binding: B? = null
     protected val binding get() = _binding!!

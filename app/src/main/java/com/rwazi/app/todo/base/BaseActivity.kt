@@ -1,9 +1,10 @@
 package com.rwazi.app.todo.base
 
-import com.rwazi.app.todo.util.DynamicBackgroundUtils
-import com.rwazi.app.todo.util.ThemePalette
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -11,6 +12,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
+import com.rwazi.app.todo.base.extension.hideKeyboard
+import com.rwazi.app.todo.util.DynamicBackgroundUtils
+import com.rwazi.app.todo.util.ThemePalette
 import javax.inject.Inject
 
 abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel>(
@@ -105,6 +109,20 @@ abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel>(
     protected abstract fun initControl(savedInstanceState: Bundle?)
     open fun listener() {}
     open fun observer() {}
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (ev?.action == MotionEvent.ACTION_DOWN) {
+            val v = currentFocus
+            if (v is EditText) {
+                val outRect = Rect()
+                v.getGlobalVisibleRect(outRect)
+                if (!outRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                    v.clearFocus()
+                    this.hideKeyboard(v)
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev)
+    }
 
 }
 
