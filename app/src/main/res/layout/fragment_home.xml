@@ -38,8 +38,8 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivAvatar"
-        android:layout_width="@dimen/_32sdp"
-        android:layout_height="@dimen/_32sdp"
+        android:layout_width="@dimen/_28sdp"
+        android:layout_height="@dimen/_28sdp"
         android:layout_marginEnd="@dimen/padding_horizontal"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_logo_premium"

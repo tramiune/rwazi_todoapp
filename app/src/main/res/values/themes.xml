@@ -39,18 +39,18 @@
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/colorBackground</item>
-        <item name="android:statusBarColor">@color/gradientStart</item>
+        <item name="android:statusBarColor">@color/colorBackground</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="colorOnSurface">@android:color/white</item>
-        <item name="colorControlNormal">@android:color/white</item>
+        <item name="colorOnSurface">@android:color/black</item>
+        <item name="colorControlNormal">@android:color/black</item>
         
         <!-- Custom Attributes Defaults -->
-        <item name="textColorPrimary">@android:color/white</item>
-        <item name="textColorSecondary">#BDBDBD</item>
-        <item name="android:textColorHint">#BDBDBD</item>
-        <item name="iconTintColor">@android:color/white</item>
-        <item name="searchBarBackground">#2AFFFFFF</item>
-        <item name="dividerColor">#1AFFFFFF</item>
+        <item name="textColorPrimary">@color/black</item>
+        <item name="textColorSecondary">@color/colorNeutral2</item>
+        <item name="android:textColorHint">@color/colorNeutral3</item>
+        <item name="iconTintColor">@color/colorNeutral1</item>
+        <item name="searchBarBackground">@color/searchBackground</item>
+        <item name="dividerColor">#1A000000</item>
         <item name="textColorLightOnly">@android:color/white</item>
         <item name="textColorDarkOnly">@android:color/black</item>
     </style>
@@ -75,6 +75,9 @@
         <item name="iconTintColor">@android:color/white</item>
         <item name="searchBarBackground">#2AFFFFFF</item>
         <item name="dividerColor">#1AFFFFFF</item>
+        <item name="android:windowBackground">#1A237E</item>
+        <item name="colorSurface">#1A237E</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <!-- Palette 2: Ocean Deep (Dark) -->
@@ -89,6 +92,9 @@
         <item name="iconTintColor">@android:color/white</item>
         <item name="searchBarBackground">#2AFFFFFF</item>
         <item name="dividerColor">#1AFFFFFF</item>
+        <item name="android:windowBackground">#002171</item>
+        <item name="colorSurface">#002171</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <!-- Palette 3: Forest Whisper (Dark) -->
@@ -103,6 +109,9 @@
         <item name="iconTintColor">@android:color/white</item>
         <item name="searchBarBackground">#2AFFFFFF</item>
         <item name="dividerColor">#1AFFFFFF</item>
+        <item name="android:windowBackground">#003308</item>
+        <item name="colorSurface">#003308</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <!-- Palette 4: Soft Cloud (Light) -->
@@ -112,11 +121,14 @@
         <item name="colorOnSurface">@android:color/black</item>
         <item name="colorControlNormal">@android:color/black</item>
         <item name="textColorPrimary">@android:color/black</item>
-        <item name="textColorSecondary">#757575</item>
-        <item name="android:textColorHint">#757575</item>
-        <item name="iconTintColor">@android:color/black</item>
-        <item name="searchBarBackground">#1A000000</item>
+        <item name="textColorSecondary">@color/colorNeutral2</item>
+        <item name="android:textColorHint">@color/colorNeutral3</item>
+        <item name="iconTintColor">@color/colorNeutral1</item>
+        <item name="searchBarBackground">@color/searchBackground</item>
         <item name="dividerColor">#0D000000</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="colorSurface">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <!-- Palette 5: Peach Sunset (Light) -->
@@ -126,11 +138,14 @@
         <item name="colorOnSurface">@android:color/black</item>
         <item name="colorControlNormal">@android:color/black</item>
         <item name="textColorPrimary">@android:color/black</item>
-        <item name="textColorSecondary">#757575</item>
-        <item name="android:textColorHint">#757575</item>
-        <item name="iconTintColor">@android:color/black</item>
-        <item name="searchBarBackground">#1A000000</item>
+        <item name="textColorSecondary">@color/colorNeutral2</item>
+        <item name="android:textColorHint">@color/colorNeutral3</item>
+        <item name="iconTintColor">@color/colorNeutral1</item>
+        <item name="searchBarBackground">@color/searchBackground</item>
         <item name="dividerColor">#0D000000</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="colorSurface">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <!-- Palette 6: Midnight Blue (Dark) -->
@@ -145,6 +160,9 @@
         <item name="iconTintColor">@android:color/white</item>
         <item name="searchBarBackground">#2AFFFFFF</item>
         <item name="dividerColor">#1AFFFFFF</item>
+        <item name="android:windowBackground">#0D47A1</item>
+        <item name="colorSurface">#0D47A1</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <!-- Palette 7: Rosewood (Dark) -->
@@ -159,6 +177,9 @@
         <item name="iconTintColor">@android:color/white</item>
         <item name="searchBarBackground">#2AFFFFFF</item>
         <item name="dividerColor">#1AFFFFFF</item>
+        <item name="android:windowBackground">#4A001F</item>
+        <item name="colorSurface">#4A001F</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <!-- Palette 8: Teal Depth (Dark) -->
@@ -173,6 +194,9 @@
         <item name="iconTintColor">@android:color/white</item>
         <item name="searchBarBackground">#2AFFFFFF</item>
         <item name="dividerColor">#1AFFFFFF</item>
+        <item name="android:windowBackground">#002E2C</item>
+        <item name="colorSurface">#002E2C</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <!-- Palette 9: Royal Purple (Dark) -->
@@ -187,6 +211,9 @@
         <item name="iconTintColor">@android:color/white</item>
         <item name="searchBarBackground">#2AFFFFFF</item>
         <item name="dividerColor">#1AFFFFFF</item>
+        <item name="android:windowBackground">#2E003E</item>
+        <item name="colorSurface">#2E003E</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <!-- Palette 10: Charcoal (Dark) -->
@@ -201,6 +228,9 @@
         <item name="iconTintColor">@android:color/white</item>
         <item name="searchBarBackground">#2AFFFFFF</item>
         <item name="dividerColor">#1AFFFFFF</item>
+        <item name="android:windowBackground">#102027</item>
+        <item name="colorSurface">#102027</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <!-- Palette 11: Mint Breeze (Light) -->
@@ -210,11 +240,14 @@
         <item name="colorOnSurface">@android:color/black</item>
         <item name="colorControlNormal">@android:color/black</item>
         <item name="textColorPrimary">@android:color/black</item>
-        <item name="textColorSecondary">#757575</item>
-        <item name="android:textColorHint">#757575</item>
-        <item name="iconTintColor">@android:color/black</item>
-        <item name="searchBarBackground">#1A000000</item>
+        <item name="textColorSecondary">@color/colorNeutral2</item>
+        <item name="android:textColorHint">@color/colorNeutral3</item>
+        <item name="iconTintColor">@color/colorNeutral1</item>
+        <item name="searchBarBackground">@color/searchBackground</item>
         <item name="dividerColor">#0D000000</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="colorSurface">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <!-- Palette 12: Lavender Mist (Light) -->
@@ -224,11 +257,14 @@
         <item name="colorOnSurface">@android:color/black</item>
         <item name="colorControlNormal">@android:color/black</item>
         <item name="textColorPrimary">@android:color/black</item>
-        <item name="textColorSecondary">#757575</item>
-        <item name="android:textColorHint">#757575</item>
-        <item name="iconTintColor">@android:color/black</item>
-        <item name="searchBarBackground">#1A000000</item>
+        <item name="textColorSecondary">@color/colorNeutral2</item>
+        <item name="android:textColorHint">@color/colorNeutral3</item>
+        <item name="iconTintColor">@color/colorNeutral1</item>
+        <item name="searchBarBackground">@color/searchBackground</item>
         <item name="dividerColor">#0D000000</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="colorSurface">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <!-- Palette 13: Golden Sand (Light) -->
@@ -238,11 +274,14 @@
         <item name="colorOnSurface">@android:color/black</item>
         <item name="colorControlNormal">@android:color/black</item>
         <item name="textColorPrimary">@android:color/black</item>
-        <item name="textColorSecondary">#757575</item>
-        <item name="android:textColorHint">#757575</item>
-        <item name="iconTintColor">@android:color/black</item>
-        <item name="searchBarBackground">#1A000000</item>
+        <item name="textColorSecondary">@color/colorNeutral2</item>
+        <item name="android:textColorHint">@color/colorNeutral3</item>
+        <item name="iconTintColor">@color/colorNeutral1</item>
+        <item name="searchBarBackground">@color/searchBackground</item>
         <item name="dividerColor">#0D000000</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="colorSurface">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <!-- Palette 14: Sakura Pink (Light) -->
@@ -252,11 +291,14 @@
         <item name="colorOnSurface">@android:color/black</item>
         <item name="colorControlNormal">@android:color/black</item>
         <item name="textColorPrimary">@android:color/black</item>
-        <item name="textColorSecondary">#757575</item>
-        <item name="android:textColorHint">#757575</item>
-        <item name="iconTintColor">@android:color/black</item>
-        <item name="searchBarBackground">#1A000000</item>
+        <item name="textColorSecondary">@color/colorNeutral2</item>
+        <item name="android:textColorHint">@color/colorNeutral3</item>
+        <item name="iconTintColor">@color/colorNeutral1</item>
+        <item name="searchBarBackground">@color/searchBackground</item>
         <item name="dividerColor">#0D000000</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="colorSurface">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <!-- Palette 15: Sky Serenity (Light) -->
@@ -266,11 +308,14 @@
         <item name="colorOnSurface">@android:color/black</item>
         <item name="colorControlNormal">@android:color/black</item>
         <item name="textColorPrimary">@android:color/black</item>
-        <item name="textColorSecondary">#757575</item>
-        <item name="android:textColorHint">#757575</item>
-        <item name="iconTintColor">@android:color/black</item>
-        <item name="searchBarBackground">#1A000000</item>
+        <item name="textColorSecondary">@color/colorNeutral2</item>
+        <item name="android:textColorHint">@color/colorNeutral3</item>
+        <item name="iconTintColor">@color/colorNeutral1</item>
+        <item name="searchBarBackground">@color/searchBackground</item>
         <item name="dividerColor">#0D000000</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="colorSurface">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
     <style name="ShapeAppearance.Circle" parent="">
         <item name="cornerSize">50%</item>
