@@ -41,7 +41,7 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding, EditNoteViewModel
     }
 
     private fun setupButtons() {
-        binding.btnBack.click {
+        binding.topBar.setOnBackClickListener {
             findNavController().popBackStack()
         }
 

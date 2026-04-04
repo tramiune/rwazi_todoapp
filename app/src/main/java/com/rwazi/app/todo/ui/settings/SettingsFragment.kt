@@ -49,7 +49,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SettingsViewModel
     }
 
     override fun setupClick() {
-        binding.btnBack.click {
+        binding.topBar.setOnBackClickListener {
             findNavController().popBackStack()
         }
 

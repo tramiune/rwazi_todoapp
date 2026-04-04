@@ -2,7 +2,6 @@ package com.rwazi.app.todo.ui.home
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.SearchView
 import androidx.navigation.fragment.findNavController
@@ -18,7 +17,6 @@ import com.rwazi.app.todo.databinding.FragmentHomeBinding
 import com.rwazi.app.todo.domain.model.SortOrder
 import com.rwazi.app.todo.ui.home.adapter.NoteAdapter
 import com.rwazi.app.todo.ui.home.dialog.AddNoteDialog
-import com.rwazi.app.todo.util.ColorUtils
 import com.rwazi.app.todo.util.GlideCommons
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -10,4 +10,7 @@
     <!-- Forced contrast attributes -->
     <attr name="textColorLightOnly" format="color" />
     <attr name="textColorDarkOnly" format="color" />
+    <declare-styleable name="RwaziTopBar">
+        <attr name="topBarTitle" format="string" />
+    </declare-styleable>
 </resources>

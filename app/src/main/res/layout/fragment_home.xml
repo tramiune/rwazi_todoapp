@@ -103,6 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_16sdp"
+            android:textColor="?attr/textColorPrimary"
             android:text="@string/no_notes_found"
             android:textStyle="bold" />
 
@@ -113,6 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
             android:gravity="center"
+            android:textColor="?attr/textColorSecondary"
             android:text="@string/tap_to_add_first_note" />
     </LinearLayout>
 

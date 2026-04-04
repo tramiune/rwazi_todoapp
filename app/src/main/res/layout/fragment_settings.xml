@@ -5,37 +5,19 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent">
 
-    <ImageButton
-        android:id="@+id/btnBack"
-        android:layout_width="@dimen/_36sdp"
-        android:layout_height="@dimen/_36sdp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/back"
-        android:padding="@dimen/_12sdp"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:src="@drawable/ic_back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="?attr/colorControlNormal" />
-
-    <TextView
-        android:id="@+id/tvSettingsTitle"
-        android:layout_width="wrap_content"
+    <com.rwazi.app.todo.util.RwaziTopBar
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:text="@string/settings"
-        android:textColor="?attr/textColorPrimary"
-        style="@style/TextAppearance.ToDoApp.Headline6"
-        app:layout_constraintBottom_toBottomOf="@+id/btnBack"
-        app:layout_constraintStart_toEndOf="@+id/btnBack"
-        app:layout_constraintTop_toTopOf="@+id/btnBack" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:topBarTitle="@string/settings" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_2sdp"
         app:layout_constraintBottom_toTopOf="@+id/btnLogout"
-        app:layout_constraintTop_toBottomOf="@+id/btnBack">
+        app:layout_constraintTop_toBottomOf="@+id/topBar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,7 +29,6 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_4sdp"
                 android:layout_marginVertical="@dimen/_8sdp"
                 app:cardCornerRadius="@dimen/_12sdp"
                 app:cardElevation="@dimen/_2sdp"
@@ -108,7 +89,6 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_4sdp"
                 android:layout_marginVertical="@dimen/_8sdp"
                 app:cardCornerRadius="@dimen/_12sdp"
                 app:cardElevation="@dimen/_2sdp"

@@ -4,96 +4,69 @@
     android:id="@+id/editNoteRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
-    android:padding="@dimen/_16sdp">
+    android:background="@android:color/transparent">
 
-    <ImageButton
-        android:id="@+id/btnBack"
-        android:layout_width="@dimen/_48sdp"
-        android:layout_height="@dimen/_48sdp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/back"
-        android:padding="@dimen/_12sdp"
-        android:src="@drawable/ic_back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="?attr/colorControlNormal" />
-
-    <TextView
-        android:id="@+id/tvEditTitle"
-        android:layout_width="wrap_content"
+    <com.rwazi.app.todo.util.RwaziTopBar
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:text="@string/edit_note_label"
-        style="@style/TextAppearance.ToDoApp.Headline6"
-        app:layout_constraintBottom_toBottomOf="@+id/btnBack"
-        app:layout_constraintStart_toEndOf="@+id/btnBack"
-        app:layout_constraintTop_toTopOf="@+id/btnBack" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:topBarTitle="@string/edit_note_label" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardEdit"
+    <EditText
+        android:id="@+id/etTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/padding_horizontal"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:background="@null"
+        android:hint="@string/title_hint"
+        android:inputType="textCapSentences"
+        android:justificationMode="inter_word"
+        android:maxLines="2"
+        android:textColor="?attr/textColorPrimary"
+        android:textColorHint="?attr/textColorSecondary"
+        style="@style/TextAppearance.ToDoApp.Headline6"
+        app:layout_constraintTop_toBottomOf="@+id/topBar" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="@dimen/padding_horizontal"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:alpha="0.1"
+        android:background="?attr/dividerColor"
+        app:layout_constraintTop_toBottomOf="@+id/etTitle" />
+
+    <EditText
+        android:id="@+id/etContent"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginHorizontal="@dimen/padding_horizontal"
+        android:layout_marginTop="@dimen/_12sdp"
         android:layout_marginBottom="@dimen/_16sdp"
-        app:cardCornerRadius="@dimen/_24sdp"
-        app:cardElevation="@dimen/_4sdp"
+        android:background="@null"
+        android:gravity="top"
+        android:hint="@string/start_typing_hint"
+        android:inputType="textMultiLine|textCapSentences"
+        android:justificationMode="inter_word"
+        android:paddingBottom="@dimen/_24sdp"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:textColor="?attr/textColorPrimary"
+        android:textColorHint="?attr/textColorSecondary"
         app:layout_constraintBottom_toTopOf="@+id/btnUpdate"
-        app:layout_constraintTop_toBottomOf="@+id/btnBack"
-        app:strokeWidth="0dp">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/_16sdp">
-
-            <EditText
-                android:id="@+id/etTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:hint="@string/title_hint"
-                android:inputType="textCapSentences"
-                android:maxLines="2"
-                style="@style/TextAppearance.ToDoApp.Headline6"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:alpha="0.1"
-                android:background="@android:color/darker_gray"
-                app:layout_constraintTop_toBottomOf="@+id/etTitle" />
-
-            <EditText
-                android:id="@+id/etContent"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:background="@null"
-                android:gravity="top"
-                android:hint="@string/start_typing_hint"
-                android:inputType="textMultiLine|textCapSentences"
-                android:paddingBottom="@dimen/_24sdp"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textColorHint="?android:attr/textColorSecondary"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnUpdate"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_60sdp"
+        android:layout_height="@dimen/_56sdp"
         android:layout_marginBottom="@dimen/_8sdp"
         android:text="@string/save_changes"
         android:textStyle="bold"
         app:cornerRadius="@dimen/_16sdp"
+        android:layout_marginHorizontal="@dimen/padding_horizontal"
         app:elevation="@dimen/_4sdp"
         app:icon="@drawable/ic_add"
         app:iconGravity="textStart"
