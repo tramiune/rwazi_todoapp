@@ -25,8 +25,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
     FragmentHomeBinding::inflate
 ) {
 
-    override val shouldObserveViewModelState: Boolean = false
-
     override val classTypeOfViewModel: Class<HomeViewModel>
         get() = HomeViewModel::class.java
     private val adapter = NoteAdapter(
@@ -53,6 +51,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
     override fun observer() {
         observeNotes()
         observeUser()
+        observeEffects()
     }
 
     private fun setupAvatarClick() {
@@ -131,6 +130,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
             } else {
                 binding.llEmptyState.goneView()
                 binding.rvNotes.visibleView()
+            }
+        }
+    }
+
+    private fun observeEffects() {
+        viewModel.effect.collectInStarted(this) { effect ->
+            when (effect) {
+                is HomeViewModel.HomeEffect.ShowToast -> {
+                    showToast(getString(effect.messageResId), android.widget.Toast.LENGTH_SHORT)
+                }
             }
         }
     }

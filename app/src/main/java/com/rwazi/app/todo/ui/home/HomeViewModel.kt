@@ -20,6 +20,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 import java.util.UUID
 import javax.inject.Inject
 
@@ -31,6 +33,13 @@ class HomeViewModel @Inject constructor(
 
     val currentUser: Flow<User?> = authRepository.getAuthState()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), authRepository.currentUser)
+
+    private val _effect = kotlinx.coroutines.flow.MutableSharedFlow<HomeEffect>()
+    val effect = _effect.asSharedFlow()
+
+    sealed class HomeEffect {
+        data class ShowToast(val messageResId: Int) : HomeEffect()
+    }
 
     private val _searchQuery = MutableStateFlow("")
     private val _sortOrder = MutableStateFlow(SortOrder.NEWEST_FIRST)
@@ -64,14 +73,22 @@ class HomeViewModel @Inject constructor(
         )
         justExecute(
             action = { noteRepository.addNote(note) },
-            onSuccess = { /* Success auto-updates via Flow */ }
+            onSuccess = { 
+                viewModelScope.launch {
+                    _effect.emit(HomeEffect.ShowToast(com.rwazi.app.todo.R.string.note_added))
+                }
+            }
         )
     }
 
     fun deleteNote(id: String) {
         justExecute(
             action = { noteRepository.deleteNote(id) },
-            onSuccess = { /* Success auto-updates via Flow */ }
+            onSuccess = { 
+                viewModelScope.launch {
+                    _effect.emit(HomeEffect.ShowToast(com.rwazi.app.todo.R.string.note_deleted))
+                }
+            }
         )
     }
 }
