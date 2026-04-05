@@ -48,11 +48,13 @@ class SyncWorker @AssistedInject constructor(
                 Timber.d("SyncWorker: Process note ${note.id} (isDeleted=${note.isDeleted})")
                 if (note.isDeleted) {
                     remoteDataSource.updateNoteField(uid, note.id, "deleted", true)
+                    noteDao.deleteNotePermanently(note.id)
+                    Timber.d("SyncWorker: Permanently deleted note ${note.id} after remote sync")
                 } else {
                     remoteDataSource.saveNote(uid, note.toRemote())
+                    noteDao.updateNote(note.copy(syncStatus = SyncStatus.SYNCED))
+                    Timber.d("SyncWorker: Sync success for note ${note.id}")
                 }
-                noteDao.updateNote(note.copy(syncStatus = SyncStatus.SYNCED))
-                Timber.d("SyncWorker: Sync success for note ${note.id}")
             }
             Timber.d("SyncWorker: All notes synced successfully")
             Result.success()
