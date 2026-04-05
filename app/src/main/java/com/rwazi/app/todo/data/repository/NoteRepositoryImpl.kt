@@ -49,6 +49,7 @@ class NoteRepositoryImpl @Inject constructor(
 
     init {
         repositoryScope.launch {
+            syncNotes()
             authRepository.getAuthState().collect { user ->
                 val uid = user?.id
                 if (uid != null) {

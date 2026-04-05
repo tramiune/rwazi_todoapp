@@ -23,27 +23,41 @@ class SyncWorker @AssistedInject constructor(
     private val authRepository: AuthRepository
 ) : CoroutineWorker(context, params) {
 
+    init {
+        Timber.d("SyncWorker: Instantiated with Hilt successfully")
+    }
+
     override suspend fun doWork(): Result {
+        Timber.d("SyncWorker: Starting doWork")
+        
         val uid = authRepository.currentUser?.id ?: run {
             Timber.w("SyncWorker: User not logged in, retrying...")
             return Result.retry()
         }
 
         val notesToSync = noteDao.getNotesToSync()
-        if (notesToSync.isEmpty()) return Result.success()
+        Timber.d("SyncWorker: Found ${notesToSync.size} notes to sync")
+        
+        if (notesToSync.isEmpty()) {
+            Timber.d("SyncWorker: Nothing to sync, success")
+            return Result.success()
+        }
 
         return try {
             notesToSync.forEach { note ->
+                Timber.d("SyncWorker: Process note ${note.id} (isDeleted=${note.isDeleted})")
                 if (note.isDeleted) {
                     remoteDataSource.updateNoteField(uid, note.id, "deleted", true)
                 } else {
                     remoteDataSource.saveNote(uid, note.toRemote())
                 }
                 noteDao.updateNote(note.copy(syncStatus = SyncStatus.SYNCED))
+                Timber.d("SyncWorker: Sync success for note ${note.id}")
             }
+            Timber.d("SyncWorker: All notes synced successfully")
             Result.success()
         } catch (e: Exception) {
-            Timber.e(e, "SyncWorker failed")
+            Timber.e(e, "SyncWorker: Error during sync")
             Result.retry()
         }
     }

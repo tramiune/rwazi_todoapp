@@ -93,6 +93,7 @@ dependencies {
 
     // work
     implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.hilt.work.v130)
 
     // Size- and scale-independent pixels for @dimen/_XXsdp and @dimen/_XXssp
     implementation(libs.sdp)

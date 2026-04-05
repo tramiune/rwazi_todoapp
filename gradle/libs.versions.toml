@@ -1,6 +1,7 @@
 [versions]
 agp = "8.10.1"
 appcompatVersion = "1.6.1"
+hiltWorkVersion = "1.3.0"
 kotlin = "2.0.21"
 coreKtx = "1.18.0"
 junit = "4.13.2"
@@ -38,6 +39,7 @@ googleid = "1.1.1"
 [libraries]
 androidx-appcompat-v161 = { module = "androidx.appcompat:appcompat", version.ref = "appcompatVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-hilt-work-v130 = { module = "androidx.hilt:hilt-work", version.ref = "hiltWorkVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
