@@ -148,14 +148,17 @@ class NoteRepositoryImpl @Inject constructor(
             return
         }
 
-        try {
-            action(uid, entity.toRemote())
-            noteDao.updateNote(entity.copy(syncStatus = SyncStatus.SYNCED))
-            Timber.d("Repository: Remote action successful for ${entity.id}")
-        } catch (e: Exception) {
-            Timber.e(e, "Repository: Remote action failed for ${entity.id}")
-        } finally {
-            syncNotes()
+        // Run remote sync in background scope so it doesn't block UI navigation
+        repositoryScope.launch {
+            try {
+                action(uid, entity.toRemote())
+                noteDao.updateNote(entity.copy(syncStatus = SyncStatus.SYNCED))
+                Timber.d("Repository: Remote action successful for ${entity.id}")
+            } catch (e: Exception) {
+                Timber.e(e, "Repository: Remote action failed for ${entity.id}")
+            } finally {
+                syncNotes()
+            }
         }
     }
 

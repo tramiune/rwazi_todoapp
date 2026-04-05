@@ -22,6 +22,7 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding, EditNoteViewModel
         get() = EditNoteViewModel::class.java
 
     private val args: EditNoteFragmentArgs by navArgs()
+    private var isNoteLoaded = false
 
     override fun initControl(view: View, savedInstanceState: Bundle?) {
         val noteId = args.noteId
@@ -54,9 +55,11 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding, EditNoteViewModel
 
     private fun observeNote() {
         viewModel.getNoteFlow(args.noteId).collectInStarted(this) { note ->
+            if (isNoteLoaded) return@collectInStarted
             note?.let {
                 binding.etTitle.setText(it.title)
                 binding.etContent.setText(it.content)
+                isNoteLoaded = true
             }
         }
     }

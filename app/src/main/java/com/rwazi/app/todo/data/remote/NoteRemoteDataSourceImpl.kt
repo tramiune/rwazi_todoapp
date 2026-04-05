@@ -2,6 +2,7 @@ package com.rwazi.app.todo.data.remote
 
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.rwazi.app.todo.util.AppConstants
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -47,6 +48,8 @@ class NoteRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun updateNoteField(uid: String, noteId: String, field: String, value: Any) {
-        getNotesCollection(uid).document(noteId).update(field, value).await()
+        getNotesCollection(uid).document(noteId)
+            .set(mapOf(field to value), SetOptions.merge())
+            .await()
     }
 }
