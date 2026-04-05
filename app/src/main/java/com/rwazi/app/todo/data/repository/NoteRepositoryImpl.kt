@@ -149,6 +149,9 @@ class NoteRepositoryImpl @Inject constructor(
             return
         }
 
+        // Enqueue sync immediately so it persistent even if app is killed during the launch
+        syncNotes()
+
         // Run remote sync in background scope so it doesn't block UI navigation
         repositoryScope.launch {
             try {
@@ -157,8 +160,6 @@ class NoteRepositoryImpl @Inject constructor(
                 Timber.d("Repository: Remote action successful for ${entity.id}")
             } catch (e: Exception) {
                 Timber.e(e, "Repository: Remote action failed for ${entity.id}")
-            } finally {
-                syncNotes()
             }
         }
     }
@@ -168,6 +169,7 @@ class NoteRepositoryImpl @Inject constructor(
     override fun getNoteFlow(id: String): Flow<Note?> = noteDao.getNoteFlow(id).map { it?.toDomain() }
 
     override suspend fun syncNotes() {
+        Timber.d("SyncWorker syncNotes")
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
