@@ -19,12 +19,24 @@ class LogInViewModel @Inject constructor(
 
     sealed interface LoginEffect {
         data class Success(val user: User) : LoginEffect
+        object LaunchGoogleSignIn : LoginEffect
     }
 
     private val _effect = MutableSharedFlow<LoginEffect>()
     val effect = _effect.asSharedFlow()
 
     fun isLoggedIn(): Boolean = authRepository.currentUser != null
+
+    fun onGoogleSignInClicked() {
+        showProgress(null)
+        viewModelScope.launch {
+            _effect.emit(LoginEffect.LaunchGoogleSignIn)
+        }
+    }
+
+    fun onGoogleSignInCancelled() {
+        hideProgress()
+    }
 
     fun signInWithGoogle(idToken: String) {
         justExecute(
@@ -33,6 +45,9 @@ class LogInViewModel @Inject constructor(
             },
             onSuccess = { user ->
                 viewModelScope.launch { _effect.emit(LoginEffect.Success(user)) }
+            },
+            onError = {
+                hideProgress()
             }
         )
     }

@@ -17,7 +17,7 @@ class GoogleAuthManager @Inject constructor(
 ) {
     private val credentialManager = CredentialManager.create(context)
 
-    suspend fun signIn(activity: Activity): String? {
+    suspend fun getIdToken(activity: Activity): Result<String?> = runCatching {
         val googleIdOption = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)
             .setServerClientId(serverClientId)
@@ -37,8 +37,9 @@ class GoogleAuthManager @Inject constructor(
             credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
         ) {
             val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
-            return googleIdTokenCredential.idToken
+            googleIdTokenCredential.idToken
+        } else {
+            null
         }
-        return null
     }
 }
